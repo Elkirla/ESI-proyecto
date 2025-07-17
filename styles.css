@@ -1,0 +1,263 @@
+body {
+  margin: 0;
+  padding-top: 60px; /* Ajusta según la altura de tu header */
+  background-color: #444444;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+}
+
+  /* Contenedor principal (2 contenedores: header + hero) */
+.header {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  background-color: #2ab3ff;
+  padding: 0.6rem 1rem;
+  position: fixed; /* Cambiado de static a fixed */
+  top: 2%;
+  left: 3%;
+  right: 0;
+  width: 90%;
+  border-radius:  7px; /* Redondeamos solo las esquinas inferiores */
+  z-index: 1000; /* Aseguramos que esté por encima de otros elementos */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Sombra para efecto de elevación */
+}
+  .header button {
+    background-color: rgba(0,0,0,0.7);
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.25rem 0.8rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+   .header button:hover {
+    background-color: rgba(0,0,0,0.9);
+  }
+  .headerline { 
+    position: absolute;
+    top: 0;
+    left: 80px;
+    right: 0;
+    height: 43px;
+    width: 1%;
+    background-color: #444444; /* Línea azul */
+    z-index: 2; /* Asegura que la línea esté detrás del header */
+  }
+  /* Hero container con grid para dos columnas */
+.hero {
+  max-width: 900px;
+  margin: 2rem auto; /* Aumentamos el margen superior */
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  align-items: center;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+  /* Texto izquierda */
+  .hero-text {
+    font-weight: 600;
+  }
+  .hero-text h1 {
+    
+    font-size: 50px;
+    margin-bottom: 6px;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: -20px; /* Mueve el h1 más arriba */
+  }
+   .hero-text p {
+    font-weight: 300;
+    line-height: 1.4;
+    max-width: 320px;
+  }
+  /* Imagen */
+  .hero-image {
+    position: relative;
+    left: 0;
+  }
+  .hero-image img {
+    width: 100%;
+    max-height: 400px; /* Nuevo: limita la altura */
+    object-fit: cover; /* Mantiene el recorte si la imagen es muy alta */
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.6);
+    display: block;
+  }
+  /* Botones debajo de la imagen en línea */
+  .hero-buttons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+  }
+    .hero-buttons button {
+      width: 100%;
+      max-width: 250px;
+      background: linear-gradient(90deg, #2ab3ff 0%, #6d9fd8 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(42,179,255,0.2);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    }
+    .hero-buttons button:hover {
+    background: linear-gradient(90deg, #0077ff 0%, #2ab3ff 100%);
+    transform: translateY(-2px) scale(1.04);
+  }
+.comunidad{  
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    position: absolute;
+    height: 40px;  
+    font-size: 50px;
+    top: 91%;
+    left:20% ;
+  } 
+  #slider {
+    position: absolute;
+    width: 40%;
+    height: 60%;
+    top: 110%;
+    left: 20%;
+    background-color: white;
+    z-index: -1; 
+     transition: all 0.5s ease;
+  }
+  .slider-arrow {
+  position: absolute; 
+  font-size: 48px;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 1;
+  user-select: none; 
+  transition: transform 0.2s ease;
+}
+.slider-arrow:hover {
+  transform: scale(1.2);
+  color: #2ab3ff;
+}
+.slider-arrow-left {
+  top: 135%;
+}
+.slider-arrow-right {
+  top: 135%;
+    left: 61%;
+} 
+.slidertext {
+  position: absolute;
+  top: 110%;
+  left: 62%;
+  width: 35%;
+  color: #fff;
+  font-size: 30px;
+  line-height: 1.5;
+} 
+  /* Bottom full width inputs */
+  #user-create .bottom-section {
+    margin-top: 20px;
+    display: flex;
+    gap: 16px;
+  }
+  #user-create .bottom-section label {
+    flex: 1 1 auto;
+    font-size: 13px;
+  }
+  #user-create .bottom-section input[type="text"] {
+    width: 100%;
+    height: 26px;
+    border-radius: 4px;
+    border: none;
+    background: #6a6a6a;
+    color: #eee;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+  #user-create .bottom-section input[type="text"]:focus {
+    outline: 2px solid #bbb;
+    background: #7f7f7f;
+  }
+ 
+  #user-create {
+    position: absolute;
+    left: 20%;
+    top: 240%;
+    background: #1d1d1d;
+    width: 800px;
+    padding: 20px 30px 30px 30px;
+    height: 320px;
+    box-sizing: border-box;
+  }
+  #user-create h2 {
+    font-weight: 600;
+    font-size: 28px;
+    margin: 0 0 30px 0;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+  }
+  /* Flex container for top area */
+  #user-create .top-section {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+#user-create .fields-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+#user-create .form-row {
+  display: flex;
+  gap: 16px;
+}
+#user-create .form-row label {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  font-size: 13px;
+}
+#user-create .form-row input[type="text"],
+#user-create .form-row input[type="tel"]
+ {
+  width: 80%;
+  height: 26px;
+  border-radius: 4px;
+  border: none;
+  background: #6a6a6a;
+  color: #eee;
+  padding: 0 10px;
+  font-size: 13px;
+}
+#user-create .form-row input[type="email"]{
+  width: 39%;
+  height: 26px;
+  border-radius: 4px;
+  border: none;
+  background: #6a6a6a;
+  color: #eee;
+  padding: 0 10px;
+  font-size: 13px;
+}
+#user-create button {
+  position: absolute;
+  right: 10%;
+    top: 80%;
+  margin-top: 16px;
+  align-self: flex-end;
+  background: #2ab3ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#user-create button:hover {
+  background: #0077ff;
+}
