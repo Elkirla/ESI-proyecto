@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     animarElementos();
     iniciarSlider();
 });
+const menucontainer = document.getElementById("menucontainer");
+const menuAbrir = document.getElementById('menuabrir');
+const menuCerrar = document.getElementById('menucerrar'); 
+const menucontactos = document.getElementById('menucontactos'); 
+const menubotones = document.getElementById('menubotones'); 
 
 const h2 = [ 
     "Unidos por el cambio", 
@@ -122,13 +127,26 @@ function iniciarSlider() {
         slides[currentIndex].classList.add('active');
         dotsContainer.children[currentIndex].classList.add('active');
     }
-
-    // Auto-avance cada 5 segundos (pero ya mostrando la primera imagen)
+ 
     setInterval(() => {
         cambiarSlide((currentIndex + 1) % slides.length);
     }, 5000);
 }
-async function esperar(segundos) {
-    return new Promise(resolve => setTimeout(resolve, segundos * 1000));
+ 
+document.getElementById('menuabrir').addEventListener('click', function() {
+    menucontainer.style.display = 'flex';
+    menucontainer.style.transform = 'translateX(0)';
+    menucontainer.style.opacity = '1';
+});
+
+document.getElementById('menucerrar').addEventListener('click', function() {
+    menucontainer.style.transform = 'translateX(250px)';
+    menucontainer.style.opacity = '0';
+    menucontainer.style.display = 'none';
+});
+
+
+function esperar(segundos) {
+  return new Promise(resolve => setTimeout(resolve, segundos * 1000));
 }
 
