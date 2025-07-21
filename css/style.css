@@ -2,13 +2,13 @@ body {
     margin: 0;
     padding: 0;
     height: 400vh;
-    overflow-x: hidden; /* Evita el desplazamiento horizontal */
+    overflow-x: hidden;
     background-color: #070707;
 }
 h1 {
     position: absolute;
     font-family: 'Playfair Display', serif;
-    font-weight: 300; /* Texto más fino */
+    font-weight: 300;
     font-size: 73px;
     margin-top: 4%;
     left:3.5%;
@@ -28,9 +28,9 @@ h1 {
 }
 .hero {
     display: flex;
-    position: absolute; /* Cambiado de relative a absolute */
+    position: absolute; 
     top: 0;
-    right: 0; /* Lo posicionamos a la derecha */
+    right: 0; 
     width: 60%;
     height: 100%;
     background-image: 
@@ -100,9 +100,9 @@ h1 {
     align-items: center;
 }
 .logoheader{
-    width: 50px; /* Ajusta el tamaño del logo */
-    height: 50px; /* Ajusta el tamaño del logo */
-    margin-left: 20px; /* Espacio a la izquierda del logo */
+    width: 50px; 
+    height: 50px;
+    margin-left: 20px; 
 }
 .menu {
     width: 30px;  
@@ -121,26 +121,25 @@ h1 {
     padding: 10px 20px;
 }
 .header button:hover {
-    color: #000000; /* Cambia el color al pasar el mouse */
-    background-color: white;
-    /*una fuente mas gruesa*/
+    color: #000000; 
+    background-color: white; 
     font-weight: bold;
     transition: 0.3s ease-in-out;  
 }
 .separador {
     position: fixed;
-    top: 29.5px; /* Debajo del header */
+    top: 29.5px; 
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: #ffffff; /* Color del separador */
+    background-color: #ffffff; 
 }
 .nosotros-container {
     display: flex;  
     color: white;
     justify-content: space-around;
     position: absolute;
-    top: 120%; /* Ajusta según sea necesario */
+    top: 120%;
     left: 10%; 
     height: 53%;
     width: 80%;
@@ -167,7 +166,7 @@ h1 {
     height: 85%; 
     border-bottom: #ffffff 2px solid;
      border-right: #ffffff 2px solid; 
-    padding: 20px; /* Espacio interno */
+    padding: 20px; 
 }
 #sobrenosotrosh2{
 border-bottom: #ffffff 2px solid; 
@@ -176,7 +175,7 @@ padding-left: 10px;
 padding-bottom: 10px; 
 margin-bottom: 20px; 
 }
-/* Estilos para el slider */
+
 .comunidad{
     position: absolute;
     top: 190%;  
@@ -218,7 +217,7 @@ margin-bottom: 20px;
 
 .slider-item img {
     width: 100%;
-    height: 100%;
+    height: 100%; 
     object-fit: cover;
     border-radius: 8px;
 }
@@ -260,7 +259,7 @@ margin-bottom: 20px;
 }
 .info-slide{
     position: absolute;
-    top: 213%;
+    top: 212%;
     left: 58%; 
     width: 40%;
     height: 42%;
@@ -270,8 +269,8 @@ margin-bottom: 20px;
     justify-content: start; 
     color: white;
     padding: 20px ;
-    background-color: rgb(5, 32, 76);
     border-radius: 20px;
+    border: #ffffff 4px solid;
 }
 .info-slide p {
     font-family: 'Montserrat', sans-serif;
@@ -363,7 +362,13 @@ margin-bottom: 20px;
 .footer-column ul li {
     margin-bottom: 10px;
 }
-
+a{
+    text-decoration: none;
+    color: white;
+}
+a:hover{
+    color: black;
+}
 .social-icons {
     display: flex;
     gap: 15px;
@@ -443,5 +448,20 @@ margin-bottom: 20px;
     margin-bottom:10px; 
     display: flex;
     flex-direction: column;
+}  
+.menu-container .loginbtton {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    text-align: left;
+}
+ 
+.menu-container .loginbtton:hover {
+    color: #000000 !important;  
+}
+ 
+.menu-container .loginbtton a {
+    display: block;
+    width: 100%; 
 }
  

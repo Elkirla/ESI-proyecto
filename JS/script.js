@@ -24,8 +24,7 @@ async function animacionh2() {
         for (const texto of h2) {
             // Efecto de máquina de escribir 
             await escribirTexto(elementoH2, texto);
-            
-            // Espera 2 segundos con el texto completo
+             
             await esperar(12);
             
             // Efecto de borrado 
@@ -135,16 +134,14 @@ function iniciarSlider() {
  
 document.getElementById('menuabrir').addEventListener('click', function() {
     menucontainer.style.display = 'flex';
-    menucontainer.style.transform = 'translateX(0)';
-    menucontainer.style.opacity = '1';
+    moverElemento(menucontainer, 100, 0, 0.05, 'x', 0, 1); 
 });
 
 document.getElementById('menucerrar').addEventListener('click', function() {
-    menucontainer.style.transform = 'translateX(250px)';
-    menucontainer.style.opacity = '0';
-    menucontainer.style.display = 'none';
+    moverElemento(menucontainer, 0, 100, 0.05, 'x', 1, 0).then(() => { 
+        menucontainer.style.display = 'none';
+    });
 });
-
 
 function esperar(segundos) {
   return new Promise(resolve => setTimeout(resolve, segundos * 1000));
