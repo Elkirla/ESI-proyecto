@@ -134,41 +134,129 @@ h1 {
     height: 2px;
     background-color: #ffffff; 
 }
-.nosotros-container {
+.normas{
+    position: relative; 
+    top: 28%;
+    width: 100%;
+    height: 400px;
+    display: flex;
+}
+.normasimg1, .normasimg2 {
+    position: relative;  
+}
+
+.normasimg1::before, .normasimg2::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.514);  
+    z-index: 1;  
+}
+.normastexto-container{
+    position: relative; 
+    top: 11.3%;
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: space-around; 
+    z-index: 2;
+
+}
+.textonormas, .textocrearcuenta {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    padding: 20px;
+}
+
+.textonormas h2, .textocrearcuenta h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 40px;
+    z-index: 2;
+}
+
+.textonormas p, .textocrearcuenta p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.textonormas button, .textocrearcuenta button {
+    top: 40%;
+    background: transparent;
+    color: white;
+    font-size: 20px;
+    border: 1px solid white;
+    padding: 8px 20px;
+    cursor: pointer; 
+    transition: all 0.3s ease;
+    position: relative;
+    padding-left: 30px;
+    font-family: 'Montserrat', sans-serif;
+    padding-right: 30px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.textonormas button:hover, .textocrearcuenta button:hover {
+    background: white;
+    color: black;
+}
+.normasimg1{
+    width: 50%; 
+    background-image: url(../imagenes/normas1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.normasimg2{
+    width: 50%;
+    background-image: url(../imagenes/normas2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+.logrado-container {
     display: flex;  
     color: white;
     justify-content: space-around;
     position: absolute;
-    top: 120%;
+    top: 300%;
     left: 10%; 
     height: 53%;
     width: 80%;
     max-width: 1200px; 
     padding: 20px; 
 }
-.nosotros-container h2{
+.logrado-container h2{
     font-family:"montserrat", sans-serif;
     font-size: 30px;
 }
-.nosotros-container p{
+.logrado-container p{
     font-family:"montserrat", sans-serif;
     font-size: 20px;
 }
-.subnosotros1{
+.conseguidocont{
     width: 40%;
 }
-.subnosotros2 {
+.metas {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     width: 40%;
-    height: 85%; 
+    height: 80%; 
     border-bottom: #ffffff 2px solid;
      border-right: #ffffff 2px solid; 
-    padding: 20px; 
-}
-#sobrenosotrosh2{
+    padding: 10px; 
+} 
+.conseguidocont h2{
 border-bottom: #ffffff 2px solid; 
 border-left: #ffffff 2px solid;
 padding-left: 10px;
@@ -259,7 +347,7 @@ margin-bottom: 20px;
 }
 .info-slide{
     position: absolute;
-    top: 212%;
+    top: 210%;
     left: 58%; 
     width: 40%;
     height: 42%;
@@ -268,49 +356,20 @@ margin-bottom: 20px;
     align-items: flex-start;
     justify-content: start; 
     color: white;
-    padding: 20px ;
-    border-radius: 20px;
-    border: #ffffff 4px solid;
+    padding: 20px ;  
+    border-left: #ffffff 2px solid;
+    
 }
 .info-slide p {
     font-family: 'Montserrat', sans-serif;
-    font-size: 30px;
+    font-size: 20px;
     margin-bottom: 10px;
 }
 .info-slide-text{
     width: 80%;
+
 }
-.novedades-container { 
-    position: absolute;
-    top: 300%;
-    left: 10%;
-    width: 80%;
-    height: 50%;
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    color: white;
-} 
-.novedades-imagen img {
-    height: 210px;
-}
-.novedades-texto {
-    width: 50%;
-    font-size: 20px;
-    height: 150%;
-    padding-right: 20px;
-    display: flex;
-    padding-left:160px;
-    flex-direction: column;
-    align-items: center;
-    border-right: #ffffff 2px solid;
-    border-bottom: #ffffff 2px solid;
-    border-radius: 10px;
-    justify-content: center;
-}
-.novedades-texto h2{
-    font-size: 40px;
-}
+
 .footer-container {
     position: absolute;
     top: 400%;
@@ -415,8 +474,8 @@ a:hover{
     position: relative;
     background-color: white;
     width: 250px;
-    height: 3px;
-    top: 25px;
+    height: 2px;
+    top: 20px;
 }
 .menu-container button {
     background-color: transparent;
