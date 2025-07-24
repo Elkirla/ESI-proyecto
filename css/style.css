@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    height: 400vh;
+    height: 500vh;
     overflow-x: hidden;
     background-color: #070707;
 }
@@ -44,6 +44,7 @@ h1 {
     background-size: cover;
     background-position: center center;
 }
+
 #h2, .inicio-hero, .subtitle {
     position:relative;
     font-family: 'Montserrat'; 
@@ -51,7 +52,14 @@ h1 {
     top: 190px; 
     left: 7%;                   
 }
- 
+.hero-container p{
+    position: relative;
+    top: 185px; 
+    left: 118px;
+    font-family: 'Montserrat', sans-serif; 
+    font-size: 13px;                        
+    width: 50%;
+}
 .inicio-hero {
     position: relative;
     left: 9%;
@@ -70,7 +78,7 @@ h1 {
     padding: 4px 83px;
     font-size: 17px;     
     left: 8.8%;     
-    transition: 0.1s ease-in-out;            
+    transition: 0.1s ease-in-out;              
 }
 .subtitle { 
     font-family: 'Montserrat', sans-serif; 
@@ -136,7 +144,7 @@ h1 {
 }
 .normas{
     position: relative; 
-    top: 28%;
+    top: 23%;
     width: 100%;
     height: 400px;
     display: flex;
@@ -156,8 +164,8 @@ h1 {
     z-index: 1;  
 }
 .normastexto-container{
-    position: relative; 
-    top: 11.3%;
+    position: absolute; 
+    top: 2%;
     width: 100%;
     height: 400px;
     display: flex;
@@ -263,10 +271,9 @@ padding-left: 10px;
 padding-bottom: 10px; 
 margin-bottom: 20px; 
 }
-
-.comunidad{
+#comunidadtxt{
     position: absolute;
-    top: 190%;  
+    top: 210%;  
     left: 10%;    
     color: white;
     font-family: 'Montserrat', sans-serif;
@@ -274,7 +281,7 @@ margin-bottom: 20px;
 }
 .slider {
     position: absolute;
-    top: 210%;  
+    top: 230%;  
     width: 45%;
     left: 6%;
     height: 320px;
@@ -347,7 +354,7 @@ margin-bottom: 20px;
 }
 .info-slide{
     position: absolute;
-    top: 210%;
+    top: 231%;
     left: 58%; 
     width: 40%;
     height: 42%;
@@ -372,7 +379,7 @@ margin-bottom: 20px;
 
 .footer-container {
     position: absolute;
-    top: 400%;
+    top: 500%;
     left: 0;
     width: 100%;
     height: 120%;
@@ -523,4 +530,518 @@ a:hover{
     display: block;
     width: 100%; 
 }
- 
+.registro-instrucciones {
+    position: absolute;
+    top: 378%;
+    left: 10%;
+    width: 80%;
+    max-width: 1200px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.541);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.registro-instrucciones h2 {
+    
+    border-bottom:#ffffff 2px solid;
+    font-size: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.registro-instrucciones h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 2px;
+}
+
+.registro-instrucciones p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 25px;
+}
+
+.registro-instrucciones p::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.registro-instrucciones a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.registro-instrucciones a:hover {
+    color: #000000;
+}
+
+.registro-button {
+    background: transparent;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    border: 1px solid white;
+    padding: 12px 30px;
+    margin: 20px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.registro-button:hover {
+    background: white;
+    color: black;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Escritorio grande */
+@media (min-width: 1741px) {
+#h1{
+    font-size: 95px;
+    margin-top: 3%;
+    left: 3%;
+}
+#h2{
+    font-size: 25px;
+    left: 114px;
+    top: 30%;
+}
+.subtitle{
+    font-size: 15px;
+    position: relative;
+    top: 26%; 
+    left: 114px;                   
+}
+.inicio-hero{
+    top: 35%;   
+    left: 133px; 
+    padding: 1px 125px;
+    font-size: 25px;                
+}
+.inicio-hero:hover{ 
+    padding: 1px 135px;     
+    font-size: 28px; 
+    left: 128px;     
+    transition: 0.1s ease-in-out;          
+}
+.hero-container {
+top: 40px;
+height: 97%;
+}
+.hero-container p{
+    top: 35%;
+    left: 146px;
+    font-size: 18px;   
+}
+.header{
+ height: 49px;
+}
+.header button{
+    font-size: 20px;
+    padding: 10px 25px;
+}
+.menu {
+    width: 40px;  
+    height: 40px;  
+    margin-right: 40px;  
+}
+.menu-container {
+    width: 300px;
+    height: 440px;
+}
+
+.menu-container button{
+    font-size: 22px;
+}
+#menucontactos p{
+    font-size: 17px;
+    margin: 5px 0;
+}
+#menucontactos {
+    margin-top: 40px;
+   width: 110%;
+}
+.normas{
+    height: 15%;
+}
+.normastexto-container{
+top: 2%;
+}
+.normastexto-container h2{
+    font-size: 50px;
+}
+.normastexto-container p{
+    font-size: 24px;
+}
+.normastexto-container button{
+   margin-top: 60px;
+   margin-left: 20px;
+   padding: 10px 50px;
+}
+#comunidadtxt{
+    font-size: 60px;
+    top: 210%;
+    left: 8%;    
+}
+.slider {
+    top: 230%;  
+    width: 50%;
+    left: 5%;
+    height: 430px;
+}
+.info-slide p{
+    margin-top: 0;
+font-size: 26px;
+}
+.info-slide{
+    top: 233%;
+}
+.logrado-container{
+    width: 90%;
+    height: 50%;
+    top: 304%;
+    padding-left: 6%;
+}
+.conseguidocont{
+width: 80%;
+padding-right: 6%; ;
+}
+.conseguidocont h2{
+    font-size: 40px;
+} 
+.conseguidocont p{
+    font-size: 24px;
+}
+.metas {
+    height: 80%;
+    width: 80%;
+}
+.metas h2 {
+    font-size: 40px;
+    margin-bottom: 20px; 
+}
+.metas p {
+    font-size: 24px;
+}
+.registro-instrucciones {
+    top: 380%;
+    left: 13%;
+    width: 90%;
+    max-width: 1200px;
+    padding: 50px;
+}
+.registro-instrucciones h2{
+font-size: 40px;
+margin-bottom: 40px;
+}
+.registro-instrucciones p{
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+.registro-instrucciones button{
+    font-size: 20px;
+}
+.footer-column p{
+    font-size: 20px;
+}
+.footer-column h3{
+    font-size: 35px;
+}
+.footer-column a{
+    font-size: 20px;
+}
+
+}
+/* Móvil */
+@media (max-width: 500px) {
+body{
+    height: 750vh;
+}
+#h1{
+    font-size: 65px;
+    margin-top: 21%;
+    left: 12%; 
+}
+#h2{
+    font-size: 18px;
+    left: 54px;
+    top: 45%;
+}
+.subtitle{
+    font-size: 15px;
+    position: relative;
+    top: 41%; 
+    left: 56px;                   
+}
+.hero{
+    display: none;
+}
+.inicio-hero{
+    top: 55%;   
+    left: 75px; 
+    padding: 1px 125px;
+    font-size: 25px;                
+}
+.inicio-hero:hover{  
+    padding: 1px 125px;     
+    font-size: 25px; 
+    left: 75px;             
+}
+.hero-container {
+top: 40px;
+height: 97%;
+}
+.hero-container p{
+    top: 55%;
+    left: 110px;
+    font-size: 15px; 
+    width: 80%;  
+}
+.header{
+z-index: 4;
+ height: 49px;
+ width:100%;
+}
+.header button{
+    display: none;
+}
+.header button{
+    font-size: 20px;
+    padding: 10px 25px;
+}
+.menu {
+    width: 40px;  
+    height: 40px;  
+    margin-right: 35px;  
+}
+.menu-container {
+    background-color: rgb(0, 37, 37);
+    width: 300px;
+    height: 500px;
+}
+.menubotones{ 
+    margin-top: 34px;
+    height: 50%;
+}
+.menu-container button{
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+#menucontactos p{
+    font-size: 15px;
+    margin: 2px 0;
+}
+#menucontactos {
+    margin-top: 40px;
+    width: 100%;
+}
+   .normas {
+    position: absolute;
+        flex-direction: column;
+        height: auto;
+        top: 120%;
+    }
+
+    .normasimg1, .normasimg2 {
+        position: relative;
+        width: 100% !important;
+        height: 400px; /* Aumenté la altura para mejor visualización */
+    }
+
+    .normastexto-container {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 800px; /* 400px por cada imagen */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .textonormas, .textocrearcuenta {
+        position: absolute;
+        width: 100%;
+        height: 400px;
+        padding: 20px;
+        box-sizing: border-box;
+        display: block; /* Cambiado de flex a block para alinear arriba */
+    }
+
+    .textonormas {
+        top: 0;
+    }
+
+    .textocrearcuenta {
+        top: 400px;
+    }
+
+    .textonormas h2, 
+    .textocrearcuenta h2 {
+        margin-top: 20px;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .textonormas p, 
+    .textocrearcuenta p {
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    .textonormas button, 
+    .textocrearcuenta button {
+        margin-top: 1px;
+        padding: 8px 20px;
+        font-size: 16px;
+    }
+
+    .textonormas h2,
+    .textocrearcuenta h2,
+    .textonormas p,
+    .textocrearcuenta p,
+    .textonormas button,
+    .textocrearcuenta button {
+        position: relative;
+        z-index: 2;
+    }
+        
+#comunidadtxt{
+    font-size: 50px;
+    top: 255%;
+    left: 17%;    
+}
+.slider {
+    top: 275%;  
+    width: 100%;
+    left: 1%;
+    height: 200px; 
+}
+.info-slide p{
+    margin-top: 0;
+font-size: 18px;
+}
+.info-slide{
+    top: 320%;
+    width: 100%;
+    left: 6%;
+    height: 200px;
+}
+.logrado-container{
+    flex-direction: column;
+    width: 90%;
+    height: 50%;
+    top: 374%;
+    padding-left: 0%;
+}
+.conseguidocont{
+width: 80%; 
+padding-right: 6%; ;
+}
+.conseguidocont h2{
+    font-size: 30px;
+} 
+.conseguidocont p{
+    font-size: 18px;
+}
+.metas { 
+    margin-top: 80px;
+    display: flex;
+    justify-content: flex-end;
+    height: 80%;
+    width: 80%;
+}
+.metas h2 {
+    font-size: 30px;
+    margin-bottom: 20px; 
+}
+.metas p {
+    font-size: 18px;
+}
+.registro-instrucciones {
+    top: 500%;
+    left: 1%;
+    width: 77%;
+    max-width: 1200px;
+    padding: 50px;
+}
+.registro-instrucciones h2{
+font-size: 25px;
+margin-bottom: 40px;
+width: 100%;
+}
+.registro-instrucciones p{
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.registro-instrucciones button{
+    font-size: 15px;
+    padding: 8px 120px;
+    margin-left: 15px;
+
+}
+    .footer-container {
+        top: 650%;
+        height: auto;
+        padding: 30px 5%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40px;
+    }
+
+    .footer-column {
+        width: 100%;
+        margin-bottom: 0;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .footer-column:last-child {
+        border-bottom: none;
+    }
+
+    .footer-column h3 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .footer-column p, 
+    .footer-column a, 
+    .footer-column li {
+        font-size: 16px;
+    }
+
+    .footer-column ul {
+        padding-left: 20px;
+    }
+
+    .social-icons {
+        justify-content: flex-start;
+        margin-top: 15px;
+    }
+
+    .footer-bottom {
+        margin-top: 30px;
+        padding-top: 30px;
+        font-size: 14px;
+    }
+}
+@media (max-width: 508px) {
+body{
+}
+}
+
