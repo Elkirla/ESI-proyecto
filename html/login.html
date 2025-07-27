@@ -7,31 +7,24 @@
     <title>Login</title>
 </head>
 <body>
-
     <div class="header">
         <img src="/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
-        <button>Novedades</button>
-        <button>Contactanos</button>
-        <button>Sobre nosotros</button>
-        <img src="/imagenes/menu.png" alt="menu hamburguesa" class="menu">
+        <img src="/imagenes/menu.png" alt="menu hamburguesa" class="menu" id="menuabrir">
         <p class="separador"></p>
     </div>
 
     <div class="login-container">
-        <div class="login-column img-login">
-            <p>FUTURA imagen</p>
-   
+        <div class="login-column" id="img-login">  
+
         </div>
-        <div class="login-column ">
-            <img src="/imagenes/Login-Avatar.webp" alt="Avatar" class="avatar-icon">
-            <h1>Inicio de Sesión</h1>
-            <p> Le damos la bienvenida a la cooperativa FENEC,
-            <br>por favor ingrese sus datos de acceso.</p>
-            <p>Si no tienes una cuenta, puedes registrarte <a href="registro.html">aquí</a>.</p>
-            <input type="text" placeholder="Usuario" id="username" class="input-field">
-            <input type="password" placeholder="Contraseña" id="password" class="input-field">
-            <button id="login-ingresar">Ingresar</button>
-        </div>
+        <form class="login-column" id="form-login">
+            <img src="/imagenes/Login-Avatar.pn" alt="Avatar" class="avatar-icon">
+            <h2>¡Bienvenido de nuevo!</h2>
+            <input type="email" placeholder="Email" id="Email" class="input-field" required >
+            <input type="password" placeholder="Contraseña" id="password" class="input-field" required>
+            <input type="submit" value="Iniciar Sesión" class="input-field login-button">
+            <p id="link-registro">Si no tienes una cuenta puedes registrarte <a href="registro.html">aquí</a>.</p>
+        </form>
 
     </div>
 

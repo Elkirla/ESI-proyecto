@@ -616,6 +616,7 @@ a:hover{
     margin-top: 3%;
     left: 3%;
 }
+
 #h2{
     font-size: 25px;
     left: 114px;
@@ -860,7 +861,7 @@ z-index: 4;
     .normasimg1, .normasimg2 {
         position: relative;
         width: 100% !important;
-        height: 400px; /* Aumenté la altura para mejor visualización */
+        height: 400px;
     }
 
     .normastexto-container {
@@ -1041,7 +1042,6 @@ width: 100%;
     }
 }
 @media (max-width: 508px) {
-body{
-}
+
 }
 

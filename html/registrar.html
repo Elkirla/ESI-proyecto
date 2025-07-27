@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/registrar.css">
+    <title>Registro</title>
+</head>
+<body>
+    <div class="header">
+        <img src="/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
+        <img src="/imagenes/menu.png" alt="menu hamburguesa" class="menu" id="menuabrir">
+        <p class="separador"></p>                               
+    </div>
+    <div class="registro-container">
+        <form method="post" class="registro-column" id="form-registro" autocomplete="on">
+            <h2>¡Regístrate!</h2>
+            <input type="text" placeholder="Nombre(s)" id="nombre" name="nombre" class="input-field" required>
+            <input type="text" placeholder="Apellido(s)" id="apellido" name="apellido" class="input-field" required>
+            <input type="text" id="ci" name="ci" placeholder="Cédula de Identidad" class="input-field" maxlength="15" pattern="[0-9]+" required>
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="input-field" placeholder="Fecha de nacimiento" required>
+            <select id="genero" name="genero" class="input-field" required>
+                <option value="">Selecciona tu género</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="otro">Otro</option>
+                <option value="prefiero_no_decirlo">Prefiero no decirlo</option>
+            </select>
+            <input type="tel" id="telefono" name="telefono" placeholder="Teléfono" class="input-field" pattern="[0-9]{7,15}" maxlength="15" required>
+            <input type="email" placeholder="Email" id="email" name="email" class="input-field" required>
+            <input type="text" placeholder="Dirección" id="direccion" name="direccion" class="input-field" required>
+            <input type="text" placeholder="Departamento" id="departamento" name="departamento" class="input-field" required>
+            <input type="password" placeholder="Contraseña" id="password" name="password" class="input-field" minlength="8" required>
+            <input type="password" placeholder="Confirmar contraseña" id="confirm_password" name="confirm_password" class="input-field" minlength="8" required>
+            <label class="input-field" style="display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" id="terminos" name="terminos" required>
+                Acepto los <a href="#" target="_blank">términos y condiciones</a>
+            </label>
+            <input type="submit" value="Registrarse" class="input-field registro-button">
+            <p id="link-login">¿Ya tienes una cuenta? Puedes iniciar sesión <a href="login.html">aquí</a>.</p>
+        </form>
+    </div>
+</body>
+</html>
