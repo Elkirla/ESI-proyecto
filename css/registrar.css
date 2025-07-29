@@ -173,7 +173,7 @@ a{
     position: relative;
     align-items: flex-end;
     flex-direction: column;
-    background-image: url(/imagenes/login.jpg);
+    background-image: url(/Esi-proyecto/imagenes/login.jpg);
     background-size: cover; height:100VH; width: 70%;
 }
 
