@@ -12,11 +12,14 @@
         <img src="/imagenes/menu.png" alt="menu hamburguesa" class="menu" id="menuabrir">
         <p class="separador"></p>                               
     </div>
-    <div class="registro-container">
+    <div class="registrar-container">
+
         <form method="post" class="registro-column" action="crear_usuario.php" id="form-registro" autocomplete="on">
             <h2>¡Regístrate!</h2>
-            <input type="text" placeholder="Nombre(s)" id="nombre" name="nombre" class="input-field" required>
-            <input type="text" placeholder="Apellido(s)" id="apellido" name="apellido" class="input-field" required>
+            <div id="nombre-completo">
+                <input type="text" placeholder="Nombre(s)" id="nombre" name="nombre" class="input-field" required>
+                <input type="text" placeholder="Apellido(s)" id="apellido" name="apellido" class="input-field" required>
+            </div>
             <input type="text" id="ci" name="ci" placeholder="Cédula de Identidad" class="input-field" maxlength="15" pattern="[0-9]+" required>
             <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="input-field" placeholder="Fecha de nacimiento" required>
             <select id="genero" name="genero" class="input-field" required>
@@ -28,17 +31,50 @@
             </select>
             <input type="tel" id="telefono" name="telefono" placeholder="Teléfono" class="input-field" pattern="[0-9]{7,15}" maxlength="15" required>
             <input type="email" placeholder="Email" id="email" name="email" class="input-field" required>
-            <input type="text" placeholder="Dirección" id="direccion" name="direccion" class="input-field" required>
-            <input type="text" placeholder="Departamento" id="departamento" name="departamento" class="input-field" required>
             <input type="password" placeholder="Contraseña" id="password" name="password" class="input-field" minlength="8" required>
             <input type="password" placeholder="Confirmar contraseña" id="confirm_password" name="confirm_password" class="input-field" minlength="8" required>
-            <label class="input-field" style="display:flex;align-items:center;gap:8px;">
+            <label class="input-field" id="terminos-label">
                 <input type="checkbox" id="terminos" name="terminos" required>
-                Acepto los <a href="#" target="_blank">términos y condiciones</a>
+                <p>Acepto los <a href="#" target="_blank">términos y condiciones</a></p>
             </label>
             <input type="submit" value="Registrarse" class="input-field registro-button">
             <p id="link-login">¿Ya tienes una cuenta? Puedes iniciar sesión <a href="login.html">aquí</a>.</p>
         </form>
+                        <div class="registro-column" id="img-registro"></div>
+
     </div>
+
+    <div class="footer-container">
+    <div class="footer-column">
+        <h3>Contacto</h3>
+        <p>Email: info@cooperativafenec.com</p>
+        <p>Teléfono: +123 456 7890</p>
+        <p>Dirección: Calle Principal 123, Ciudad</p>
+    </div>
+
+    <div class="footer-column">
+        <h3>Enlaces rápidos</h3>
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Novedades</a></li>
+            <li><a href="#">Sobre nosotros</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-column">
+        <h3>Redes sociales</h3>
+        <div class="social-icons">
+            <a href="#"><img src="/imagenes/twitter.png" alt="Twitter"></a>
+            <a href="#"><img src="/imagenes/facebook.png" alt="Facebook"></a>
+            <a href="#"><img src="/imagenes/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="/imagenes/linkedin.png" alt="LinkedIn"></a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2025 FENEC. Todos los derechos reservados.</p>
+    </div>
+
 </body>
 </html>
