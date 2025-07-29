@@ -280,9 +280,7 @@ h2{
 
 /* Móvil */
 @media (max-width: 500px) {
-    body{
-        
-    }
+
     .registro-column {
         align-items: center;
         justify-content: flex-start;
@@ -315,15 +313,18 @@ h2{
     }
 
     .footer-container {
+        display: none;
         top: 100vh;
         height: auto;
         padding: 30px 5%;
         flex-direction: column;
         align-items: flex-start;
         gap: 40px;
+        background-color: #ffffff00;
     }
 
     .footer-column {
+        display: none;
         width: 100%;
         margin-bottom: 0;
         padding-bottom: 20px;
@@ -354,6 +355,7 @@ h2{
     }
 
     .footer-bottom {
+        display: none;
         margin-top: 30px;
         padding-top: 30px;
         font-size: 0.8rem;
