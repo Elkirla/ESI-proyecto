@@ -26,8 +26,7 @@ h2 {
     text-align: center;
     color: white;
 }
-
-/*Header*/
+ 
 .header {
     display: none;
     z-index: 2; 
@@ -64,11 +63,7 @@ height: 30%;
     height: 2px;
     background-color: #ffffff; 
 }
-
-/*Header*/
-
-
-/*Registrar*/
+ 
 
 .registrar-container {
     display: flex;
@@ -176,12 +171,7 @@ a{
     background-image: url(/Esi-proyecto/imagenes/login.jpg);
     background-size: cover; height:100VH; width: 70%;
 }
-
-/*Registrar*/
-
-
-
-/*Footer*/
+ 
 .footer-container {
     position: absolute;
     top: 109vh;

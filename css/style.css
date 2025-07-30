@@ -864,7 +864,7 @@ z-index: 4;
         position: absolute;
         top: 0;
         width: 100%;
-        height: 800px; /* 400px por cada imagen */
+        height: 800px; 
         display: flex;
         flex-direction: column;
     }
@@ -875,7 +875,7 @@ z-index: 4;
         height: 400px;
         padding: 20px;
         box-sizing: border-box;
-        display: block; /* Cambiado de flex a block para alinear arriba */
+        display: block; 
     }
 
     .textonormas {
