@@ -1,10 +1,9 @@
-version: "3.9"
 services:
   # Frontend Landing Page (HTML/CSS/JS)
   frontend-landing:
     image: nginx:alpine
     ports:
-      - "8080:80"  # Nuevo puerto para el frontend
+      - "8000:80"  # Nuevo puerto para el frontend
     volumes:
       - ./frontend-landing:/usr/share/nginx/html
     restart: always
