@@ -1,29 +1,39 @@
 version: "3.9"
 services:
-  # Servicio de la API de Usuarios (PHP + Apache)
-  api-usuarios:
-    build: ./api-usuarios  
+  # Frontend Landing Page (HTML/CSS/JS)
+  frontend-landing:
+    image: nginx:alpine
     ports:
-      - "8000:80"  # Accesible en http://localhost:8000
+      - "8080:80"  # Nuevo puerto para el frontend
     volumes:
-      - ./api-usuarios:/var/www/html 
+      - ./frontend-landing:/usr/share/nginx/html
+    restart: always
+ 
+  api-usuarios:
+    build: ./api-usuarios
+    ports:
+      - "8000:80" 
+    volumes:
+      - ./api-usuarios:/var/www/html
     depends_on:
-      - db  
+      - db
     environment:
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=rootpass
       - DB_NAME=buceo
 
-  # Servicio de la Base de Datos (MySQL)
+  # Base de Datos
   db:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: buceo
     volumes:
-      - ./db:/docker-entrypoint-initdb.d  # Ejecuta init.sql al iniciar
-      - mysql_data:/var/lib/mysql  # Persistencia de datos
+      - ./db:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306" 
 
 volumes:
-  mysql_data:  # Volumen para persistir la BD
+  mysql_data:
