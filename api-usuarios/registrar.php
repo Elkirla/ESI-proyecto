@@ -49,7 +49,7 @@ $stmt->bind_param("isssss", $rol_id, $nombre_completo, $email, $telefono, $ci, $
 if ($stmt->execute()) {
     echo "Usuario registrado correctamente.";
 } else {
-    echo "Error: " . $stmt->error;
+    echo "Error: algo malio sal :(" . $stmt->error;
 }
 
 $stmt->close();

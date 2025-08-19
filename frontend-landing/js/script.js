@@ -1,12 +1,12 @@
-/**
- * COOPERATIVA FENEC - SCRIPT PRINCIPAL
- * 
- * Este script maneja:
- * - Animaciones de texto (máquina de escribir)
- * - Animaciones al hacer scroll
- * - Funcionalidad del slider
- * - Menú móvil
- */
+// ==================== COOPERATIVA FENEC - SCRIPT PRINCIPAL ====================
+//
+// Este script maneja:
+// - Animaciones de texto (máquina de escribir)
+// - Animaciones al hacer scroll
+// - Funcionalidad del slider
+// - Menú móvil
+//
+ 
 
 // ==================== CONFIGURACIONES INICIALES ====================
 const elementosAnimados = new Set(); // Para rastrear elementos ya animados
