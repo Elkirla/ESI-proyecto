@@ -1,38 +1,21 @@
+version: "3.9"
 services:
-  # Frontend Landing Page (HTML/CSS/JS)
-  frontend-landing:
-    image: nginx:alpine
+  web:
+    build: ./app
     ports:
-      - "8000:80"  # Nuevo puerto para el frontend
+      - "8080:80"
     volumes:
-      - ./frontend-landing:/usr/share/nginx/html
-    restart: always
- 
-  api-usuarios:
-    build: ./api-usuarios
-    ports:
-      - "8000:80" 
-    volumes:
-      - ./api-usuarios:/var/www/html
+      - ./app:/var/www/html
     depends_on:
       - db
-    environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=rootpass
-      - DB_NAME=buceo
 
-  # Base de Datos
   db:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: buceo
     volumes:
       - ./db:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
-    ports:
-      - "3307:3306" 
 
 volumes:
   mysql_data:
