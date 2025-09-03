@@ -6,8 +6,7 @@ CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL COMMENT 'Nombre del rol: usuario, administrador'
 ); 
-
-/*cambio ultima hora*/
+ 
 INSERT INTO roles (nombre) VALUES ('usuario');
 
 CREATE TABLE usuarios (

@@ -1,20 +1,24 @@
 version: "3.9"
 services:
   web:
-    build: ./app
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
-      - ./app:/var/www/html
+       - ./app:/var/www/html
+       - ./public:/var/www/html/public
     depends_on:
       - db
-
+      
   db:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: cooperativa
     volumes:
-      - ./db:/docker-entrypoint-initdb.d
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - mysql_data:/var/lib/mysql
 
 volumes:
