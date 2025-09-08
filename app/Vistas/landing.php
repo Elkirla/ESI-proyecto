@@ -40,7 +40,7 @@
     <h1 id="h1">Cooperativa</h1>
     <h2 id="h2"></h2>
     <h2 class="subtitle">Cooperativa FENEC</h2>
-    <button class="inicio-hero"><a href="../frontend-usuarios/registrar.html">Iniciar</a></button>
+    <button class="inicio-hero"><a href="registro.php">Iniciar</a></button>
     <p>Cree su usuario de manera rapida</p>
     <div class="hero"></div>
 </div>
@@ -108,8 +108,7 @@
     <h2>Instrucciones para el registro</h2>
     <p>Para unirte a nuestra cooperativa, sigue estos simples pasos:</p> 
     <p>Haz clic en el botón "Registrarse" a continuación.</p>
-    <button class="registro-button"><a href="../frontend-usuarios/registrar.html">Registrarse</a></button>
-    
+    <button class="registro-button"><a href="registro.php">Registrarse</a></button>
     <p>Completa el formulario de registro con tus datos personales.</p>
     <p>Acepta los términos y condiciones de la cooperativa.</p>
     <p>Verifica tu correo electrónico para activar tu cuenta.</p>
@@ -136,7 +135,7 @@
     <div class="footer-column">
         <h3>Redes sociales</h3>
         <div class="social-icons">
-            <a href="https://twitter.com/" target="_blank"><img src="public/imagenes/twitter.png" alt="Twitter"></a>
+            <a href="https://x.com/" target="_blank"><img src="public/imagenes/twitter.png" alt="Twitter"></a>
             <a href="https://facebook.com/" target="_blank"><img src="public/imagenes/facebook.png" alt="Facebook"></a>
             <a href="https://instagram.com/" target="_blank"><img src="public/imagenes/instagram.png" alt="Instagram"></a>
             <a href="https://linkedin.com/" target="_blank"><img src="public/imagenes/linkedin.png" alt="LinkedIn"></a>
