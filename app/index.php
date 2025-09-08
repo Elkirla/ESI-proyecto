@@ -23,5 +23,6 @@ if (isset($routes[$method][$uri])) {
     $controller->$methodName();
 } else {
     http_response_code(404);
-    echo "Página no encontrada";
+    echo "Página no encontrada :/";
+//  include __DIR__ . '/Vistas/404.php';  Crea esta vista en un futuro 
 }

@@ -15,7 +15,7 @@
     <button><a href="#normas">Normas</a></button>
     <button><a href="#comunidadtxt">Sobre nosotros</a></button>
     <button><a href="#footer">Contactanos</a></button>
-    <button class="loginbtton"><a href="../frontend-usuarios/login.html">Log in</a></button> 
+    <button class="loginbtton"><a href="/login">Log in</a></button> 
     <img src="public/imagenes/menu.png" alt="menu hamburguesa" class="menu" id="menuabrir">
     <p class="separador"></p>
 </div>
@@ -27,7 +27,7 @@
       <button><a href="#logrado">Novedades</a></button>
       <button><a href="#footer">Contactanos</a></button>
       <button><a href="#comunidadtxt">Sobre nosotros</a></button>
-      <button class="loginbtton"><a href="../frontend-usuarios/login.html">Log in</a></button>
+      <button class="loginbtton"><a href="/login">Log in</a></button>
    </div>    
    <div id="menucontactos">
       <p class="menu-text">Email: info@cooperativafenec.com</p>
@@ -40,7 +40,7 @@
     <h1 id="h1">Cooperativa</h1>
     <h2 id="h2"></h2>
     <h2 class="subtitle">Cooperativa FENEC</h2>
-    <button class="inicio-hero"><a href="registro.php">Iniciar</a></button>
+    <button class="inicio-hero"><a href="/registro">Iniciar</a></button>
     <p>Cree su usuario de manera rapida</p>
     <div class="hero"></div>
 </div>

@@ -1,7 +1,7 @@
 <?php
 $routes = [
     'GET' => [
-        '/'         => 'HomeControler@index',
+        '/'         => 'HomeControl@index',
         '/login'    => 'AuthControl@loginView',
         '/registro' => 'AuthControl@registroView',
         '/normas'   => 'HomeControl@normas'

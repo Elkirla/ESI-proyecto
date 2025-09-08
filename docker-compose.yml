@@ -9,6 +9,7 @@ services:
     volumes:
        - ./app:/var/www/html
        - ./public:/var/www/html/public
+       - ./app/.htaccess:/var/www/html/.htaccess
     depends_on:
       - db
       
