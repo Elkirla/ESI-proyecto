@@ -1,5 +1,24 @@
-<?php 
+<?php
 
+spl_autoload_register(function($class){
+    $paths = [
+        __DIR__ . '/Controladores/',
+        __DIR__ . '/Modelos/',
+        __DIR__ . '/Entidades/',
+        __DIR__ . '/Config/',
+        __DIR__ . '/../Utils/',   
+    ];
+
+    foreach ($paths as $path) {
+        $file = $path . $class . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+            return;
+        }
+    }
+});
+
+// Rutas
 require_once __DIR__ . '/Config/routes.php';
 
 // Obtener la URL solicitada
@@ -15,14 +34,20 @@ if (isset($routes[$method][$uri])) {
     $controllerAction = $routes[$method][$uri];
     list($controllerName, $methodName) = explode('@', $controllerAction);
 
-    // Cargar archivo del controlador
-    require_once __DIR__ . "/Controladores/{$controllerName}.php";
-
     // Instanciar y llamar al método
-    $controller = new $controllerName();
-    $controller->$methodName();
+    if (class_exists($controllerName)) {
+        $controller = new $controllerName();
+        if (method_exists($controller, $methodName)) {
+            $controller->$methodName();
+        } else {
+            http_response_code(500);
+            echo "Método $methodName no encontrado en $controllerName";
+        }
+    } else {
+        http_response_code(500);
+        echo "Controlador $controllerName no encontrado";
+    }
 } else {
     http_response_code(404);
-    echo "Página no encontrada :/";
-//  include __DIR__ . '/Vistas/404.php';  Crea esta vista en un futuro 
+    include __DIR__ . '/Vistas/404.php';
 }

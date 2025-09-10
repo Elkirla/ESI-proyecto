@@ -12,7 +12,8 @@ INSERT INTO roles (nombre) VALUES ('usuario');
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     rol_id INT NOT NULL,
-    nombre_completo VARCHAR(100) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     telefono VARCHAR(20),
     ci VARCHAR(20) UNIQUE,

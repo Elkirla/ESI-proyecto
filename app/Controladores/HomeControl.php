@@ -7,4 +7,8 @@ class HomeControl {
     public function normas() {
         include __DIR__ . "/../Vistas/normas.php";
     }
+    public function exitoregistro() {
+        include __DIR__ . "/../Vistas/exitoregistro.php";
+    }
+        
 }

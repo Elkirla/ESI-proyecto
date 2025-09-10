@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="public/css/registro.css">
-    <link rel="icon" href="../imagenes/logo.png" type="icon">
+    <link rel="icon" href="public/imagenes/logo.png" type="icon">
     <title>Registro</title>
 </head>
 <body>
 
 <div class="header">
-    <a href="../index.html">
-        <img src="/Esi-proyecto/imagenes/regresar.png" alt="regresar boton" class="regresar_flecha">
+    <a href="/">
+        <img src="public/imagenes/regresar.png" alt="regresar boton" class="regresar_flecha">
     </a>
-    <img src="/Esi-proyecto/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
+    <img src="public/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
     <p class="separador"></p>
 </div>
 
     <div class="registrar-container">
 
-        <form method="post" class="registro-column" action="crear_usuario.php" id="form-registro" autocomplete="on">
-            <h2>¡Regístrate!</h2>
+<form method="post" class="registro-column" action="/registro" id="form-registro" autocomplete="on">
+          <h2>¡Regístrate!</h2>
             <div id="nombre-completo">
-                <input type="text" placeholder="Nombre(s)" id="nombre" name="nombre" class="input-field" required>
-                <input type="text" placeholder="Apellido(s)" id="apellido" name="apellido" class="input-field" required>
+            <input type="text" placeholder="Nombre(s)" id="nombre" name="nombre" class="input-field" required>
+            <input type="text" placeholder="Apellido(s)" id="apellido" name="apellido" class="input-field" required>
             </div>
             <input type="text" id="ci" name="ci" placeholder="Cédula de Identidad" class="input-field" maxlength="15" pattern="[0-9]+" required>
             <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="input-field" placeholder="Fecha de nacimiento" required>
@@ -46,16 +46,17 @@
             <p id="link-login">¿Ya tienes una cuenta? Puedes iniciar sesión <a href="login.html">aquí</a>.</p>
         </form>
     <div class="registro-column" id="img-registro"></div>
-    </div>
+</div>
+ 
 
-    <div class="footer-container">
+
+<div class="footer-container">
     <div class="footer-column">
         <h3>Contacto</h3>
         <p>Email: info@cooperativafenec.com</p>
         <p>Teléfono: +123 456 7890</p>
         <p>Dirección: Calle Principal 123, Ciudad</p>
     </div>
-
     <div class="footer-column">
         <h3>Enlaces rápidos</h3>
         <ul>
@@ -65,20 +66,26 @@
             <li><a href="#">Contacto</a></li>
         </ul>
     </div>
-
     <div class="footer-column">
         <h3>Redes sociales</h3>
         <div class="social-icons">
-            <a href="https://twitter.com/" target="_blank"><img src="/Esi-proyecto/imagenes/twitter.png" alt="Twitter"></a>
-            <a href="https://facebook.com/" target="_blank"><img src="/Esi-proyecto/imagenes/facebook.png" alt="Facebook"></a>
-            <a href="https://instagram.com/" target="_blank"><img src="/Esi-proyecto/imagenes/instagram.png" alt="Instagram"></a>
-            <a href="https://linkedin.com/" target="_blank"><img src="/Esi-proyecto/imagenes/linkedin.png" alt="LinkedIn"></a>
+            <a href="https://twitter.com/" target="_blank"><img src="public/imagenes/twitter.png" alt="Twitter"></a>
+            <a href="https://facebook.com/" target="_blank"><img src="public/imagenes/facebook.png" alt="Facebook"></a>
+            <a href="https://instagram.com/" target="_blank"><img src="public/imagenes/instagram.png" alt="Instagram"></a>
+            <a href="https://linkedin.com/" target="_blank"><img src="public/imagenes/linkedin.png" alt="LinkedIn"></a>
         </div>
     </div>
-
     <div class="footer-bottom">
         <p>&copy; 2025 FENEC. Todos los derechos reservados.</p>
     </div>
-
+    
+    <div class="Errores"> 
+        <h2>Error al registrar</h2>
+        <p>Debe cumplir con los siguientes requisitos:</p>
+        <div id="mensaje-error"></div> 
+        <button>Aceptar</button>
+    </div>
+</div>
+<script src="public/js/registro.js"></script>
 </body>
 </html>
