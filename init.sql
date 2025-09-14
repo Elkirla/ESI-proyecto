@@ -46,9 +46,10 @@ CREATE TABLE pagos_iniciales (
 CREATE TABLE horas_trabajadas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    semana DATE NOT NULL,
+    fecha DATE NOT NULL,
     horas INT NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    UNIQUE (usuario_id, fecha),
 );
 
 CREATE TABLE justificaciones (
@@ -73,6 +74,7 @@ CREATE TABLE pagos_mensuales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     mes DATE NOT NULL,
+    fecha DATE NOT NULL,
     archivo_url VARCHAR(255),
     estado ENUM('pendiente', 'aprobado', 'rechazado') DEFAULT 'pendiente',
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
