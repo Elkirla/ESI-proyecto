@@ -1,7 +1,10 @@
+CREATE DATABASE IF NOT EXISTS cooperativa;
+USE cooperativa;
 
-CREATE DATABASE IF NOT EXISTS cooperativa_vivienda;
-USE cooperativa_vivienda;
- 
+CREATE USER IF NOT EXISTS 'usuariodb'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON cooperativa.* TO 'usuariodb'@'%';
+FLUSH PRIVILEGES;
+
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL COMMENT 'Nombre del rol: usuario, administrador'

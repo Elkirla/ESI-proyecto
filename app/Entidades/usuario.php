@@ -1,65 +1,37 @@
 <?php
-class usuario {
+class Usuario {
     private $rol;
     private $nombre;
-    private $apellidos;
+    private $apellido;
     private $email;
+    private $telefono;  
+    private $ci;          
     private $password;
     private $estado;
     private $fecha_registro;
 
-    public function __construct($rol, $nombre, $apellidos, $email, $password, $estado, $fecha_registro) {
+    public function __construct($rol, $nombre, $apellido, $telefono, $ci, $email, $password, $estado, $fecha_registro) {
         $this->rol = $rol;
         $this->nombre = $nombre;
-        $this->apellidos = $apellidos;
+        $this->apellido = $apellido;
+        $this->telefono = $telefono;    
+        $this->ci = $ci;                
         $this->email = $email;
         $this->password = $password;
         $this->estado = $estado;
-        $this->fecha_registro = $fecha_registro;
-    }
-    //getters y setters
-    public function getRol() {
-        return $this->rol;
-    }
-    public function setRol($rol) {
-        $this->rol = $rol;
-    }
-    public function getNombre() {
-        return $this->nombre;
-    }
-    public function setNombre($nombre) {
-        $this->nombre = $nombre;
-    }
-    public function getApellidos() {
-        return $this->apellidos;
-    }
-    public function setApellidos($apellidos) {
-        $this->apellidos = $apellidos;
-    }
-    public function getEmail() {
-        return $this->email;
-    }
-    public function setEmail($email) {
-        $this->email = $email;
-    }
-    public function getPassword() {
-        return $this->password;
-    }
-    public function setPassword($password) {
-        $this->password = $password;
-    }
-    public function getEstado() {
-        return $this->estado;
-    }
-    public function setEstado($estado) {
-        $this->estado = $estado;
-    }
-    public function getFechaRegistro() {
-        return $this->fecha_registro;
-    }
-    public function setFechaRegistro($fecha_registro) {
         $this->fecha_registro = $fecha_registro;
     }
 
+    // Asegúrate de tener estos getters
+    public function getTelefono() { return $this->telefono; }
+    public function getCi() { return $this->ci; }
+    
+    // ... los otros getters existentes
+    public function getRol() { return $this->rol; }
+    public function getNombre() { return $this->nombre; }
+    public function getApellido() { return $this->apellido; }
+    public function getEmail() { return $this->email; }
+    public function getPassword() { return $this->password; }
+    public function getEstado() { return $this->estado; }
+    public function getFechaRegistro() { return $this->fecha_registro; }
 }
-?>

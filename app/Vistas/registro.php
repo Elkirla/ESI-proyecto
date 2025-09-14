@@ -17,7 +17,7 @@
     <p class="separador"></p>
 </div>
 
-    <div class="registrar-container">
+<div class="registrar-container">
 
 <form method="post" class="registro-column" action="/registro" id="form-registro" autocomplete="on">
           <h2>¡Regístrate!</h2>

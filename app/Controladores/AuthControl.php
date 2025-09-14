@@ -9,6 +9,8 @@ class AuthControl {
     }
     
 public function registrar(){
+    require_once __DIR__ . '/../Entidades/usuario.php';
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
      header('Content-Type: application/json');
 
     $validator = new validator();
@@ -41,12 +43,14 @@ public function registrar(){
     }
 
     //Si todo va bien creamos la entidad usuario
- 
+ try{
     $fecha_registro = date('Y-m-d H:i:s');
     $usuario = new usuario( 
-        "usuario",
+        1,
         $_POST['nombre'] ?? '',
         $_POST['apellido'] ?? '',
+        $_POST["telefono"] ?? "",
+        $_POST["ci"] ?? "",
         $email,
         password_hash($password, PASSWORD_BCRYPT),
         "pendiente",
@@ -57,5 +61,10 @@ public function registrar(){
     $modelo->CrearUsuario($usuario); 
     echo json_encode(['success' => true]);
     exit; 
+}catch(Exception $e) {
+    error_log("Error en registrar: " . $e->getMessage());
+    $errores['confirm'][] = "Error interno del servidor. Por favor, intente nuevamente más tarde.";
+    echo json_encode(['success' => false, 'errors' => $errores]);
+    }
 }
 }
