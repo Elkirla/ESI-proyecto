@@ -1,17 +1,11 @@
-FROM mysql:8.0
+FROM ubuntu:22.04
 
-# Instalar cron y herramientas necesarias
-RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    mysql-client \
+    cron \
+ && rm -rf /var/lib/apt/lists/*
 
-COPY backup-script.sh /backup-script.sh
-RUN chmod +x /backup-script.sh
+COPY backup-script.sh /usr/local/bin/backup-script.sh
+RUN chmod +x /usr/local/bin/backup-script.sh
 
-# Configurar cron job
-RUN echo "0 2 * * * /backup-script.sh" > /etc/cron.d/backup-cron
-RUN chmod 0644 /etc/cron.d/backup-cron
-
-# Crear directorio de backups
-RUN mkdir -p /backups
-
-# Iniciar cron en primer plano
 CMD ["cron", "-f"]
