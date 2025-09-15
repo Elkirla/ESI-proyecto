@@ -3,7 +3,9 @@ $routes = [
     'GET' => [
         "/"              => "HomeControl@index",
         "/normas"        => "HomeControl@normas",
-        "/exitoregistro" => "HomeControl@exitoregistro",
+        "/exitoregistro" => "HomeControl@exitoregistro", 
+        "/dashboard-admin" => "HomeControl@dashboardAdmin",
+        "/dashboard-usuario" => "HomeControl@dashboardUsuario",
         "/login"         => "AuthControl@loginView",
         "/registro"      => "AuthControl@registroView",
         "/pagosusuario"  => "PagosControl@verPagosUsuario",
@@ -14,7 +16,7 @@ $routes = [
     "POST" => [
         "/login"    => "AuthControl@login",
         "/registro" => "AuthControl@registrar",
-        "/pago"    => "PagosControl@IngresarPago",
+        "/pago"     => "PagosControl@IngresarPago",
         "/horas"    => "HorasControl@IngresarHoras",
     ]
 ];

@@ -65,4 +65,51 @@ public function registrar(){
     echo json_encode(['success' => false, 'errors' => $errores]);
     }
 }
+    public function login() {
+        // Iniciar sesión al principio
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Establecer header JSON
+        header('Content-Type: application/json');
+
+        try {
+            $email = $_POST['email'] ?? null;
+            $password = $_POST['password'] ?? null;
+
+            if (!$email || !$password) {
+                echo json_encode(['success' => false, 'error' => 'Faltan datos']);
+                exit;
+            }
+
+            $modelo = new UsuarioModelo();
+            $usuario = $modelo->VerificarLogin($email, $password);
+
+            if ($usuario === 'inactivo') {
+                echo json_encode([
+                    'success' => false,
+                    'error' => 'Usuario no autorizado. Contacte al backoffice.'
+                ]);
+            } elseif ($usuario) {
+                // Regenerar sesión
+                session_regenerate_id(true);
+                $_SESSION['usuario_id'] = $usuario['id'];
+                $_SESSION['rol'] = $usuario['rol'];
+
+                echo json_encode([
+                    'success' => true,
+                    'rol' => $usuario['rol']
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'error' => 'Credenciales inválidas'
+                ]);
+            }
+        } catch (Exception $e) {
+            error_log("Error en login: " . $e->getMessage());
+            echo json_encode(['success' => false, 'error' => 'Error interno del servidor']);
+        }
+    }
 }

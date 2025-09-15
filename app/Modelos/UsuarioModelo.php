@@ -26,4 +26,37 @@ public function CrearUsuario(Usuario $usuario) {
         ':fecha_registro' => $usuario->getFechaRegistro()
     ]);
 }
+    public function VerificarLogin($email, $password) {
+        // Sanitizar el email
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        
+        // Seleccionamos password_hash, rol y estado
+        $sql = "SELECT u.id, u.email, u.password_hash, u.estado, r.nombre AS rol
+                FROM usuarios u
+                JOIN roles r ON u.rol_id = r.id
+                WHERE u.email = :email
+                LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':email' => $email]);
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($usuario) {
+            if (!password_verify($password, $usuario['password_hash'])) {
+                return false; // Contraseña incorrecta
+            }
+
+            if ($usuario['estado'] !== 'activo') {
+                return 'inactivo'; // Usuario pendiente o rechazado
+            }
+
+            // Usuario válido
+            return [
+                'id' => $usuario['id'],
+                'rol' => $usuario['rol']
+            ];
+        }
+
+        return false; // Usuario no encontrado
+    }
 }

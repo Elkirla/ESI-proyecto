@@ -16,20 +16,19 @@
     <p class="separador"></p>
 </div>
 
-    <div class="login-container">
-        <div class="login-column" id="img-login">  
-
-        </div>
-        <form class="login-column" id="form-login" action="login.php" method="POST" autocomplete="on">
-            <img src="/Esi-proyecto/imagenes/Login-Avatar.png" alt="Avatar" class="avatar-icon">
-            <h2>¡Bienvenido de nuevo!</h2>
-            <input type="email" placeholder="Email" id="Email" class="input-field" required >
-            <input type="password" placeholder="Contraseña" id="password" class="input-field" required>
-            <input type="submit" value="Iniciar Sesión" class="input-field login-button">
-            <p id="link-registro">Si no tienes una cuenta puedes registrarte <a href="registrar.html">aquí</a>.</p>
-        </form>
-
-    </div>
+<div class="login-container">
+  <div class="login-column" id="img-login"></div>
+  <form class="login-column" id="form-login" autocomplete="on">
+    <img src="publix/imagenes/Login-Avatar.png" alt="Avatar" class="avatar-icon">
+    <h2>¡Bienvenido de nuevo!</h2>
+    <input type="email" name="email" placeholder="Email" id="Email" class="input-field" required>
+    <input type="password" name="password" placeholder="Contraseña" id="password" class="input-field" required>
+    <input type="submit" value="Iniciar Sesión" class="boton-login">
+    <p id="link-registro">
+      Si no tienes una cuenta puedes registrarte <a href="/registro">aquí</a>.
+    </p>
+  </form>
+</div>
 
     <div class="footer-container">
     <div class="footer-column">
@@ -62,6 +61,6 @@
     <div class="footer-bottom">
         <p>&copy; 2025 FENEC. Todos los derechos reservados.</p>
     </div>
-
+<script src="public/js/login.js"></script>
 </body>
 </html>
