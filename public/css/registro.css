@@ -73,8 +73,7 @@ height: 30%;
     justify-content: flex-end;
     box-sizing: border-box;
     height: 100vh; width: 100%;
-    top: 60px;
-    padding: 0; 
+    top: 30px; 
     color: white;
     background: linear-gradient(to left, 
             rgb(0, 0, 0),   

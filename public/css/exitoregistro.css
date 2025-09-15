@@ -44,10 +44,11 @@ a {
     cursor: pointer;
     transition: background 0.2s, transform 0.2s;
     border-color: #ffffff 2px solid;
+    text-decoration: none;
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
 a:hover {
-    background-color: #031844;
+    background-color: #4b6399;
     transform: translateY(-2px) scale(1.03);
 }

@@ -43,7 +43,7 @@
                 <p>Acepto los términos y condiciones</p>
             </label>
             <input type="submit" value="Registrarse" class="input-field registro-button">
-            <p id="link-login">¿Ya tienes una cuenta? Puedes iniciar sesión <a href="login.html">aquí</a>.</p>
+            <p id="link-login">¿Ya tienes una cuenta? Puedes iniciar sesión <a href="/login">aquí</a>.</p>
         </form>
     <div class="registro-column" id="img-registro"></div>
 </div>

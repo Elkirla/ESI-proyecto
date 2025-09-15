@@ -24,4 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('.' + mapping[btnId]).style.display = 'block';
         });
     });
+
+
+    
 });

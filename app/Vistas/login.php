@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="public/css/login.css">
-    <link rel="icon" href="../imagenes/logo.png" type="icon">
+    <link rel="icon" href="public/imagenes/logo.png" type="icon">
     <title>Login</title>
 </head>
 <body>
 <div class="header">
-    <a href="../frontend-landing/index.html">
-        <img src="/Esi-proyecto/imagenes/regresar.png" alt="regresar boton" class="regresar_flecha">
+    <a href="/">
+        <img src="public/imagenes/regresar.png" alt="regresar boton" class="regresar_flecha">
     </a>
-    <img src="/Esi-proyecto/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
+    <img src="public/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
     <p class="separador"></p>
 </div>
 
 <div class="login-container">
   <div class="login-column" id="img-login"></div>
   <form class="login-column" id="form-login" autocomplete="on">
-    <img src="publix/imagenes/Login-Avatar.png" alt="Avatar" class="avatar-icon">
+    <img src="public/imagenes/Login-Avatar.png" alt="Avatar" class="avatar-icon">
     <h2>¡Bienvenido de nuevo!</h2>
     <input type="email" name="email" placeholder="Email" id="Email" class="input-field" required>
     <input type="password" name="password" placeholder="Contraseña" id="password" class="input-field" required>
@@ -51,10 +51,10 @@
     <div class="footer-column">
         <h3>Redes sociales</h3>
         <div class="social-icons">
-            <a href="https://twitter.com/" target="_blank"><img src="/Esi-proyecto/imagenes/twitter.png" alt="Twitter"></a>
-            <a href="https://facebook.com/" target="_blank"><img src="/Esi-proyecto/imagenes/facebook.png" alt="Facebook"></a>
-            <a href="https://instagram.com/" target="_blank"><img src="/Esi-proyecto/imagenes/instagram.png" alt="Instagram"></a>
-            <a href="https://linkedin.com/" target="_blank"><img src="/Esi-proyecto/imagenes/linkedin.png" alt="LinkedIn"></a>
+            <a href="https://twitter.com/" target="_blank"><img src="  public/imagenes/twitter.png" alt="Twitter"></a>
+            <a href="https://facebook.com/" target="_blank"><img src=" public/imagenes/facebook.png" alt="Facebook"></a>
+            <a href="https://instagram.com/" target="_blank"><img src="public/imagenes/instagram.png" alt="Instagram"></a>
+            <a href="https://linkedin.com/" target="_blank"><img src=" public/imagenes/linkedin.png" alt="LinkedIn"></a>
         </div>
     </div>
 

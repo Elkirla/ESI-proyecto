@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/dashboard.css">
+    <link rel="stylesheet" href="public/css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person" />
-    <title>Document</title>
+    <title>Página usuario</title>
 </head>
 <body>
      <div class="heder"></div>
@@ -105,22 +105,17 @@
         <option value="Marzo">Marzo</option>
         <option value="Abril">Abril</option>
         <option value="Mayo">Mayo</option>
-        <option value="Junio">Enero</option>
-        <option value="Julio">Febrero</option>
-        <option value="Agosto">Marzo</option>
-        <option value="Septiembre">Abril</option>
-        <option value="Octubre">Mayo</option>
-        <option value="Noviembre">Abril</option>
-        <option value="Diciembre">Mayo</option>
+        <option value="Junio">Junio</option>
+        <option value="Julio">Julio</option>
+        <option value="Agosto">Agosto</option>
+        <option value="Septiembre">Septiembre</option>
+        <option value="Octubre">Octubre</option>
+        <option value="Noviembre">Noviembre</option>
+        <option value="Diciembre">Diciembre</option>
     </select>
         <button id="btn-subir" class="but">Subir</button>
     </div>
 </div>
-    
-
-
-
-
     <div class="horas section">
        <div> <h2>Horas Registradas</h2></div>
         <div>
@@ -217,6 +212,6 @@
     </div>
 </div>
 
-<script src="../../public/js/dashboard.js"></script>
+<script src="public/js/dashboard.js"></script>
 </body>
 </html>
