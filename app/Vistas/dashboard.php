@@ -23,7 +23,7 @@
     <div class="inicio section">
         <div class="h2">
             <h2>Bienvenido</h2>
-            <h2>nombre</h2>
+            <h2 id="nombre_usuario">nombre</h2>
         </div>
         <div class="estado">
             <h3>Estado de pagos </h3> <h3>Al dia</h3>
@@ -41,13 +41,13 @@
             <span class="material-symbols-outlined">person</span>
             <span>Mi perfil</span>
         </div>
-        <div class="datos">
-            <input type="text" placeholder="Nombre">
-            <input type="text" placeholder="Apellido">
-            <input type="text" placeholder="Telefono">
-            <input type="email" placeholder="Correo electronico">
+        <div class="datos"> 
+            <p id="Nombre-datos"></p>
+            <p id="Apellido-datos"></p>
+            <p id="Telefono-datos"></p>
+            <p id="Correo-datos"></p>
         </div>
-        <button id="btn-guardar" class="but">Guardar</button>
+        <button id="btn-cambiarcontraseña" class="but">Cambiar Contraseña</button>
     </div>
  
 <div class="pagos section"> 

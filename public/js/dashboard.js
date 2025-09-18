@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() { 
+    cargardatos();
+
     document.querySelectorAll('.section').forEach(section => {
         section.style.display = 'none';
     });
@@ -25,6 +27,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+async function cargardatos() {
+    const respuesta = await fetch("/usuariodatos", { method: "GET" });
 
-    
+    const texto = await respuesta.text(); 
+ 
+
+    try {
+        const data = JSON.parse(texto); // intentamos parsear
+      document.getElementById("nombre_usuario").innerText = data.nombre;
+
+      document.getElementById("Nombre-datos").innerText ="Nombre: "+ data.nombre;
+      document.getElementById("Apellido-datos").innerText ="Apellido: "+ data.apellido;
+      document.getElementById("Telefono-datos").innerText ="Telefono: "+ data.telefono;
+      document.getElementById("Correo-datos").innerText ="Correo: "+ data.email;
+    } catch (e) {
+        console.log("No se pudo parsear JSON:", e);
+    }
+}
+
 });

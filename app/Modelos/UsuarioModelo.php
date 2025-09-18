@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../Config/database.php';
-
+require_once __DIR__ . '/../Entidades/usuario.php'; 
 class UsuarioModelo {
     private $db;
 
@@ -57,6 +57,28 @@ public function CrearUsuario(Usuario $usuario) {
             ];
         }
 
-        return false; // Usuario no encontrado
+        return false; 
     }
-}
+
+  public function obtenerDatosUsuario($userId) {
+        $sql = "SELECT nombre, apellido, telefono, email 
+                FROM usuarios 
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $userId]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return null; // por si no se encuentra
+        }
+
+        $usuario = new Usuario();
+        $usuario->setNombre($row['nombre']);
+        $usuario->setApellido($row['apellido']);
+        $usuario->setTelefono($row['telefono']);
+        $usuario->setEmail($row['email']);
+
+        return $usuario;
+    }}

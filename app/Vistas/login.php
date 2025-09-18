@@ -16,8 +16,7 @@
     <p class="separador"></p>
 </div>
 
-<div class="login-container">
-  <div class="login-column" id="img-login"></div>
+<div class="login-container"> 
   <form class="login-column" id="form-login" autocomplete="on">
     <img src="public/imagenes/Login-Avatar.png" alt="Avatar" class="avatar-icon">
     <h2>¡Bienvenido de nuevo!</h2>

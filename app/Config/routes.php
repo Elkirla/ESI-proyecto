@@ -12,6 +12,7 @@ $routes = [
         "/pagosadmin"    => "PagosControl@verPagosAdmin",
         "/horasusuario"  => "HorasControl@verHorasUsuario",
         "/horasadmin"    => "HorasControl@verHorasAdmin",
+        "/usuariodatos"   => "UserControl@cargarDatosUsuario",
     ],
     "POST" => [
         "/login"    => "AuthControl@login",
