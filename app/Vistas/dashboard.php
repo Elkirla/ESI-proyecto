@@ -123,7 +123,59 @@
         <button id="btn-subir" class="but">Subir</button>
     </div>
 </div>
-  w       <button id="enviar">Enviar</button>
+    <div class="horas section">
+       <div> <h2>Horas Registradas</h2></div>
+        <div>
+|           <label for="fil">Filtro</label>
+            <select id="fil" class="color">
+                <option value="todos">Todos</option>
+                <option value="pendientes">Pendientes</option>
+                <option value="aprobados">Aprobados</option>
+                <option value="atrasados">Rechazados</option>
+            </select>
+        </div>
+        <div class="conjunto">
+        <div class="t">
+            <table>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                </tr>
+                <tr>
+                    <td>17/5</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>17/5</td>
+                    <td>Ausente</td>
+                </tr>
+                <tr>
+                    <td>14/5</td>
+                    <td>Exonerado</td>
+                </tr>
+                 <tr>
+                    <td>17/5</td>
+                    <td>Ausente</td>
+                </tr>
+                <tr>
+                    <td>14/5</td>
+                    <td>Exonerado</td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="con">
+            <div class="jus1">
+                <h3>Registrar horas</h3>
+                <label for="hr">18/7</label>
+                <input type="text" id="hr" placeholder="Horas trabajadas">
+                <button>Subir</button>
+            </div>
+            <div class="jus">
+                <h3>Justificativo</h3>
+                <textarea name="just" id="just" cols="30" rows="10" placeholder="Escriba el justificativo aqui..."></textarea>
+                <input type="file" placeholder="Fotodelcertificado.png">
+                <button id="enviar">Enviar</button>
                 </div>
         </div>
     </div>
@@ -153,6 +205,6 @@
     </div>
 </div>
 
-<script src="public/js/dashboard.js"></script>
+<script src="/public/js/dashboard.js"></script>
 </body>
 </html>
