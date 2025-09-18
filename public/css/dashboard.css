@@ -266,6 +266,15 @@ body {
 
 
 
+
+
+
+
+
+
+
+
+
 .horas h2{
     font-size: 45px;
     margin-bottom: 20px;
@@ -287,8 +296,8 @@ body {
     height: 500px;
 }
 .horas table{
-    width: 100%;
-    height: 400px;
+    width: 80%;
+    height: 100%;
     margin-top: 5px;
     margin-bottom: 20px;
     font-size: 18px;
@@ -307,32 +316,65 @@ body {
     border-color: white;
     border-collapse: collapse;
 }
-
-.jus{
+.con {
     width: 50%;
-    height: 500px;
+    height: 50%;
+    gap: 20px;
+}
+.jus1 {
+    width: 50%;
+    height: 30%;;
+}
+.jus1 h3{
+    color: #1b5197;
+    font-size: 30px;
+}
+.jus1 input{
+    width: 70%;
+    height: 25px;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #1b5197;
+    margin-bottom: 5px;
+}
+.jus1 button{
+    background: #1b5197;
+    color: white;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    width: 30%;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+
+.jus {
+    width: 50%;
+    height: 50%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 }
 .jus h3{
     color: #1b5197;
     font-size: 30px;
 }
 .jus textarea{
-    width: 50%;
-    height: 200px;
+    width: 100%;
+    height: 50%;
     font-size: 18px;
     padding: 10px;
     border-radius: 10px;
     border: 2px solid #1b5197;
 }
 .jus input{
-    width: 25%;
+    width: 50%;
 
 }
 .jus button{
-    width: 150px;
+    width: 50%;
     padding: 5px;
     background: #1b5197;
     color: white;
@@ -340,29 +382,16 @@ body {
     border-radius: 10px;
     font-size: 20px;
 }
-.bverde{
-    width: 100px;
-    height: 40px;
-    font-size: 20px;
-    padding: 5px;
-    margin-left: 10px;
-    background: #1b9730;
-    color: white;
-    border: none;
-    border-radius: 20px;
-}
 
-.brojo{
-    width: 100px;
-    height: 40px;
-    font-size: 20px;
-    padding: 5px;
-    margin-left: 10px;
-    background: #e00c0c;
-    color: white;
-    border: none;
-    border-radius: 20px;
-}
+
+
+
+
+
+
+
+
+
 
 .unidad h2{
     font-size: 45px;
@@ -399,13 +428,6 @@ body {
     border-right: 2px solid white;
     padding-right: 40px;
 }
-
-
-
-
-
-
-
 .mensajes h2{
     font-size: 45px;
     margin-bottom: 20px;
