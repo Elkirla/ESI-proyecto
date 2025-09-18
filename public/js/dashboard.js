@@ -45,5 +45,12 @@ async function cargardatos() {
         console.log("No se pudo parsear JSON:", e);
     }
 }
+document.getElementById("regresar_icon").addEventListener("click", function() {
+    document.getElementById("Cambio-contraseña").style.display = "none";
+});
+
+document.getElementById("btn-cambiarcontraseña").addEventListener("click", function() {
+    document.getElementById("Cambio-contraseña").style.display = "block";
+});
 
 });

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../Config/database.php';
-require_once __DIR__ . '/../Entidades/usuario.php'; 
+require_once __DIR__ . '/../Entidades/Usuario.php'; 
+
 class UsuarioModelo {
     private $db;
 
@@ -8,29 +9,28 @@ class UsuarioModelo {
         $this->db = Database::getConnection();
     }
 
-public function CrearUsuario(Usuario $usuario) {
-    $sql = "INSERT INTO usuarios (rol_id, nombre, apellido, email, telefono, ci, password_hash, estado, fecha_registro) 
-            VALUES (:rol_id, :nombre, :apellido, :email, :telefono, :ci, :password_hash, :estado, :fecha_registro)";
-    
-    $stmt = $this->db->prepare($sql);
-    
-    return $stmt->execute([
-        ':rol_id' => $usuario->getRol(),
-        ':nombre' => $usuario->getNombre(),
-        ':apellido' => $usuario->getApellido(),
-        ':email' => $usuario->getEmail(),
-        ':telefono' => $usuario->getTelefono(),       
-        ':ci' => $usuario->getCi(),                   
-        ':password_hash' => $usuario->getPassword(),
-        ':estado' => $usuario->getEstado(),
-        ':fecha_registro' => $usuario->getFechaRegistro()
-    ]);
-}
+    public function CrearUsuario(Usuario $usuario) {
+        $sql = "INSERT INTO usuarios (rol_id, nombre, apellido, email, telefono, ci, password_hash, estado, fecha_registro) 
+                VALUES (:rol_id, :nombre, :apellido, :email, :telefono, :ci, :password_hash, :estado, :fecha_registro)";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        return $stmt->execute([
+            ':rol_id' => $usuario->getRol(),
+            ':nombre' => $usuario->getNombre(),
+            ':apellido' => $usuario->getApellido(),
+            ':email' => $usuario->getEmail(),
+            ':telefono' => $usuario->getTelefono(),       
+            ':ci' => $usuario->getCi(),                   
+            ':password_hash' => $usuario->getPassword(),
+            ':estado' => $usuario->getEstado(),
+            ':fecha_registro' => $usuario->getFechaRegistro()
+        ]);
+    }
+
     public function VerificarLogin($email, $password) {
-        // Sanitizar el email
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         
-        // Seleccionamos password_hash, rol y estado
         $sql = "SELECT u.id, u.email, u.password_hash, u.estado, r.nombre AS rol
                 FROM usuarios u
                 JOIN roles r ON u.rol_id = r.id
@@ -43,24 +43,23 @@ public function CrearUsuario(Usuario $usuario) {
 
         if ($usuario) {
             if (!password_verify($password, $usuario['password_hash'])) {
-                return false; // Contraseña incorrecta
+                return false;
             }
 
             if ($usuario['estado'] !== 'activo') {
-                return 'inactivo'; // Usuario pendiente o rechazado
+                return 'inactivo';
             }
 
-            // Usuario válido
             return [
                 'id' => $usuario['id'],
                 'rol' => $usuario['rol']
             ];
         }
 
-        return false; 
+        return false;
     }
 
-  public function obtenerDatosUsuario($userId) {
+    public function obtenerDatosUsuario($userId) {
         $sql = "SELECT nombre, apellido, telefono, email 
                 FROM usuarios 
                 WHERE id = :id";
@@ -71,7 +70,7 @@ public function CrearUsuario(Usuario $usuario) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$row) {
-            return null; // por si no se encuentra
+            return null;
         }
 
         $usuario = new Usuario();
@@ -81,4 +80,5 @@ public function CrearUsuario(Usuario $usuario) {
         $usuario->setEmail($row['email']);
 
         return $usuario;
-    }}
+    }
+}

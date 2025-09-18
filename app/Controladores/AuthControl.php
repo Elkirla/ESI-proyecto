@@ -9,6 +9,9 @@ class AuthControl {
     }
     
 public function registrar(){
+    require_once __DIR__ . '/../Entidades/Usuario.php'; 
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
+
     header('Content-Type: application/json');
 
     $validator = new validator();
@@ -41,30 +44,33 @@ public function registrar(){
     }
 
     //Si todo va bien creamos la entidad usuario
- try{
+ try {
     $fecha_registro = date('Y-m-d H:i:s');
-    $usuario = new usuario( 
-        1,
-        $_POST['nombre'] ?? '',
-        $_POST['apellido'] ?? '',
-        $_POST["telefono"] ?? "",
-        $_POST["ci"] ?? "",
-        $email,
-        password_hash($password, PASSWORD_BCRYPT),
-        "pendiente",
-        $fecha_registro
-    );
+
+    $usuario = new Usuario();
+    $usuario->setRol(1); 
+    $usuario->setNombre($_POST['nombre'] ?? '');
+    $usuario->setApellido($_POST['apellido'] ?? '');
+    $usuario->setTelefono($_POST['telefono'] ?? '');
+    $usuario->setCi($_POST['ci'] ?? '');
+    $usuario->setEmail($email);
+    $usuario->setPassword(password_hash($password, PASSWORD_BCRYPT));
+    $usuario->setEstado("pendiente");
+    $usuario->setFechaRegistro($fecha_registro);
 
     $modelo = new UsuarioModelo();
     $modelo->CrearUsuario($usuario); 
+
     echo json_encode(['success' => true]);
     exit; 
-}catch(Exception $e) {
+} catch (Exception $e) {
     error_log("Error en registrar: " . $e->getMessage());
     $errores['confirm'][] = "Error interno del servidor. Por favor, intente nuevamente más tarde.";
     echo json_encode(['success' => false, 'errors' => $errores]);
-    }
 }
+
+}
+
     public function login() {
         // Iniciar sesión al principio
         if (session_status() === PHP_SESSION_NONE) {

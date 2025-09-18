@@ -88,7 +88,7 @@ body {
     margin-left: 250px;
     margin-top: 50px;
     width: 100%;
-    height: 100%;
+    height: 80%;
 }
 
 .inicio {
@@ -150,9 +150,29 @@ body {
 
 .mi-perfil {
     width: 70%;
-    height: 70%;
+    height: 50%;
     margin-left: 50px;
     margin-top: 20px;
+}
+.Cambio-contraseña{
+    z-index: 100;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #00000031;
+    display: none;
+}
+
+.Form-cambiarcontraseña{
+    background-color: #0e2747;
+    width: 600px;
+    height: 530px;
+    position: fixed;
+    top: 7%;
+    left: 29%;
+}
+#regresar_icon{
+    cursor: pointer;
 }
 .texto-icono {
     display: flex;
@@ -266,15 +286,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
 .horas h2{
     font-size: 45px;
     margin-bottom: 20px;
@@ -296,8 +307,8 @@ body {
     height: 500px;
 }
 .horas table{
-    width: 80%;
-    height: 100%;
+    width: 100%;
+    height: 400px;
     margin-top: 5px;
     margin-bottom: 20px;
     font-size: 18px;
@@ -316,65 +327,32 @@ body {
     border-color: white;
     border-collapse: collapse;
 }
-.con {
-    width: 50%;
-    height: 50%;
-    gap: 20px;
-}
-.jus1 {
-    width: 50%;
-    height: 30%;;
-}
-.jus1 h3{
-    color: #1b5197;
-    font-size: 30px;
-}
-.jus1 input{
-    width: 70%;
-    height: 25px;
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 2px solid #1b5197;
-    margin-bottom: 5px;
-}
-.jus1 button{
-    background: #1b5197;
-    color: white;
-    padding: 10px;
-    border-radius: 15px;
-    border: none;
-    width: 30%;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
 
-
-.jus {
+.jus{
     width: 50%;
-    height: 50%;
+    height: 500px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 }
 .jus h3{
     color: #1b5197;
     font-size: 30px;
 }
 .jus textarea{
-    width: 100%;
-    height: 50%;
+    width: 50%;
+    height: 200px;
     font-size: 18px;
     padding: 10px;
     border-radius: 10px;
     border: 2px solid #1b5197;
 }
 .jus input{
-    width: 50%;
+    width: 25%;
 
 }
 .jus button{
-    width: 50%;
+    width: 150px;
     padding: 5px;
     background: #1b5197;
     color: white;
@@ -382,16 +360,29 @@ body {
     border-radius: 10px;
     font-size: 20px;
 }
+.bverde{
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    padding: 5px;
+    margin-left: 10px;
+    background: #1b9730;
+    color: white;
+    border: none;
+    border-radius: 20px;
+}
 
-
-
-
-
-
-
-
-
-
+.brojo{
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    padding: 5px;
+    margin-left: 10px;
+    background: #e00c0c;
+    color: white;
+    border: none;
+    border-radius: 20px;
+}
 
 .unidad h2{
     font-size: 45px;
@@ -428,6 +419,13 @@ body {
     border-right: 2px solid white;
     padding-right: 40px;
 }
+
+
+
+
+
+
+
 .mensajes h2{
     font-size: 45px;
     margin-bottom: 20px;

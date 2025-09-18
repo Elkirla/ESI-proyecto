@@ -3,7 +3,7 @@
 # Configuración
 BACKUP_DIR="/backups"
 DATE=$(date +%Y%m%d_%H%M%S)
-DB_HOST="db"              # Nombre del servicio en docker-compose
+DB_HOST="db"              
 DB_NAME="cooperativa"
 DB_USER="usuariodb"
 DB_PASS="password"
