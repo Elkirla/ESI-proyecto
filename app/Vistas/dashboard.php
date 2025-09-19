@@ -165,13 +165,15 @@
 
             </table>
         </div>
+        
         <div class="con">
             <div class="jus1">
                 <h3>Registrar horas</h3>
                 <label for="hr" id="fecha-horas"></label>
                 <input type="text" id="hr" placeholder="Horas trabajadas">
-                <button>Subir</button>
+                <button id="subirhoras">Subir</button>
             </div>
+
             <div class="jus">
                 <h3>Justificativo</h3>
                 <textarea name="just" id="just" cols="30" rows="10" placeholder="Escriba el justificativo aqui..."></textarea>
