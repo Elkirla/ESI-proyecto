@@ -168,7 +168,7 @@
         <div class="con">
             <div class="jus1">
                 <h3>Registrar horas</h3>
-                <label for="hr">18/7</label>
+                <label for="hr" id="fecha-horas"></label>
                 <input type="text" id="hr" placeholder="Horas trabajadas">
                 <button>Subir</button>
             </div>

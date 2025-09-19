@@ -44,6 +44,17 @@ async function cargardatos() {
     } catch (e) {
         console.log("No se pudo parsear JSON:", e);
     }
+
+    const hoy = new Date();
+
+    const dia = String(hoy.getDate()).padStart(2, '0');
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0'); 
+    const anio = String(hoy.getFullYear()).slice(-2); 
+
+    const fechaFormateada = `${dia}/${mes}/${anio}`;
+
+    document.getElementById("fecha-horas").innerText = fechaFormateada;
+
 }
 document.getElementById("regresar_icon").addEventListener("click", function() {
     document.getElementById("Cambio-contraseña").style.display = "none";
@@ -52,5 +63,6 @@ document.getElementById("regresar_icon").addEventListener("click", function() {
 document.getElementById("btn-cambiarcontraseña").addEventListener("click", function() {
     document.getElementById("Cambio-contraseña").style.display = "block";
 });
+
 
 });
