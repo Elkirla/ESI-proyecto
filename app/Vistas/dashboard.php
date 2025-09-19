@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="public/css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person" />
+    <link rel="icon" href="public/imagenes/logo.png" type="icon">
     <title>Página usuario</title>
 </head>
 <body>
