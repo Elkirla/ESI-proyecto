@@ -49,7 +49,7 @@ CREATE TABLE horas_trabajadas (
     fecha DATE NOT NULL,
     horas INT NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-    UNIQUE (usuario_id, fecha),
+    UNIQUE (usuario_id, fecha)
 );
 
 CREATE TABLE justificaciones (

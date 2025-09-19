@@ -12,6 +12,7 @@ class HorasModelo {
         $sql = "INSERT INTO horas_trabajadas (usuario_id, fecha, horas) 
                 VALUES (:usuario_id, :fecha, :horas)";
         $stmt = $this->db->prepare($sql);
+
         return $stmt->execute([
             ':usuario_id' => $hora->getUsuarioId(),
             ':fecha' => $hora->getFecha(),

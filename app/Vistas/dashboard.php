@@ -13,9 +13,28 @@
 
 <div class="Cambio-contraseña" id="Cambio-contraseña">
     <div class="Form-cambiarcontraseña">
-        <img src="public/imagenes/regresar.png" alt="regresar_icon" id="regresar_icon">
+        <div class="flecha">
+            <img src="public/imagenes/regresar.png" alt="regresar_icon" id="regresar_icon">
+            <h2>Cambiar Contraseña</h2>
+        </div>
+        <form action="" class="form">
+            <div class="input">
+                <label for="contraseña-actual">Contraseña Actual:</label>
+                <input type="password" id="contraseña-actual" name="contraseña-actual" required>
+            </div>
+            <div class="input">
+                <label for="nueva-contraseña">Nueva Contraseña:</label>
+                <input type="password" id="nueva-contraseña" name="nueva-contraseña" required>
+            </div>
+            <div class="input">
+                <label for="confirmar-contraseña">Confirmar Nueva Contraseña:</label>
+                <input type="password" id="confirmar-contraseña" name="confirmar-contraseña" required>
+            </div>
+            <button type="submit" id="btn-guardar">Confirmar</button>
+        </form>
     </div>
 </div>
+
 
      <div class="heder"></div>
     <div class="sider">
@@ -165,8 +184,8 @@
 
             </table>
         </div>
-        
         <div class="con">
+
             <div class="jus1">
                 <h3>Registrar horas</h3>
                 <label for="hr" id="fecha-horas"></label>
@@ -208,6 +227,6 @@
     </div>
 </div>
 
-<script src="/public/js/dashboard.js"></script>
+<script src="public/js/dashboard.js"></script>
 </body>
 </html>
