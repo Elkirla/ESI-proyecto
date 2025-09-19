@@ -35,6 +35,14 @@
     </div>
 </div>
 
+<div class="notificaciónes-container">
+    <div class="notificaciónes" id="notificaciónes">
+        <h3>Notificaciones</h3>
+        <p id="cerrar-notis">X</p>
+        <ul id="lista-notificaciones">
+        </ul>
+    </div>
+</div>
 
      <div class="heder"></div>
     <div class="sider">

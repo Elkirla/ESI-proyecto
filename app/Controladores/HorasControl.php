@@ -6,6 +6,7 @@ class HorasControl {
 
         try {
             session_start();
+            $modelo = new HorasModelo();
             $usuario_id = $_SESSION['usuario_id'] ?? null;
 
             $fecha = $_POST['fecha'] ?? null;
@@ -14,11 +15,13 @@ class HorasControl {
             if (!$usuario_id || !$fecha || !$horas) {
                 echo json_encode(['success' => false, 'error' => 'Faltan datos']);
                 exit;
+            }elseif ($modelo->tieneHorasRegistradas($usuario_id, $fecha)) {
+                echo json_encode(['success' => false, 'error' => 'Ya has registrado horas hoy']);
+                exit;
             }
 
             $hora = new Hora($usuario_id, $fecha, $horas);
 
-            $modelo = new HorasModelo();
             $ok = $modelo->registrarHoras($hora);
 
             if ($ok) {

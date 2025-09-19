@@ -93,7 +93,7 @@ body {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Icono config abajo */
+
 .sider::after {
     content: "⚙️";
     font-size: 20px;
@@ -101,6 +101,69 @@ body {
     bottom: 20px;
     left: 20px;
     cursor: pointer;
+}
+
+.notificaciónes-container {
+    position: fixed;
+    top: 40px;
+    right: 20px;
+    width: 260px;             
+    min-height: 80px;
+    z-index: 1002;
+    border-radius: 10px;
+    background-color: rgb(18, 111, 173);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.notificaciónes {
+    padding: 10px;
+    position: relative;
+}
+
+.notificaciónes h3 {
+    margin: 0;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    padding-bottom: 5px;
+    text-align: center;  
+}
+
+.notificaciónes p#cerrar-notis {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+}
+
+.notificaciónes p#cerrar-notis:hover {
+    color: #ffcccc;
+}
+
+.notificaciónes ul {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.notificaciónes ul li {
+    display: block;                 
+    text-align: left;              
+    background: rgba(255,255,255,0.15);
+    padding: 6px 10px;
+    margin: 6px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;          
 }
 
 .info {

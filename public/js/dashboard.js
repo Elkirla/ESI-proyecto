@@ -55,6 +55,7 @@ async function cargardatos() {
     const fecha_actual = `${anioCompleto}-${mes}-${dia}`;
     document.getElementById("fecha-horas").dataset.mysql = fecha_actual; 
 }
+
 document.getElementById("regresar_icon").addEventListener("click", function() {
     document.getElementById("Cambio-contraseña").style.display = "none";
 });
@@ -71,7 +72,7 @@ const horas = document.getElementById("hr").value;
     e.preventDefault();
 
     if (!horas || isNaN(horas) || Number(horas) <= 0) {
-        alert("Debes ingresar un número válido de horas trabajadas" + horas);
+        agregarNotificacion("Por favor ingresa un número válido de horas.");
         return;
     }
 
@@ -87,18 +88,44 @@ const horas = document.getElementById("hr").value;
         const resultado = await respuesta.json();
 
         if (resultado.success) {
-            alert("Horas registradas ✅");
-            document.getElementById("hr").value = "";
-            cargardatos(); // refrescar datos
+        agregarNotificacion("Horas registradas con exito") 
+
+        document.getElementById("hr").value = "";
+        cargardatos(); // refrescar datos
+
         } else {
-            alert("Error ❌ " + (resultado.error || ""));
-            console.log("Error details:", resultado);
+            agregarNotificacion(resultado.error);
         }
+
     } catch (err) {
         alert("Error en la conexión ❌ " + err.message);
     }
 });
 
+function agregarNotificacion(mensaje, tipo = "info") {
+    const container = document.querySelector('.notificaciónes-container');
+    const lista = document.getElementById("lista-notificaciones"); 
 
+    const item = document.createElement('li');
+    item.textContent = mensaje;
+    item.classList.add(tipo); 
+
+    lista.appendChild(item);
+    container.style.display = 'block';
+/*
+    setTimeout(() => {
+        item.remove();
+        if (lista.children.length === 0) {
+            container.style.display = 'none';
+        }
+    }, 15000);
+    */
+}
+
+
+document.getElementById("cerrar-notis").addEventListener("click", function() {
+    document.querySelector('.notificaciónes-container').style.display = 'none';
+    document.getElementById("lista-notificaciones").innerHTML = '';
+});
 
 });
