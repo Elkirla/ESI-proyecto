@@ -167,6 +167,63 @@ body {
     padding-right: 40px;
 }
 
+
+
+
+
+.flecha {
+    display: flex;
+    gap: 20px;
+}
+.flecha img {
+    width: 8%;
+    height: 5%;
+    cursor: pointer;
+}
+.flecha h2{
+    font-size: 30px;
+    color: white;
+    border-bottom: 2px solid white;
+}
+
+.form{
+    margin-top: 50px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction:column;
+    gap: 20px;
+}
+.input{
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+.input label{
+    width: 37%;
+    color: white;
+}
+.input input{
+    width: 55%;
+}
+
+.form button{
+    margin-top: 20px;
+    margin-left: 30%;
+    width: 30%;
+    padding: 5px;
+    border-radius: 10px;
+    background: white;
+    color: black;
+}
+
+
+
+
+
+
+
 .mi-perfil {
     width: 70%;
     height: 70%;
@@ -180,7 +237,6 @@ body {
     font-size: 30px;
     color: #1b5197;
 }
-
 .material-symbols-outlined {
   font-size: 30px;
   color: #1b5197; 
@@ -282,18 +338,6 @@ body {
     color: white;
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
 .horas h2{
     font-size: 45px;
     margin-bottom: 20px;
@@ -401,17 +445,6 @@ body {
     border-radius: 10px;
     font-size: 20px;
 }
-
-
-
-
-
-
-
-
-
-
-
 .unidad h2{
     font-size: 45px;
     margin-bottom: 20px;
