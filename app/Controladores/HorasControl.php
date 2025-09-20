@@ -1,9 +1,9 @@
 <?php
 class HorasControl {
     public function IngresarHoras() {
-        require_once __DIR__ . '/../Entidades/hora.php'; 
         header('Content-Type: application/json');
 
+    require_once __DIR__ . '/../Entidades/hora.php'; 
         try {
             session_start();
             $modelo = new HorasModelo();
@@ -36,4 +36,28 @@ class HorasControl {
             exit;
         }
     }
+
+public function verHorasUsuario() {
+    require_once __DIR__ . '/../Modelos/ReporteModelo.php';
+    session_start();
+    $modelo = new ReporteModelo();
+    $usuario_id = $_SESSION['usuario_id'] ?? null;
+
+    header('Content-Type: application/json');
+
+    try {
+        if (!$usuario_id) {
+            echo json_encode(["error" => "Usuario no autenticado"]);
+            return;
+        }
+
+        $arreglo = $modelo->obtenerHorasPorUsuario($usuario_id);
+        echo json_encode($arreglo);
+    } catch (Exception $e) {
+        echo json_encode(["error" => $e->getMessage()]);
+    }
+}
+
+
+
 }

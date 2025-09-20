@@ -497,29 +497,43 @@ body {
 }
 .t {
     width: 50%;
-    height: 500px;
+    margin: 20px auto;
+    height: 400px;   
+    max-height: 800px;   
+    overflow-y: auto;  
+    background: #999999;
+    border-radius: 10px;
+    padding: 7px;
 }
-.horas table{
-    width: 80%;
-    height: 100%;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    font-size: 18px;
+
+.t table {
+    width: 100%;
+    border-collapse: collapse; 
+    font-size: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
 }
-.horas th{
+
+.t th {
     background: #1b5197; 
-    color: white;
+    color: rgb(255, 255, 255);
     text-align: center; 
-    font-size: 20px;
+    font-size: 18px;
+    padding: 10px;
+    position: sticky;   
+    top: 0;
 }
-.horas td {
-    background: #1b5197;
-    color: white;
+
+.t td {
+    background: rgb(16, 57, 110); 
+    color: #ffffff;
     text-align: center;
-    font-size: 15px;
-    border-color: white;
-    border-collapse: collapse;
+    padding: 8px;
 }
+
+.t tr:nth-child(even) td {
+    background: #1d497a; 
+}
+
 .con {
     width: 50%;
     height: 50%;

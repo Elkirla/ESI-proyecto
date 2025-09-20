@@ -27,8 +27,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-async function cargardatos() {
-    // Cargar datos del usuario
+function cargardatos() {
+    datosusuario();
+    cargarhora();
+    cargarhoralista();
+}
+async function cargarhoralista() {
+    const respuesta = await fetch("/horasusuario", { method: "GET" });
+    const datos = await respuesta.json();
+
+    const tabla = document.querySelector(".t table");
+
+    // limpiar filas anteriores (menos la cabecera)
+    tabla.querySelectorAll("tr:not(:first-child)").forEach(tr => tr.remove());
+
+    // agregar filas
+    datos.forEach(item => {
+        const fila = document.createElement("tr");
+
+        const tdFecha = document.createElement("td");
+        tdFecha.textContent = item.fecha; 
+
+        const tdHoras = document.createElement("td");
+        tdHoras.textContent = item.horas;
+
+        fila.appendChild(tdFecha);
+        fila.appendChild(tdHoras);
+
+        tabla.appendChild(fila);
+    });
+}
+
+
+async function datosusuario(){
     const respuesta = await fetch("/usuariodatos", { method: "GET" });
     const texto = await respuesta.text();
 
@@ -42,7 +73,8 @@ async function cargardatos() {
     } catch (e) {
         console.log("No se pudo parsear JSON:", e);
     }
-
+}
+function cargarhora(){
     const hoy = new Date();
 
     const dia = String(hoy.getDate()).padStart(2, '0');
@@ -64,9 +96,9 @@ document.getElementById("btn-cambiarcontraseña").addEventListener("click", func
     document.getElementById("Cambio-contraseña").style.display = "block";
 });
 
-const enviarBtn = document.getElementById("subirhoras");
+const enviarhorasBtn = document.getElementById("subirhoras");
 
-enviarBtn.addEventListener('click', async function(e) { 
+enviarhorasBtn.addEventListener('click', async function(e) { 
 const fecha_actual = document.getElementById("fecha-horas").dataset.mysql;
 const horas = document.getElementById("hr").value;
     e.preventDefault();
@@ -91,7 +123,7 @@ const horas = document.getElementById("hr").value;
         agregarNotificacion("Horas registradas con exito") 
 
         document.getElementById("hr").value = "";
-        cargardatos(); // refrescar datos
+        cargarhoralista(); // refrescar datos
 
         } else {
             agregarNotificacion(resultado.error);
@@ -112,14 +144,14 @@ function agregarNotificacion(mensaje, tipo = "info") {
 
     lista.appendChild(item);
     container.style.display = 'block';
-/*
+
     setTimeout(() => {
         item.remove();
         if (lista.children.length === 0) {
             container.style.display = 'none';
         }
     }, 15000);
-    */
+
 }
 
 

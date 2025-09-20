@@ -169,27 +169,6 @@
                     <th>Fecha</th>
                     <th>Hora</th>
                 </tr>
-                <tr>
-                    <td>17/5</td>
-                    <td>6</td>
-                </tr>
-                <tr>
-                    <td>17/5</td>
-                    <td>Ausente</td>
-                </tr>
-                <tr>
-                    <td>14/5</td>
-                    <td>Exonerado</td>
-                </tr>
-                 <tr>
-                    <td>17/5</td>
-                    <td>Ausente</td>
-                </tr>
-                <tr>
-                    <td>14/5</td>
-                    <td>Exonerado</td>
-                </tr>
-
             </table>
         </div>
         <div class="con">
