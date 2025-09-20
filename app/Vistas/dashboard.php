@@ -30,7 +30,7 @@
                 <label for="confirmar-contraseña">Confirmar Nueva Contraseña:</label>
                 <input type="password" id="confirmar-contraseña" name="confirmar-contraseña" required>
             </div>
-            <button type="submit" id="btn-guardar">Confirmar</button>
+            <button type="submit" id="btn-guardar-contraseña">Confirmar</button>
         </form>
     </div>
 </div>
