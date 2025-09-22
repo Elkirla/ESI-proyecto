@@ -154,10 +154,64 @@ function agregarNotificacion(mensaje, tipo = "info") {
 
 }
 
-
 document.getElementById("cerrar-notis").addEventListener("click", function() {
     document.querySelector('.notificaciónes-container').style.display = 'none';
     document.getElementById("lista-notificaciones").innerHTML = '';
 });
+
+const enviarBtn = document.getElementById('btn-pagar');
+const form = document.getElementById('form-pago'); 
+
+enviarBtn.addEventListener('click', async function(e) {
+    e.preventDefault();
+
+    // Deshabilitar botón para evitar múltiples envíos
+    enviarBtn.disabled = true;
+    enviarBtn.textContent = 'Procesando...';
+
+    try {
+        const formData = new FormData(form);
+        
+        const respuesta = await fetch('/pago', {
+            method: "POST",
+            body: formData
+        });
+
+        // Verificar si la respuesta es JSON válido
+        const contentType = respuesta.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('El servidor respondió con un formato incorrecto');
+        }
+
+        const resultado = await respuesta.json();
+
+        if (resultado.success) {
+            agregarNotificacion(resultado.message || "Pago registrado exitosamente", 'success');
+            // Limpiar formulario después de éxito
+            form.reset();
+        } else {
+            // Mostrar error específico del servidor
+            agregarNotificacion(resultado.error || "Error al procesar el pago", 'error');
+        }
+
+    } catch (err) {
+        // Mensajes más amigables según el tipo de error
+        if (err.name === 'TypeError' && err.message.includes('JSON')) {
+            agregarNotificacion("Error en el servidor. Por favor, intente más tarde.", 'error');
+        } else if (err.name === 'TypeError') {
+            agregarNotificacion("Error de conexión. Verifique su internet e intente nuevamente.", 'error');
+        } else {
+            agregarNotificacion("Error inesperado. Intente más tarde.", 'error');
+        }
+        
+        console.error('Error detallado (solo desarrollo):', err);
+    } finally {
+        // Rehabilitar botón siempre
+        enviarBtn.disabled = false;
+        enviarBtn.textContent = 'Enviar Pago';
+    }
+});
+
+
 
 });

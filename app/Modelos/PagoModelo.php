@@ -12,11 +12,12 @@ class PagoModelo {
         $sql = "INSERT INTO pagos_mensuales (usuario_id, mes, fecha, archivo_url, estado) 
                 VALUES (:usuario_id, :mes, :fecha, :archivo_url, :estado)";
         $stmt = $this->db->prepare($sql);
+
         return $stmt->execute([
             ':usuario_id' => $pago->getUsuarioId(),
-            ':mes'        => $pago->getMes(),
+            ':mes'        => $pago->getMes(),   
             ':fecha'      => $pago->getFecha(),
-            ':archivo_url'=> $pago->getArchivoUrl(),
+            ':archivo_url'=> $pago->getArchivoUrl(), 
             ':estado'     => $pago->getEstado()
         ]);
     }

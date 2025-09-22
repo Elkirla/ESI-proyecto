@@ -131,25 +131,39 @@
     </tr>
 </table>
     <h2>Subir comprobantes</h2>
-    <div class="comprovante">
-        <input type="file"">
-        <label for="mes">Mes:</label>
-        <select id="mes" name="mes">
-        <option value="Enero">Enero</option>
-        <option value="Febrero">Febrero</option>
-        <option value="Marzo">Marzo</option>
-        <option value="Abril">Abril</option>
-        <option value="Mayo">Mayo</option>
-        <option value="Junio">Junio</option>
-        <option value="Julio">Julio</option>
-        <option value="Agosto">Agosto</option>
-        <option value="Septiembre">Septiembre</option>
-        <option value="Octubre">Octubre</option>
-        <option value="Noviembre">Noviembre</option>
-        <option value="Diciembre">Diciembre</option>
-    </select>
-        <button id="btn-subir" class="but">Subir</button>
-    </div>
+<div class="comprovante">
+    <form action="" class="form-pago" id="form-pago" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="archivo" class="file-label">
+                <span>📎 Seleccionar comprobante</span>
+                <input type="file" name="archivo" id="archivo" accept=".jpg,.jpeg,.png,.pdf">
+            </label>
+            <small>Formatos permitidos: JPG, PNG, PDF (Máx. 5MB)</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="mes">Mes del pago:</label>
+            <select id="mes" name="mes" class="select-mes">
+                <option value="">Seleccione un mes</option>
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+        </div>
+        
+        <button type="submit" id="btn-pagar" class="but">Enviar Comprobante</button>
+    </form>
+</div>
+
 </div>
     <div class="horas section">
        <div> <h2>Horas Registradas</h2></div>

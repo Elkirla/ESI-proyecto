@@ -464,20 +464,104 @@ body {
     border-collapse: collapse;
 }
 
-.comprovante{
-    display: flex;
-    gap: 30px;
+.comprovante {
     background: #1b5197;
     color: white;
     width: 490px;
-    padding: 10px;
-
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
-.comprovante button{
-    border-radius: 10px;
+
+.form-pago {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Estilo mejorado para el input file */
+.file-label {
+    display: inline-block;
+    padding: 12px 20px;
+    background: rgba(255,255,255,0.1);
+    border: 2px dashed rgba(255,255,255,0.3);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-label:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.5);
+}
+
+.file-label input[type="file"] {
+    display: none;
+}
+
+/* Estilo para el select */
+.select-mes {
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 14px;
+}
+
+.select-mes option {
     background: #1b5197;
     color: white;
-    
+}
+
+/* Estilo mejorado para el botón */
+.but {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #2a6bc9;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.but:hover {
+    background: #3a7bd9;
+    transform: translateY(-1px);
+}
+
+.but:disabled {
+    background: #4a8be9;
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+small {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.file-name {
+    font-size: 12px;
+    margin-top: 5px;
+    font-style: italic;
 }
 .horas h2{
     font-size: 45px;
