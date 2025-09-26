@@ -107,6 +107,7 @@ public function registrar(){
                     'success' => true,
                     'rol' => $usuario['rol']
                 ]);
+
             } else {
                 echo json_encode([
                     'success' => false,

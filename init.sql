@@ -11,6 +11,7 @@ CREATE TABLE roles (
 ); 
  
 INSERT INTO roles (nombre) VALUES ('usuario');
+INSERT INTO roles (nombre) VALUES ('administrador');
 
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,

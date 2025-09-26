@@ -14,7 +14,7 @@ class HomeControl {
     }
 
     public function dashboardAdmin(){
-        $this->verificarSesion('admin');
+        $this->verificarSesion('administrador');
         include __DIR__ . "/../Vistas/backoffice.php";
     }  
 

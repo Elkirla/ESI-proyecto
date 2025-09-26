@@ -26,13 +26,15 @@ document.addEventListener('DOMContentLoaded', function() {
       const resultado = await respuesta.json();
 
       if (resultado.success) {
-        alert("Login exitoso ✅");
 
         // ✅ redirigir según el rol
-        if (resultado.rol === "admin") {
-          window.location.href = "/dashboard-admin";
+        if (resultado.rol === "administrador") {
+        window.location.href = "/dashboard-admin";
+        alert("Bienido de vuelta");
+
         } else {
-          window.location.href = "/dashboard-usuario";
+        window.location.href = "/dashboard-usuario";
+        alert("Bienido de vuelta");
         }
 
       } else {
