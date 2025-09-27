@@ -9,7 +9,7 @@ class AuthControl {
     }
     
 public function registrar(){
-    require_once __DIR__ . '/../Entidades/Usuario.php'; 
+    require_once __DIR__ . '/../Entidades/usuario.php'; 
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
 
     header('Content-Type: application/json');

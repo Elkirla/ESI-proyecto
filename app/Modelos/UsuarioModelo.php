@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../Config/database.php';
-require_once __DIR__ . '/../Entidades/Usuario.php'; 
+require_once __DIR__ . '/../Entidades/usuario.php'; 
 
 class UsuarioModelo {
     private $db;
@@ -80,5 +80,23 @@ class UsuarioModelo {
         $usuario->setEmail($row['email']);
 
         return $usuario;
+    }
+    public function obtenerUsuariosPendientes() { 
+        $sql = "SELECT id, nombre, apellido 
+                FROM usuarios 
+                WHERE estado = 'pendiente'";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(); 
+        $usuarios = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $usuario = new Usuario();
+            $usuario->setId($row['id']);
+            $usuario->setNombre($row['nombre']);
+            $usuario->setApellido($row['apellido']);
+            $usuarios[] = $usuario;
+        }
+
+        return $usuarios;
     }
 }

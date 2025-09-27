@@ -1,5 +1,6 @@
 <?php
-class Usuario {
+class usuario {
+    private $id;            
     private $rol;
     private $nombre;
     private $apellido;
@@ -12,6 +13,7 @@ class Usuario {
 
     public function __construct() {}
  
+    public function getId() { return $this->id; }  
     public function getTelefono() { return $this->telefono; }
     public function getCi() { return $this->ci; }
     public function getRol() { return $this->rol; }
@@ -22,6 +24,7 @@ class Usuario {
     public function getEstado() { return $this->estado; }
     public function getFechaRegistro() { return $this->fecha_registro; }
  
+    public function setId($id) { $this->id = $id; }    
     public function setTelefono($telefono) { $this->telefono = $telefono; }
     public function setCi($ci) { $this->ci = $ci; }
     public function setRol($rol) { $this->rol = $rol; }
