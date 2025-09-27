@@ -8,17 +8,20 @@ class PagoModelo {
         $this->db = Database::getConnection();
     }
 
-    public function registrarPago(pago $pago) {
-        $sql = "INSERT INTO pagos_mensuales (usuario_id, mes, fecha, archivo_url, estado) 
-                VALUES (:usuario_id, :mes, :fecha, :archivo_url, :estado)";
-        $stmt = $this->db->prepare($sql);
+ public function registrarPago(pago $pago) {
+    $sql = "INSERT INTO pagos_mensuales 
+            (usuario_id, mes, monto, fecha, archivo_url, estado) 
+            VALUES (:usuario_id, :mes, :monto, :fecha, :archivo_url, :estado)";
+    $stmt = $this->db->prepare($sql);
 
-        return $stmt->execute([
-            ':usuario_id' => $pago->getUsuarioId(),
-            ':mes'        => $pago->getMes(),   
-            ':fecha'      => $pago->getFecha(),
-            ':archivo_url'=> $pago->getArchivoUrl(), 
-            ':estado'     => $pago->getEstado()
-        ]);
-    }
+    return $stmt->execute([
+        ':usuario_id' => $pago->getUsuarioId(),
+        ':mes'        => $pago->getMes(),
+        ':monto'      => $pago->getMonto(),   
+        ':fecha'      => $pago->getFecha(),
+        ':archivo_url'=> $pago->getArchivoUrl(),
+        ':estado'     => $pago->getEstado()
+    ]);
+}
+
 }

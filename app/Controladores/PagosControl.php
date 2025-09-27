@@ -19,6 +19,12 @@ class PagosControl {
                 throw new Exception("El campo 'mes' es obligatorio");
             }
 
+            // Validar monto
+            $monto = $_POST['monto'] ?? null;
+            if (!$monto || !is_numeric($monto) || $monto <= 0) {
+            throw new Exception("El campo 'monto' es obligatorio y debe ser mayor a 0.");
+            }
+
             // Validar archivo
             if (!isset($_FILES['archivo']) || $_FILES['archivo']['error'] === UPLOAD_ERR_NO_FILE) {
                 throw new Exception("Por favor, seleccione un archivo para adjuntar.");
@@ -66,7 +72,8 @@ class PagosControl {
             $archivo_url = "/uploads/" . $nombreArchivo;
 
             // Registrar en BD
-            $pago = new pago($usuario_id, $mes, $fecha, $archivo_url, $estado);
+            $pago = new pago($usuario_id, $mes, $monto, $fecha, $archivo_url, $estado);
+
             $modelo = new PagoModelo();
             $ok = $modelo->registrarPago($pago);
 

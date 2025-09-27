@@ -142,6 +142,9 @@
         </div>
         
         <div class="form-group">
+    <label for="monto">Monto del pago:</label>
+    <input type="number" id="monto" name="monto" step="0.01" min="0" required>
+
             <label for="mes">Mes del pago:</label>
             <select id="mes" name="mes" class="select-mes">
                 <option value="">Seleccione un mes</option>

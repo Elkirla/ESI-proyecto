@@ -9,9 +9,16 @@ CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL COMMENT 'Nombre del rol: usuario, administrador'
 ); 
- 
+
 INSERT INTO roles (nombre) VALUES ('usuario');
 INSERT INTO roles (nombre) VALUES ('administrador');
+
+CREATE TABLE entrega (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL COMMENT 'Estado de la fecha en la que se entrego el pago'
+); 
+INSERT INTO entrega (nombre) VALUES ('Atrasado');
+INSERT INTO entrega (nombre) VALUES ('En hora');
 
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -75,12 +82,12 @@ CREATE TABLE pagos_mensuales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     mes VARCHAR(20) NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
     fecha DATE NOT NULL,
     archivo_url VARCHAR(255),
     estado ENUM('pendiente', 'aprobado', 'rechazado') DEFAULT 'pendiente',
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
-
 
 CREATE TABLE validaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
