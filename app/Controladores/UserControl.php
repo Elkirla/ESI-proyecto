@@ -30,7 +30,31 @@ class UserControl {
             echo json_encode(["error" => $e->getMessage()]);
         }
     }
+  public function cargarUsuariosPendientes() {
+                session_start();
+    header('Content-Type: application/json; charset=utf-8');
 
+if($_SESSION['rol'] == 'administrador') {
+    try {
+        $modelo = new UsuarioModelo();
+        $usuarios = $modelo->obtenerUsuariosPendientes();  
 
+        $resultado = [];
+        foreach ($usuarios as $usuario) {
+            $resultado[] = [
+                "id"       => $usuario->getId(),
+                "nombre"   => $usuario->getNombre(),
+                "apellido" => $usuario->getApellido(),
+            ];
+        }
 
-}
+        echo json_encode($resultado);
+    } catch (Exception $e) {
+        echo json_encode(["error" => $e->getMessage()]);
+    }
+}else{
+    http_response_code(404);
+    include __DIR__ . '/../Vistas/404.php';
+  
+  }
+}}
