@@ -30,26 +30,7 @@ class UserControl {
             echo json_encode(["error" => $e->getMessage()]);
         }
     }
-  public function cargarUsuariosPendientes() {
-    header('Content-Type: application/json; charset=utf-8');
 
-    try {
-        $modelo = new UsuarioModelo();
-        $usuarios = $modelo->obtenerUsuariosPendientes();  
 
-        $resultado = [];
-        foreach ($usuarios as $usuario) {
-            $resultado[] = [
-                "id"       => $usuario->getId(),
-                "nombre"   => $usuario->getNombre(),
-                "apellido" => $usuario->getApellido(),
-            ];
-        }
-
-        echo json_encode($resultado);
-    } catch (Exception $e) {
-        echo json_encode(["error" => $e->getMessage()]);
-    }
-}
 
 }
