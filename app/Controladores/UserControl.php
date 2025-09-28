@@ -57,4 +57,36 @@ if($_SESSION['rol'] == 'administrador') {
     include __DIR__ . '/../Vistas/404.php';
   
   }
-}}
+}
+public function ObtenerUsuarioPorId() {
+    header('Content-Type: application/json; charset=utf-8');
+    try {
+        $id = $_POST['id'] ?? null;
+        if (!$id) {
+            throw new Exception("ID de usuario no proporcionado");
+        }
+
+        $modelo = new UsuarioModelo();
+        $usuario = $modelo->obtenerDatosUsuario($id);
+
+        if (!$usuario) {
+            echo json_encode(["error" => "Usuario no encontrado"]);
+            return;
+        }
+
+        $resultado = [
+            "nombre"   => $usuario->getNombre(),
+            "apellido" => $usuario->getApellido(),
+            "telefono" => $usuario->getTelefono(),
+            "email"    => $usuario->getEmail(),
+            "ci"       => $usuario->getCi()
+        ];
+
+        echo json_encode($resultado);
+    } catch (Exception $e) {
+        echo json_encode(["error" => $e->getMessage()]);
+    }
+}
+
+
+}

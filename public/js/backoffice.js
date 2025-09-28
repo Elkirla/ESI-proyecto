@@ -68,6 +68,49 @@ async function usuariospendientesList() {
 }
  
 
+// 1. Seleccionar la lista
+const lista = document.getElementById("listaUsuarios");
+
+// 2. Delegar el click a los <li>
+lista.addEventListener("click", async (e) => {
+  const li = e.target.closest("li"); // el li en el que se hizo click
+  if (!li) return;
+
+  const userId = li.getAttribute("data-id"); // leer el id del usuario
+  console.log("Usuario clickeado con id:", userId);
+
+  try {
+    // 3. Hacer fetch al backend
+    const response = await fetch("/usuario-por-id", {
+      method: "POST", // o GET si tu API lo permite
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ id: userId })
+    });
+
+    const data = await response.json();
+
+    if (data.error) {
+      console.error("Error en el servidor:", data.error);
+      return;
+    }
+
+    // 4. Guardar en variables (ejemplo)
+    const nombre   = data.nombre;
+    const apellido = data.apellido;
+    const telefono = data.telefono;
+    const email    = data.email;
+    const ci       = data.ci;
+
+    console.log("Datos recibidos:");
+    console.log({ nombre, apellido, telefono, email, ci });
+
+    // (luego acá vos los adaptás a tu programa, ej: mostrarlos en inputs)
+  } catch (err) {
+    console.error("Error en la petición:", err);
+  }
+});
 
 /*
 USA ESTO EN EL HTML PARA LOS USUARIOS PENDIENTES

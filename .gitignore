@@ -1,0 +1,17 @@
+
+/public/uploads/
+
+/backups/
+
+.env
+.env.local
+.env.production
+
+*.log
+logs/
+
+.DS_Store
+Thumbs.db
+
+*.tmp
+*.temp

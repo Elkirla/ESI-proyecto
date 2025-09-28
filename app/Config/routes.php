@@ -14,6 +14,8 @@ $routes = [
         "/horasadmin"    => "HorasControl@verHorasAdmin",
         "/usuariodatos"   => "UserControl@cargarDatosUsuario",
         "/usuariospendientes" => "UserControl@cargarUsuariosPendientes",
+        "/usuario-por-id" => "UserControl@ObtenerUsuarioPorId",
+        "/logout"        => "AuthControl@logout",
     ],
     "POST" => [
         "/login"    => "AuthControl@login",

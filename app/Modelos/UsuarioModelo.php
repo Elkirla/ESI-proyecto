@@ -60,7 +60,7 @@ class UsuarioModelo {
     }
 
     public function obtenerDatosUsuario($userId) {
-        $sql = "SELECT nombre, apellido, telefono, email 
+        $sql = "SELECT nombre, apellido, telefono, email, ci
                 FROM usuarios 
                 WHERE id = :id";
 
@@ -78,6 +78,7 @@ class UsuarioModelo {
         $usuario->setApellido($row['apellido']);
         $usuario->setTelefono($row['telefono']);
         $usuario->setEmail($row['email']);
+        $usuario->setCi($row['ci']);
 
         return $usuario;
     }
