@@ -23,6 +23,12 @@ $routes = [
         "/registro" => "AuthControl@registrar",
         "/pago"     => "PagosControl@IngresarPago",
         "/horas"    => "HorasControl@IngresarHoras",
+        "/aprobar-pago" => "PagosControl@aprobarPago",
+        "/rechazar-pago" => "PagosControl@rechazarPago", 
+        "/cambiar-fecha-limite" => "PagosControl@cambiarFechaLimite",
+        "/aprobar-usuario" => "UserControl@aprobarUsuario",
+        "/rechazar-usuario" => "UserControl@rechazarUsuario",
     ]
+
 ];
 ?>

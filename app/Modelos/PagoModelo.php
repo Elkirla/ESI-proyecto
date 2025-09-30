@@ -37,5 +37,17 @@ public function setFechaLimitePago($nuevaFecha) {
     return $stmt->execute([':fecha' => $nuevaFecha]);
 }
 
+public function aprobarPago($pagoId) {
+    $sql = "UPDATE pagos_mensuales SET estado = 'aprobado' WHERE id = :pagoId";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':pagoId' => $pagoId]);
+    return $stmt->rowCount() > 0;
+}
+public function rechazarPago($pagoId) {
+    $sql = "UPDATE pagos_mensuales SET estado = 'rechazado' WHERE id = :pagoId";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':pagoId' => $pagoId]);
+    return $stmt->rowCount() > 0;
+}
 
 }

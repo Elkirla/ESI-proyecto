@@ -149,5 +149,78 @@ class PagosControl {
             'success' => false,
             'error'   => 'Error interno del servidor. Intente más tarde.'
         ]);
+    }}
+
+    public function aprobarPago(){
+        session_start();
+        header('Content-Type: application/json');
+
+        try {
+            // Verificar rol de administrador
+            if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+                throw new Exception("Acceso denegado. Solo administradores pueden realizar esta acción.");
+            }
+
+            $pago_id = $_POST['pago_id'] ?? null;
+            if (!$pago_id || !is_numeric($pago_id)) {
+                throw new Exception("ID de pago inválido.");
+            }
+
+            $modelo = new PagoModelo();
+            $ok = $modelo->aprobarPago($pago_id);
+
+            if (!$ok) {
+                throw new Exception("Error al aprobar el pago. Intente más tarde.");
+            }
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'Pago aprobado exitosamente.'
+            ]);
+
+        } catch (Exception $e) {
+            error_log("[PAGOS_APROBAR_ERROR] Admin: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
+            
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'error'   => $e->getMessage()
+            ]);
+        }
+        exit;
     }
-}}
+    public function rechazarPago(){
+    session_start();
+    header('Content-Type: application/json');
+    try {
+        
+        $pago_id = $_POST['pago_id'] ?? null;
+
+        // Verificar rol de administrador
+        if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+            throw new Exception("Acceso denegado. Solo administradores pueden realizar esta acción.");
+        }
+
+        if (!$pago_id || !is_numeric($pago_id)) {
+            throw new Exception("ID de pago inválido.");
+        }
+
+        $modelo = new PagoModelo();
+        $modelo -> rechazarPago($pago_id);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Pago rechazado con exito.'
+        ]);
+
+    } catch (Exception $e) {
+    error_log("[PAGOS_APROBAR_ERROR] Admin: " . ($_SESSION['usuario_id'] ?? 'unknown') . 
+          " - Pago: " . ($pago_id ?? 'none') . " - " . $e->getMessage());
+
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'error'   => $e->getMessage()
+        ]);
+    }}
+}
