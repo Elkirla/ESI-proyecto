@@ -1,12 +1,18 @@
 <?php
 class PagosControl {
-    public function IngresarPago() {
-        session_start();
+
+    public function __construct() {
         require_once __DIR__ . '/../Entidades/pago.php'; 
         require_once __DIR__ . '/../Modelos/PagoModelo.php';
+    }
+
+    public function IngresarPago() {
+        session_start();
         header('Content-Type: application/json');
 
         try {
+            $modelo = new PagoModelo();
+
             // Validar sesión
             $usuario_id = $_SESSION['usuario_id'] ?? null;
             if (!$usuario_id) {
@@ -49,6 +55,8 @@ class PagosControl {
             }
 
             $fecha = date('Y-m-d');
+            $diaActual = intval(date('d'));
+            $diaLimite = $modelo->getFechaLimitePago();
             $estado = 'pendiente';
             $uploadsDir = '/var/www/html/public/uploads/';
 
@@ -65,6 +73,8 @@ class PagosControl {
             $nombreArchivo = uniqid() . "_" . preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($_FILES['archivo']['name']));
             $destino = $uploadsDir . $nombreArchivo;
 
+            $entrega = ($diaActual <= $diaLimite) ? 'en_hora' : 'atrasado';
+
             if (!move_uploaded_file($_FILES['archivo']['tmp_name'], $destino)) {
                 throw new Exception("Error al guardar el archivo. Intente nuevamente.");
             }
@@ -72,9 +82,8 @@ class PagosControl {
             $archivo_url = "/uploads/" . $nombreArchivo;
 
             // Registrar en BD
-            $pago = new pago($usuario_id, $mes, $monto, $fecha, $archivo_url, $estado);
+            $pago = new pago($usuario_id, $mes, $monto, $fecha, $archivo_url, $estado, $entrega);
 
-            $modelo = new PagoModelo();
             $ok = $modelo->registrarPago($pago);
 
             if (!$ok) {
@@ -116,4 +125,29 @@ class PagosControl {
         
         return $errors[$errorCode] ?? 'Error desconocido al subir archivo.';
     }
-}
+
+    public function obtenerFechaLimite(){
+    header ('Content-Type: application/json');
+    try{
+        $modelo = new PagoModelo();
+        $fechaLimite = $modelo->getFechaLimitePago(); 
+        if($fechaLimite){
+            echo json_encode([
+                'success' => true,
+                'fecha_limite' => $fechaLimite
+            ]);
+        } else {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'error'   => 'No se encontró la fecha límite.'
+            ]);
+        }
+    }catch (Exception $e){
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'error'   => 'Error interno del servidor. Intente más tarde.'
+        ]);
+    }
+}}

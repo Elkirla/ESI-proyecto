@@ -9,6 +9,7 @@ $routes = [
         "/login"         => "AuthControl@loginView",
         "/registro"      => "AuthControl@registroView",
         "/pagosusuario"  => "PagosControl@verPagosUsuario",
+        "/fecha-limite"  => "PagosControl@obtenerFechaLimite",
         "/pagosadmin"    => "PagosControl@verPagosAdmin",
         "/horasusuario"  => "HorasControl@verHorasUsuario",
         "/horasadmin"    => "HorasControl@verHorasAdmin",

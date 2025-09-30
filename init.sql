@@ -86,8 +86,19 @@ CREATE TABLE pagos_mensuales (
     fecha DATE NOT NULL,
     archivo_url VARCHAR(255),
     estado ENUM('pendiente', 'aprobado', 'rechazado') DEFAULT 'pendiente',
+    entrega ENUM('en_hora', 'atrasado') NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
+CREATE TABLE configuracion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    clave VARCHAR(50) UNIQUE NOT NULL,
+    valor VARCHAR(255) NOT NULL
+);
+
+-- Insertamos la fecha límite inicial
+INSERT INTO configuracion (clave, valor) VALUES ('fecha_limite_pago', '10');
+
 
 CREATE TABLE validaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -100,3 +111,10 @@ CREATE TABLE validaciones (
     FOREIGN KEY (administrador_id) REFERENCES usuarios(id),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
+/*
+docker exec -it <nombre_del_contenedor_mysql> mysql -u usuariodb -ppassword cooperativa -e "SELECT * FROM usuarios;"
+
+docker exec -it <nombre_del_contenedor_mysql> mysql -u usuariodb -ppassword cooperativa -e "UPDATE usuarios SET estado='activo' WHERE email='correo@gmail.com';"
+
+*/
