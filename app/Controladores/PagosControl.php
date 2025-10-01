@@ -4,113 +4,73 @@ class PagosControl {
     public function __construct() {
         require_once __DIR__ . '/../Entidades/pago.php'; 
         require_once __DIR__ . '/../Modelos/PagoModelo.php';
+        require_once __DIR__ . '/../Config/uploads.php';
     }
 
-    public function IngresarPago() {
-        session_start();
-        header('Content-Type: application/json');
+public function IngresarPago() {
+    session_start();
+    header('Content-Type: application/json');
 
-        try {
-            $modelo = new PagoModelo();
+    try {
+        $modelo = new PagoModelo();
 
-            // Validar sesión
-            $usuario_id = $_SESSION['usuario_id'] ?? null;
-            if (!$usuario_id) {
-                throw new Exception("Su sesión ha expirado. Por favor, inicie sesión nuevamente.");
-            }
-
-            // Validar mes
-            $mes = $_POST['mes'] ?? null;
-            if (!$mes) {
-                throw new Exception("El campo 'mes' es obligatorio");
-            }
-
-            // Validar monto
-            $monto = $_POST['monto'] ?? null;
-            if (!$monto || !is_numeric($monto) || $monto <= 0) {
-            throw new Exception("El campo 'monto' es obligatorio y debe ser mayor a 0.");
-            }
-
-            // Validar archivo
-            if (!isset($_FILES['archivo']) || $_FILES['archivo']['error'] === UPLOAD_ERR_NO_FILE) {
-                throw new Exception("Por favor, seleccione un archivo para adjuntar.");
-            }
-
-            if ($_FILES['archivo']['error'] !== UPLOAD_ERR_OK) {
-                $errorMessage = $this->getUploadErrorMessage($_FILES['archivo']['error']);
-                throw new Exception("Error al subir archivo: " . $errorMessage);
-            }
-
-            // Validar tipo de archivo (opcional pero recomendado)
-            $allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-            $fileType = mime_content_type($_FILES['archivo']['tmp_name']);
-            if (!in_array($fileType, $allowedTypes)) {
-                throw new Exception("Tipo de archivo no permitido. Use JPEG, PNG o PDF.");
-            }
-
-            // Validar tamaño (ejemplo: máximo 5MB)
-            $maxSize = 5 * 1024 * 1024;
-            if ($_FILES['archivo']['size'] > $maxSize) {
-                throw new Exception("El archivo es demasiado grande. Tamaño máximo: 5MB.");
-            }
-
-            $fecha = date('Y-m-d');
-            $diaActual = intval(date('d'));
-            $diaLimite = $modelo->getFechaLimitePago();
-            $estado = 'pendiente';
-            $uploadsDir = '/var/www/html/public/uploads/';
-
-            // Asegurar directorio
-            if (!is_dir($uploadsDir) && !mkdir($uploadsDir, 0755, true)) {
-                throw new Exception("Error interno del servidor. Intente más tarde.");
-            }
-
-            if (!is_writable($uploadsDir)) {
-                throw new Exception("Error interno del servidor. Intente más tarde.");
-            }
-
-            // Generar nombre seguro
-            $nombreArchivo = uniqid() . "_" . preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($_FILES['archivo']['name']));
-            $destino = $uploadsDir . $nombreArchivo;
-
-            $entrega = ($diaActual <= $diaLimite) ? 'en_hora' : 'atrasado';
-
-            if (!move_uploaded_file($_FILES['archivo']['tmp_name'], $destino)) {
-                throw new Exception("Error al guardar el archivo. Intente nuevamente.");
-            }
-
-            $archivo_url = "/uploads/" . $nombreArchivo;
-
-            // Registrar en BD
-            $pago = new pago($usuario_id, $mes, $monto, $fecha, $archivo_url, $estado, $entrega);
-
-            $ok = $modelo->registrarPago($pago);
-
-            if (!$ok) {
-                // Eliminar archivo subido si falla la BD
-                unlink($destino);
-                throw new Exception("Error al registrar el pago. Intente más tarde.");
-            }
-
-            // Éxito
-            echo json_encode([
-                'success' => true,
-                'message' => 'Pago registrado exitosamente. Estará pendiente de verificación.'
-            ]);
-
-        } catch (Exception $e) {
-            // Log interno para administradores (sin detalles al usuario)
-            error_log("[PAGOS_ERROR] User: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
-            
-            // Mensaje amigable al usuario
-            http_response_code(500);
-            echo json_encode([
-                'success' => false,
-                'error'   => $e->getMessage() // Mensajes específicos pero seguros
-            ]);
+        // Validar sesión
+        $usuario_id = $_SESSION['usuario_id'] ?? null;
+        if (!$usuario_id) {
+            throw new Exception("Su sesión ha expirado. Por favor, inicie sesión nuevamente.");
         }
-        exit;
+
+        // Validar mes
+        $mes = $_POST['mes'] ?? null;
+        if (!$mes) {
+            throw new Exception("El campo 'mes' es obligatorio");
+        }
+
+        // Validar monto
+        $monto = $_POST['monto'] ?? null;
+        if (!$monto || !is_numeric($monto) || $monto <= 0) {
+            throw new Exception("El campo 'monto' es obligatorio y debe ser mayor a 0.");
+        }
+
+        // Subir archivo usando la clase Uploads
+        $uploader = new Uploads('/var/www/html/public/uploads/'); 
+        $archivo_url = $uploader->subirArchivo('archivo'); // <- "archivo" es el name del input
+
+        // Determinar estado según fecha límite
+        $fecha = date('Y-m-d');
+        $diaActual = intval(date('d'));
+        $diaLimite = $modelo->getFechaLimitePago();
+        $estado = 'pendiente';
+        $entrega = ($diaActual <= $diaLimite) ? 'en_hora' : 'atrasado';
+
+        // Registrar en BD
+        $pago = new Pago($usuario_id, $mes, $monto, $fecha, $archivo_url, $estado, $entrega);
+        $ok = $modelo->registrarPago($pago);
+
+        if (!$ok) {
+            // Eliminar archivo subido si falla la BD
+            unlink($_SERVER['DOCUMENT_ROOT'] . $archivo_url);
+            throw new Exception("Error al registrar el pago. Intente más tarde.");
+        }
+
+        // Éxito
+        echo json_encode([
+            'success' => true,
+            'message' => 'Pago registrado exitosamente. Estará pendiente de verificación.'
+        ]);
+
+    } catch (Exception $e) {
+        error_log("[PAGOS_ERROR] User: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
+        
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'error'   => $e->getMessage()
+        ]);
     }
+    exit;
+}
+
 
     private function getUploadErrorMessage($errorCode) {
         $errors = [
