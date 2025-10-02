@@ -51,13 +51,17 @@ public function verHorasUsuario() {
             return;
         }
 
-        $arreglo = $modelo->obtenerHorasPorUsuario($usuario_id);
+        $arreglo = $modelo->listadoUniversalSimple(
+       "horas_trabajadas",
+       ["fecha", "horas"],
+       ["usuario_id" => $usuario_id],
+       ["fecha", "DESC"]
+);
+
         echo json_encode($arreglo);
     } catch (Exception $e) {
         echo json_encode(["error" => $e->getMessage()]);
     }
 }
-
-
 
 }

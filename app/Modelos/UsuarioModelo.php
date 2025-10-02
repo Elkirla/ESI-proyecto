@@ -58,46 +58,4 @@ class UsuarioModelo {
 
         return false;
     }
-
-    public function obtenerDatosUsuario($userId) {
-        $sql = "SELECT nombre, apellido, telefono, email, ci
-                FROM usuarios 
-                WHERE id = :id";
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([':id' => $userId]);
-
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$row) {
-            return null;
-        }
-
-        $usuario = new Usuario();
-        $usuario->setNombre($row['nombre']);
-        $usuario->setApellido($row['apellido']);
-        $usuario->setTelefono($row['telefono']);
-        $usuario->setEmail($row['email']);
-        $usuario->setCi($row['ci']);
-
-        return $usuario;
-    }
-    public function obtenerUsuariosPendientes() { 
-        $sql = "SELECT id, nombre, apellido 
-                FROM usuarios 
-                WHERE estado = 'pendiente'";
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(); 
-        $usuarios = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $usuario = new Usuario();
-            $usuario->setId($row['id']);
-            $usuario->setNombre($row['nombre']);
-            $usuario->setApellido($row['apellido']);
-            $usuarios[] = $usuario;
-        }
-
-        return $usuarios;
-    }
 }
