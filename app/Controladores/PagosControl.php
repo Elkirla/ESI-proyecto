@@ -4,10 +4,11 @@ class PagosControl {
     public function __construct() {
         require_once __DIR__ . '/../Entidades/pago.php'; 
         require_once __DIR__ . '/../Modelos/PagoModelo.php';
-        require_once __DIR__ . '/../Config/uploads.php';
+        require_once __DIR__ . '/../Modelos/ReporteModelo.php';
     }
 
 public function IngresarPago() {
+    require_once __DIR__ . '/../Config/uploads.php';
     session_start();
     header('Content-Type: application/json');
 
@@ -182,5 +183,53 @@ public function IngresarPago() {
             'success' => false,
             'error'   => $e->getMessage()
         ]);
+    }}
+    public function verPagosUsuario(){
+    session_start();
+    $modelo = new ReporteModelo();
+    $usuario_id = $_SESSION['usuario_id'] ?? null;
+    header('Content-Type: application/json');
+    try{
+        if (!$usuario_id) {
+            echo json_encode(["error" => "Usuario no autenticado"]);
+            return;
+        }
+
+        $arreglo = $modelo->listadoUniversalSimple(
+       "pagos_mensuales",
+       ["mes", "monto", "fecha", "estado", "entrega"],
+       ["usuario_id" => $usuario_id],
+       ["fecha", "DESC"]
+       
+    );
+        echo json_encode($arreglo);
+    } catch (Exception $e) {
+        echo json_encode(["error" => $e->getMessage()]);
+        return;
+    }
+}
+    public function verPagosAdmin(){
+    session_start();
+    $modelo = new ReporteModelo();
+    try{
+      /*  if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+            throw new Exception("Acceso denegado. Solo administradores pueden realizar esta acción.");
+        }else{ */
+
+        $arreglo = $modelo->listadoUniversalSimple(
+       "pagos_mensuales",
+       ["id", "usuario_id", "mes", "monto", "fecha", "archivo_url", "estado", "entrega"],
+       [],
+       ["fecha", "DESC"]
+    );
+        header('Content-Type: application/json');
+        echo json_encode($arreglo);
+    } catch (Exception $e) {
+        http_response_code(403);
+        echo json_encode([
+            'success' => false,
+            'error'   => $e->getMessage()
+        ]);
+        return;
     }}
 }
