@@ -63,5 +63,30 @@ public function verHorasUsuario() {
         echo json_encode(["error" => $e->getMessage()]);
     }
 }
+public function verHorasAdmin() {
+    require_once __DIR__ . '/../Modelos/ReporteModelo.php';
+    session_start();
+    $modelo = new ReporteModelo();
+    $usuario_id = $_SESSION['usuario_id'] ?? null;
+
+    header('Content-Type: application/json');
+    if ($_SESSION['rol'] == 'administrador'){
+    try {
+        $arreglo = $modelo->listadoUniversalSimple(
+       "horas_trabajadas",
+       ["usuario_id", "fecha", "horas"],
+       [],
+       ["fecha", "DESC"]
+);
+
+        echo json_encode($arreglo);
+    } catch (Exception $e) {
+        echo json_encode(["error" => $e->getMessage()]);
+    }
+}else {
+        http_response_code(404);
+        include __DIR__ . '/../Vistas/404.php'; 
+    }
+}
 
 }

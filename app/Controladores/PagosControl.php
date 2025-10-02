@@ -211,11 +211,8 @@ public function IngresarPago() {
     public function verPagosAdmin(){
     session_start();
     $modelo = new ReporteModelo();
+    if ($_SESSION['rol'] == 'administrador'){
     try{
-      /*  if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
-            throw new Exception("Acceso denegado. Solo administradores pueden realizar esta acción.");
-        }else{ */
-
         $arreglo = $modelo->listadoUniversalSimple(
        "pagos_mensuales",
        ["id", "usuario_id", "mes", "monto", "fecha", "archivo_url", "estado", "entrega"],
@@ -231,5 +228,10 @@ public function IngresarPago() {
             'error'   => $e->getMessage()
         ]);
         return;
-    }}
+    }} else {
+        http_response_code(404);
+        include __DIR__ . '/../Vistas/404.php'; 
+    }
+
+}
 }
