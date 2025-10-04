@@ -42,15 +42,6 @@ CREATE TABLE unidades_habitacionales (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
-CREATE TABLE pagos_iniciales (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    archivo_url VARCHAR(255) NOT NULL,
-    estado ENUM('pendiente', 'aprobado', 'rechazado') DEFAULT 'pendiente',
-    fecha_subida DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
-
 CREATE TABLE horas_trabajadas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -72,7 +63,8 @@ CREATE TABLE justificaciones (
 CREATE TABLE pagos_compensatorios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    semana DATE NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    fecha DATE NOT NULL,
     archivo_url VARCHAR(255),
     estado ENUM('pendiente', 'aprobado', 'rechazado') DEFAULT 'pendiente',
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
@@ -90,6 +82,30 @@ CREATE TABLE pagos_mensuales (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
+CREATE TABLE Pagos_deuda(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    mes VARCHAR(20) NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE Horas_deuda(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    horas INT NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE Notificaciones(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    mensaje TEXT NOT NULL,
+    leido BOOLEAN DEFAULT FALSE,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
 CREATE TABLE configuracion (
     id INT AUTO_INCREMENT PRIMARY KEY,
     clave VARCHAR(50) UNIQUE NOT NULL,
@@ -98,19 +114,6 @@ CREATE TABLE configuracion (
 
 -- Insertamos la fecha límite inicial
 INSERT INTO configuracion (clave, valor) VALUES ('fecha_limite_pago', '10');
-
-
-CREATE TABLE validaciones (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    administrador_id INT NOT NULL,
-    usuario_id INT NOT NULL,
-    tipo ENUM('registro', 'pago_inicial', 'pago_mensual', 'compensatorio') NOT NULL,
-    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
-    estado ENUM('aprobado', 'rechazado'),
-    observaciones TEXT,
-    FOREIGN KEY (administrador_id) REFERENCES usuarios(id),
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
 
 /*
 docker exec -it <nombre_del_contenedor_mysql> mysql -u usuariodb -ppassword cooperativa -e "SELECT * FROM usuarios;"
