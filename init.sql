@@ -82,12 +82,14 @@ CREATE TABLE pagos_mensuales (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
-CREATE TABLE Pagos_deuda(
+CREATE TABLE Pagos_Deudas(
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
+    correo VARCHAR(100) NOT NULL,
     mes VARCHAR(20) NOT NULL,
     monto DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (correo) REFERENCES usuarios(email)
 );
 
 CREATE TABLE Horas_deuda(

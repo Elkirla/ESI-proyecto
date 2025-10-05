@@ -14,6 +14,7 @@ $routes = [
         "/pagosusuario"  => "PagosControl@verPagosUsuario",
         "/horasusuario"  => "HorasControl@verHorasUsuario",
         "/horasadmin"    => "HorasControl@verHorasAdmin",
+        "/listar-pago-deudas" => "PagosControl@listarPagosDeudas",
         "/usuariodatos"   => "UserControl@cargarDatosUsuario",
         "/usuariospendientes" => "UserControl@cargarUsuariosPendientes",
         "/usuario-por-id" => "UserControl@ObtenerUsuarioPorId",

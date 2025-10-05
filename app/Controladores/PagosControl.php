@@ -232,6 +232,32 @@ public function IngresarPago() {
         http_response_code(404);
         include __DIR__ . '/../Vistas/404.php'; 
     }
-
 }
+    public function listarPagosDeudas(){
+    session_start();
+    $modelo = new ReporteModelo();
+    if ($_SESSION['rol'] == 'administrador'){
+    try{
+        $arreglo = $modelo->listadoUniversalSimple(
+       "Pagos_Deudas",
+       ["usuario_id", "correo", "mes", "monto"],
+       [],
+       ["fecha", "DESC"]
+    );
+        header('Content-Type: application/json');
+        echo json_encode($arreglo);
+    } catch (Exception $e) {
+        http_response_code(403);
+        echo json_encode([
+            'success' => false,
+            'error'   => $e->getMessage()
+        ]);
+        return;
+    }} else {
+        http_response_code(404);
+        include __DIR__ . '/../Vistas/404.php'; 
+    }
+    
+
+
 }
