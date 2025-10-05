@@ -38,9 +38,15 @@ $routes = [
         // ======================
         // USUARIOS
         // ======================
-        "/usuariodatos"       => "UserControl@cargarDatosUsuario",
-        "/usuariospendientes" => "UserControl@cargarUsuariosPendientes",
-        "/usuario-por-id"     => "UserControl@ObtenerUsuarioPorId",
+        "/usuariodatos"          => "UserControl@cargarDatosUsuario",
+        "/usuariospendientes"    => "UserControl@cargarUsuariosPendientes",
+        "/usuario-por-id"        => "UserControl@ObtenerUsuarioPorId",
+        
+        // ======================
+        // NOTIFICACIONES
+        // ======================
+        "/listar-notificaciones" => "NotiControl@ObtenerNotificaciones"
+        "/notis-no-leídas"       => "NotiControl@NotisNoLeidas",
 
         // ======================
         // SESIÓN
@@ -81,5 +87,11 @@ $routes = [
         // ======================
         "/aprobar-usuario"  => "UserControl@aprobarUsuario",
         "/rechazar-usuario" => "UserControl@rechazarUsuario",
+                
+        // ======================
+        // NOTIFICACIONES
+        // ======================
+        "/marcar-todas-leidas" => "NotiControl@MarcarTodasLeidas",
+        "/crear-notificacion"  => "NotiControl@CrearNotificacion",
     ]
 ];
