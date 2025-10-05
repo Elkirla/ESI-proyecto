@@ -1,8 +1,11 @@
 <?php
 class HorasControl {
+    public function __construct() {
+        require_once __DIR__ . '/../Modelos/HorasModelo.php';
+        require_once __DIR__ . '/../Controladores/ListadoControl.php';
+        header('Content-Type: application/json; charset=utf-8');
+    }
     public function IngresarHoras() {
-        header('Content-Type: application/json');
-
     require_once __DIR__ . '/../Entidades/hora.php'; 
         try {
             session_start();
@@ -38,55 +41,24 @@ class HorasControl {
     }
 
 public function verHorasUsuario() {
-    require_once __DIR__ . '/../Modelos/ReporteModelo.php';
-    session_start();
-    $modelo = new ReporteModelo();
-    $usuario_id = $_SESSION['usuario_id'] ?? null;
-
-    header('Content-Type: application/json');
-
-    try {
-        if (!$usuario_id) {
-            echo json_encode(["error" => "Usuario no autenticado"]);
-            return;
-        }
-
-        $arreglo = $modelo->listadoUniversalSimple(
-       "horas_trabajadas",
-       ["fecha", "horas"],
-       ["usuario_id" => $usuario_id],
-       ["fecha", "DESC"]
-);
-
-        echo json_encode($arreglo);
-    } catch (Exception $e) {
-        echo json_encode(["error" => $e->getMessage()]);
-    }
+    $listado = new ListadoControl();
+    $listado->listadoComun(
+        "horas_trabajadas",
+        ["fecha", "horas"],
+        [],                    
+        ["fecha", "DESC"]
+    );
 }
+
 public function verHorasAdmin() {
-    require_once __DIR__ . '/../Modelos/ReporteModelo.php';
-    session_start();
-    $modelo = new ReporteModelo();
-    $usuario_id = $_SESSION['usuario_id'] ?? null;
-
-    header('Content-Type: application/json');
-    if ($_SESSION['rol'] == 'administrador'){
-    try {
-        $arreglo = $modelo->listadoUniversalSimple(
-       "horas_trabajadas",
-       ["usuario_id", "fecha", "horas"],
-       [],
-       ["fecha", "DESC"]
-);
-
-        echo json_encode($arreglo);
-    } catch (Exception $e) {
-        echo json_encode(["error" => $e->getMessage()]);
-    }
-}else {
-        http_response_code(404);
-        include __DIR__ . '/../Vistas/404.php'; 
-    }
+    $listado = new ListadoControl();
+    $listado->listadoAdmin(
+        "horas_trabajadas",
+        ["usuario_id", "fecha", "horas"],
+        [],
+        ["fecha", "DESC"]
+    );
 }
+
 
 }

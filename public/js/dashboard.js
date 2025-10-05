@@ -59,21 +59,26 @@ async function cargarhoralista() {
 }
 
 
-async function datosusuario(){
+async function datosusuario() {
     const respuesta = await fetch("/usuariodatos", { method: "GET" });
     const texto = await respuesta.text();
 
     try {
         const data = JSON.parse(texto);
-        document.getElementById("nombre_usuario").innerText = data.nombre;
-        document.getElementById("Nombre-datos").innerText = "Nombre: " + data.nombre;
-        document.getElementById("Apellido-datos").innerText = "Apellido: " + data.apellido;
-        document.getElementById("Telefono-datos").innerText = "Telefono: " + data.telefono;
-        document.getElementById("Correo-datos").innerText = "Correo: " + data.email;
+
+        // Como data es un array, tomamos el primer elemento
+        const usuario = data[0];
+
+        document.getElementById("nombre_usuario").innerText = usuario.nombre;
+        document.getElementById("Nombre-datos").innerText = "Nombre: " + usuario.nombre;
+        document.getElementById("Apellido-datos").innerText = "Apellido: " + usuario.apellido;
+        document.getElementById("Telefono-datos").innerText = "Telefono: " + usuario.telefono;
+        document.getElementById("Correo-datos").innerText = "Correo: " + usuario.email;
     } catch (e) {
         console.log("No se pudo parsear JSON:", e);
     }
 }
+
 function cargarhora(){
     const hoy = new Date();
 
