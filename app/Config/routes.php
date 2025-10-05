@@ -1,41 +1,85 @@
 <?php
 $routes = [
     'GET' => [
-        "/"              => "HomeControl@index",
-        "/normas"        => "HomeControl@normas",
-        "/exitoregistro" => "HomeControl@exitoregistro", 
-        "/dashboard-admin" => "HomeControl@dashboardAdmin",
-        "/dashboard-usuario" => "HomeControl@dashboardUsuario",
-        "/login"         => "AuthControl@loginView",
-        "/registro"      => "AuthControl@registroView",
-        "/pagosusuario"  => "PagosControl@verPagosUsuario",
-        "/fecha-limite"  => "PagosControl@obtenerFechaLimite",
-        "/pagosadmin"    => "PagosControl@verPagosAdmin",
-        "/pagosusuario"  => "PagosControl@verPagosUsuario",
-        "/horasusuario"  => "HorasControl@verHorasUsuario",
-        "/horasadmin"    => "HorasControl@verHorasAdmin",
-        "/listar-pago-deudas" => "PagosControl@listarPagosDeudas",
 
-        "/listar-justificativos" => "HorasControl@listarJustificativos",
-        "/listar-justificativos-admin" => "HorasControl@listarJustificativosAdmin",
-        
-        "/usuariodatos"   => "UserControl@cargarDatosUsuario",
+        // ======================
+        // VISTAS PÚBLICAS
+        // ======================
+        "/"                 => "HomeControl@index",
+        "/normas"           => "HomeControl@normas",
+        "/exitoregistro"    => "HomeControl@exitoregistro",
+        "/login"            => "AuthControl@loginView",
+        "/registro"         => "AuthControl@registroView",
+
+        // Dashboards
+        "/dashboard-admin"  => "HomeControl@dashboardAdmin",
+        "/dashboard-usuario"=> "HomeControl@dashboardUsuario",
+
+        // ======================
+        // PAGOS
+        // ======================
+        "/pagosusuario"     => "PagosControl@verPagosUsuario",
+        "/pagosadmin"       => "PagosControl@verPagosAdmin",
+        "/listar-pago-deudas" => "PagosControl@listarPagosDeudas",
+        "/fecha-limite"     => "PagosControl@obtenerFechaLimite",
+
+        // ======================
+        // HORAS
+        // ======================
+        "/horasusuario"     => "HorasControl@verHorasUsuario",
+        "/horasadmin"       => "HorasControl@verHorasAdmin",
+
+        // ======================
+        // JUSTIFICATIVOS
+        // ======================
+        "/listar-justificativos"        => "JustificativoControl@listarJustificativos",
+        "/listar-justificativos-admin"  => "JustificativoControl@listarJustificativosAdmin",
+
+        // ======================
+        // USUARIOS
+        // ======================
+        "/usuariodatos"       => "UserControl@cargarDatosUsuario",
         "/usuariospendientes" => "UserControl@cargarUsuariosPendientes",
-        "/usuario-por-id" => "UserControl@ObtenerUsuarioPorId",
-        "/logout"        => "AuthControl@logout",
+        "/usuario-por-id"     => "UserControl@ObtenerUsuarioPorId",
+
+        // ======================
+        // SESIÓN
+        // ======================
+        "/logout"           => "AuthControl@logout",
     ],
+
     "POST" => [
+
+        // ======================
+        // AUTENTICACIÓN
+        // ======================
         "/login"    => "AuthControl@login",
         "/registro" => "AuthControl@registrar",
-        "/pago"     => "PagosControl@IngresarPago",
-        "/horas"    => "HorasControl@IngresarHoras",
-        "/aprobar-pago" => "PagosControl@aprobarPago",
-        "/IngresarJustificativo" => "HorasControl@IngresarJustificativo",
-        "/rechazar-pago" => "PagosControl@rechazarPago", 
+
+        // ======================
+        // PAGOS
+        // ======================
+        "/pago"             => "PagosControl@IngresarPago",
+        "/aprobar-pago"     => "PagosControl@aprobarPago",
+        "/rechazar-pago"    => "PagosControl@rechazarPago",
         "/cambiar-fecha-limite" => "PagosControl@cambiarFechaLimite",
-        "/aprobar-usuario" => "UserControl@aprobarUsuario",
+
+        // ======================
+        // HORAS
+        // ======================
+        "/horas" => "HorasControl@IngresarHoras",
+
+        // ======================
+        // JUSTIFICATIVOS
+        // ======================
+        "/IngresarJustificativo"    => "HorasControl@IngresarJustificativo",
+        "/aceptar-justificativo"    => "JustificativoControl@aceptarJustificativo",
+        "/rechazar-justificativo"   => "JustificativoControl@rechazarJustificativo",
+
+        // ======================
+        // USUARIOS
+        // ======================
+        "/aprobar-usuario"  => "UserControl@aprobarUsuario",
         "/rechazar-usuario" => "UserControl@rechazarUsuario",
     ]
-
 ];
-?>

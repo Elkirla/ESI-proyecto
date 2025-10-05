@@ -32,7 +32,6 @@ class ListadoControl {
             include __DIR__ . '/../Vistas/404.php';
             return;
         }
-
         try {
             $arreglo = $this->modelo->listadoUniversalSimple(
                 $tabla,

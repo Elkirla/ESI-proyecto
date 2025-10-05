@@ -29,18 +29,6 @@ public function tieneHorasRegistradas($usuario_id, $fecha) {
     ]);
     return $stmt->fetchColumn() !== false;
     }
-    public function registrarJustificativo(justificativo $justificativo) {
-        $sql = "INSERT INTO justificativos (usuario_id, fecha, motivo, archivo_url, estado) 
-                VALUES (:usuario_id, :fecha, :motivo, :archivo_url, :estado)";
-        $stmt = $this->db->prepare($sql);
 
-        return $stmt->execute([
-            ':usuario_id' => $justificativo->getUsuarioId(),
-            ':fecha' => $justificativo->getFecha(),
-            ':motivo' => $justificativo->getMotivo(),
-            ':archivo_url' => $justificativo->getArchivoUrl(),
-            ':estado' => $justificativo->getEstado()
-        ]);
-    }
 
 }
