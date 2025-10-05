@@ -51,12 +51,13 @@ CREATE TABLE horas_trabajadas (
     UNIQUE (usuario_id, fecha)
 );
 
-CREATE TABLE justificaciones (
+CREATE TABLE justificativos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    semana DATE NOT NULL,
+    fecha DATE NOT NULL,
     motivo TEXT NOT NULL,
     archivo_url VARCHAR(255),
+    estado ENUM('pendiente', 'aprobado', 'rechazado') DEFAULT 'pendiente',
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 

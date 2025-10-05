@@ -15,6 +15,10 @@ $routes = [
         "/horasusuario"  => "HorasControl@verHorasUsuario",
         "/horasadmin"    => "HorasControl@verHorasAdmin",
         "/listar-pago-deudas" => "PagosControl@listarPagosDeudas",
+
+        "/listar-justificativos" => "HorasControl@listarJustificativos",
+        "/listar-justificativos-admin" => "HorasControl@listarJustificativosAdmin",
+        
         "/usuariodatos"   => "UserControl@cargarDatosUsuario",
         "/usuariospendientes" => "UserControl@cargarUsuariosPendientes",
         "/usuario-por-id" => "UserControl@ObtenerUsuarioPorId",
@@ -26,6 +30,7 @@ $routes = [
         "/pago"     => "PagosControl@IngresarPago",
         "/horas"    => "HorasControl@IngresarHoras",
         "/aprobar-pago" => "PagosControl@aprobarPago",
+        "/IngresarJustificativo" => "HorasControl@IngresarJustificativo",
         "/rechazar-pago" => "PagosControl@rechazarPago", 
         "/cambiar-fecha-limite" => "PagosControl@cambiarFechaLimite",
         "/aprobar-usuario" => "UserControl@aprobarUsuario",
