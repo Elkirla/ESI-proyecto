@@ -115,12 +115,15 @@ CREATE TABLE configuracion (
     valor VARCHAR(255) NOT NULL
 );
 
--- Insertamos la fecha límite inicial
 INSERT INTO configuracion (clave, valor) VALUES ('fecha_limite_pago', '10');
 
-/*
-docker exec -it <nombre_del_contenedor_mysql> mysql -u usuariodb -ppassword cooperativa -e "SELECT * FROM usuarios;"
+INSERT INTO configuracion (clave, valor) VALUES ('mensualidad', '30000');
 
-docker exec -it <nombre_del_contenedor_mysql> mysql -u usuariodb -ppassword cooperativa -e "UPDATE usuarios SET estado='activo' WHERE email='correo@gmail.com';"
+
+
+/*
+docker exec -it esi-proyecto-db-1 mysql -u usuariodb -ppassword cooperativa -e "SELECT * FROM usuarios;"
+
+docker exec -it esi-proyecto-db-1 mysql -u usuariodb -ppassword cooperativa -e "UPDATE usuarios SET estado='activo' WHERE email='correo@gmail.com';"
 
 */

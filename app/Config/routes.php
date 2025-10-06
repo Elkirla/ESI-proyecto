@@ -22,6 +22,7 @@ $routes = [
         "/pagosadmin"          => "PagosControl@verPagosAdmin",
         "/listar-pago-deudas"  => "PagosControl@listarPagosDeudas",
         "/fecha-limite"        => "PagosControl@obtenerFechaLimite",
+        "/obtener-mensualidad"  => "PagosControl@obtenerMensualidad",
 
         // ======================
         // HORAS

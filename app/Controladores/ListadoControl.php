@@ -9,8 +9,13 @@ class ListadoControl {
         header('Content-Type: application/json; charset=utf-8');
     }
 
-    // listado para usuarios comunes (requiere usuario logueado)
     public function listadoComun($tabla, $columnas, $condiciones = [], $orden = null, $limite = null) {
+    $usuarioid = $_SESSION['usuario_id'] ?? null;
+    if (!$usuarioid) {
+        echo json_encode([
+            "error" => "Su sesión ha expirado. Por favor, inicie sesión nuevamente."]);
+        exit;
+    }
         try {
             $arreglo = $this->modelo->listadoUniversalSimple(
                 $tabla,
