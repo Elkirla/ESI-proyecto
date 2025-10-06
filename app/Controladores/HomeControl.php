@@ -13,11 +13,6 @@ class HomeControl {
         include __DIR__ . "/../Vistas/exitoregistro.php";
     }
 
-    public function dashboardAdmin(){
-        $this->verificarSesion('administrador');
-        include __DIR__ . "/../Vistas/backoffice.php";
-    }  
-
     public function dashboardUsuario(){
         $this->verificarSesion();
         include __DIR__ . "/../Vistas/dashboard.php";

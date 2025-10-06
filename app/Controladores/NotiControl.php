@@ -57,27 +57,5 @@ public function MarcarTodasLeidas() {
     }
     exit;
 }
-public function CrearNotificacion() {
-    if ($_SESSION['rol'] !== 'administrador') {
-    http_response_code(404);
-    include __DIR__ . '/../Vistas/404.php';
-    return;
-    }
-    try {
-    $usuario_id = $_POST['usuario_id'] ?? null;
-    $mensaje = $_POST['mensaje'] ?? null;
-    if (!$usuario_id || !$mensaje) {
-        echo json_encode(["error" => "Faltan parámetros"]);
-        return;
-    }
-    $modelo = new NotiModelo();
-    if ($modelo->InsertarNoti($usuario_id, $mensaje)) {
-        echo json_encode(["success" => true]);
-    } else {
-        echo json_encode([
-        "success" => false, 
-        "error" => "No se pudo crear la notificación"]);
-    }
-    exit;
-}}
+
 }

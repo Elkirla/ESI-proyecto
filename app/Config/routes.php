@@ -11,17 +11,17 @@ $routes = [
         "/login"            => "AuthControl@loginView",
         "/registro"         => "AuthControl@registroView",
 
-        // Dashboards
-        "/dashboard-admin"  => "HomeControl@dashboardAdmin",
+        // DASHBOARDS
+        "/dashboard-admin"  => "AdminControl@dashboardAdmin",
         "/dashboard-usuario"=> "HomeControl@dashboardUsuario",
 
         // ======================
         // PAGOS
         // ======================
-        "/pagosusuario"     => "PagosControl@verPagosUsuario",
-        "/pagosadmin"       => "PagosControl@verPagosAdmin",
-        "/listar-pago-deudas" => "PagosControl@listarPagosDeudas",
-        "/fecha-limite"     => "PagosControl@obtenerFechaLimite",
+        "/pagosusuario"        => "PagosControl@verPagosUsuario",
+        "/pagosadmin"          => "PagosControl@verPagosAdmin",
+        "/listar-pago-deudas"  => "PagosControl@listarPagosDeudas",
+        "/fecha-limite"        => "PagosControl@obtenerFechaLimite",
 
         // ======================
         // HORAS
@@ -65,9 +65,9 @@ $routes = [
         // ======================
         // PAGOS
         // ======================
-        "/pago"             => "PagosControl@IngresarPago",
-        "/aprobar-pago"     => "PagosControl@aprobarPago",
-        "/rechazar-pago"    => "PagosControl@rechazarPago",
+        "/pago"                 => "PagosControl@IngresarPago",
+        "/aprobar-pago"         => "AdminControl@aprobarPago",
+        "/rechazar-pago"        => "AdminControl@rechazarPago",
         "/cambiar-fecha-limite" => "PagosControl@cambiarFechaLimite",
 
         // ======================
@@ -79,19 +79,19 @@ $routes = [
         // JUSTIFICATIVOS
         // ======================
         "/IngresarJustificativo"    => "HorasControl@IngresarJustificativo",
-        "/aceptar-justificativo"    => "JustificativoControl@aceptarJustificativo",
-        "/rechazar-justificativo"   => "JustificativoControl@rechazarJustificativo",
+        "/aceptar-justificativo"    => "AdminControl@aceptarJustificativo",
+        "/rechazar-justificativo"   => "AdminControl@rechazarJustificativo",
 
         // ======================
         // USUARIOS
         // ======================
-        "/aprobar-usuario"  => "UserControl@aprobarUsuario",
-        "/rechazar-usuario" => "UserControl@rechazarUsuario",
+        "/aprobar-usuario"  => "AdminControl@AceptarUsuario",
+        "/rechazar-usuario" => "AdminControl@RechazarUsuario",
                 
         // ======================
         // NOTIFICACIONES
         // ======================
         "/marcar-todas-leidas" => "NotiControl@MarcarTodasLeidas",
-        "/crear-notificacion"  => "NotiControl@CrearNotificacion",
+        "/crear-notificacion"  => "AdminControl@CrearNotificacion",
     ]
 ];

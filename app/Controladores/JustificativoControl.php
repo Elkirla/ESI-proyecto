@@ -50,42 +50,6 @@ public function __construct() {
     }
 }
 
-//Aprobar/Rechazar
-
-public function aceptarJustificativo() {
-    if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
-    throw new Exception("Acceso denegado. Solo administradores pueden realizar esta acción.");
-    return;
-    }
-    $id = $_POST['id'] ?? null;
-    $modelo = new JustificativoModelo();
-    $ok = $modelo->aceptarJustificativo($id);
-    if ($ok) {
-        echo json_encode([
-            'success' => true]);
-    } else {
-        echo json_encode([
-            'success' => false, 
-            'error' => 'No se pudo actualizar en la BD']);
-    }
-    exit;
-}
-public function rechazarJustificativo() {
-    if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
-    throw new Exception("Acceso denegado. Solo administradores pueden realizar esta acción.");
-    return;
-    }
-    $id = $_POST['id'] ?? null;
-    $modelo = new JustificativoModelo();
-    $ok = $modelo->rechazarJustificativo($id);
-    if ($ok) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false, 'error' => 'No se pudo actualizar en la BD']);
-    }
-    exit;
-}
-
 //Listados
 
 public function listarJustificativos() {
