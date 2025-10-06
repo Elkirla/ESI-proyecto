@@ -124,10 +124,12 @@ public function listarJustificativosAdmin() {
 
 public function verHorasUsuario() {
     $listado = new ListadoControl();
+    $usuario_id = $_SESSION['usuario_id'] ?? null; 
+
     $listado->listadoComun(
         "horas_trabajadas",
         ["fecha", "horas"],
-        [],                    
+        ["usuario_id" => $usuario_id],                       
         ["fecha", "DESC"]
     );
 }

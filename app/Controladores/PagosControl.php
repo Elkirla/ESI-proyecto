@@ -118,6 +118,7 @@ public function IngresarPago() {
             // Verificar rol de administrador
             if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
                 throw new Exception("Acceso denegado. Solo administradores pueden realizar esta acción.");
+                return;
             }
 
             $pago_id = $_POST['pago_id'] ?? null;
@@ -183,10 +184,12 @@ public function IngresarPago() {
     }}
 public function verPagosUsuario() {
     $listado = new ListadoControl();
+    $usuario_id = $_SESSION['usuario_id'] ?? null; 
+
     $listado->listadoComun(
         "pagos_mensuales",
         ["mes", "monto", "fecha", "estado", "entrega"],
-        [],
+        ["usuario_id" => $usuario_id],   
         ["fecha", "DESC"]
     );
 }

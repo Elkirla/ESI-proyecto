@@ -28,10 +28,7 @@ class NotiControl{
     public function NotisNoLeidas(){
     $listado = new ListadoControl();
     $idusuario = $_SESSION["usuario_id"] ?? null;
-    if (!$idusuario) {
-        echo json_encode(["error" => "Usuario no autenticado"]);
-        return;
-    }
+
     $listado->listadoComun(
         "notificaciones",
         ["COUNT(*) AS no_leidas"],
@@ -51,7 +48,8 @@ public function MarcarTodasLeidas() {
     }
 
     if ($modelo->NotiLeidasUsuario($usuario_id)) {
-        echo json_encode(["success" => true]);
+        echo json_encode([
+            "success" => true]);
     } else {
         echo json_encode([
             "success" => false, 

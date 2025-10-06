@@ -45,7 +45,7 @@ $routes = [
         // ======================
         // NOTIFICACIONES
         // ======================
-        "/listar-notificaciones" => "NotiControl@ObtenerNotificaciones"
+        "/listar-notificaciones" => "NotiControl@ObtenerNotificaciones",
         "/notis-no-leídas"       => "NotiControl@NotisNoLeidas",
 
         // ======================
