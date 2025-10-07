@@ -29,6 +29,7 @@ $routes = [
         // ======================
         "/horasusuario"     => "HorasControl@verHorasUsuario",
         "/horasadmin"       => "HorasControl@verHorasAdmin",
+        "/horas-semanales"  => "HorasControl@verHorasSemanales"
 
         // ======================
         // JUSTIFICATIVOS
@@ -69,6 +70,9 @@ $routes = [
         "/pago"                 => "PagosControl@IngresarPago",
         "/aprobar-pago"         => "AdminControl@aprobarPago",
         "/rechazar-pago"        => "AdminControl@rechazarPago",
+        "/pago-compensatorio"   => "PagosControl@IngresarPagoCompensatorio",
+        "/aprobar-pago-compensatorio"   => "AdminControl@aprobarPagoCompensatorio",
+        "/rechazar-pago-compensatorio"  => "AdminControl@rechazarPagoCompensatorio",
         "/cambiar-fecha-limite" => "PagosControl@cambiarFechaLimite",
 
         // ======================

@@ -1,14 +1,14 @@
 <?php
-class pago {
+class Pago {
     private $usuario_id;
     private $mes;
-    private $monto;   
+    private $monto;
     private $fecha;
     private $archivo_url;
     private $estado;
     private $entrega;
 
-    public function __construct($usuario_id, $mes, $monto, $fecha, $archivo_url, $estado, $entrega) {
+    public function __construct($usuario_id, $mes = null, $monto, $fecha, $archivo_url, $estado, $entrega = null) {
         $this->usuario_id = $usuario_id;
         $this->mes = $mes;
         $this->monto = $monto;
@@ -20,7 +20,7 @@ class pago {
 
     public function getUsuarioId() { return $this->usuario_id; }
     public function getMes() { return $this->mes; }
-    public function getMonto() { return $this->monto; } 
+    public function getMonto() { return $this->monto; }
     public function getFecha() { return $this->fecha; }
     public function getArchivoUrl() { return $this->archivo_url; }
     public function getEstado() { return $this->estado; }

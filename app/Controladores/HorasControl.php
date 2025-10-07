@@ -61,4 +61,12 @@ public function verHorasAdmin() {
         ["fecha", "DESC"]
     );
 }
+public function verHorasSemanales(){
+    $listado = new ListadoControl();
+    $listado->listadoComun(
+        "configuracion",
+        ["valor"],
+        ["clave" => "horas_semanales"]
+    );
+}
 }

@@ -119,7 +119,7 @@ INSERT INTO configuracion (clave, valor) VALUES ('fecha_limite_pago', '10');
 
 INSERT INTO configuracion (clave, valor) VALUES ('mensualidad', '30000');
 
-
+INSERT INTO configuracion (clave, valor) VALUES ('horas_semanales', '21');
 
 /*
 docker exec -it esi-proyecto-db-1 mysql -u usuariodb -ppassword cooperativa -e "SELECT * FROM usuarios;"

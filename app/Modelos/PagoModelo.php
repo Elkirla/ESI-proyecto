@@ -24,11 +24,20 @@ public function registrarPago(pago $pago) {
         ':entrega'    => $pago->getEntrega()
     ]);
 }
-public function getFechaLimitePago() {
-    $sql = "SELECT valor FROM configuracion WHERE clave = 'fecha_limite_pago' LIMIT 1";
-    $stmt = $this->db->query($sql);
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $resultado ? $resultado['valor'] : null;
+
+public function registrarPagoCompensatorio(Pago $pago) {
+    $sql = "INSERT INTO pagos_compensatorios 
+            (usuario_id, monto, fecha, archivo_url, estado) 
+            VALUES (:usuario_id, :monto, :fecha, :archivo_url, :estado)";
+    $stmt = $this->db->prepare($sql);
+
+    return $stmt->execute([
+        ':usuario_id'  => $pago->getUsuarioId(),
+        ':monto'       => $pago->getMonto(),
+        ':fecha'       => $pago->getFecha(),
+        ':archivo_url' => $pago->getArchivoUrl(),
+        ':estado'      => $pago->getEstado()
+    ]);
 }
 
 public function setFechaLimitePago($nuevaFecha) {
@@ -43,6 +52,7 @@ public function aprobarPago($pagoId) {
     $stmt->execute([':pagoId' => $pagoId]);
     return $stmt->rowCount() > 0;
 }
+
 public function rechazarPago($pagoId) {
     $sql = "UPDATE pagos_mensuales SET estado = 'rechazado' WHERE id = :pagoId";
     $stmt = $this->db->prepare($sql);
@@ -50,4 +60,17 @@ public function rechazarPago($pagoId) {
     return $stmt->rowCount() > 0;
 }
 
+public function aprobarPagoCompensatorio($pagoId) {
+    $sql = "UPDATE pagos_compensatorios SET estado = 'aprobado' WHERE id = :pagoId";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':pagoId' => $pagoId]);
+    return $stmt->rowCount() > 0;
+}
+
+public function rechazarPagoCompensatorio($pagoId) {
+    $sql = "UPDATE pagos_compensatorios SET estado = 'rechazado' WHERE id = :pagoId";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':pagoId' => $pagoId]);
+    return $stmt->rowCount() > 0;
+}
 }

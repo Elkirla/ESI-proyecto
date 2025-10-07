@@ -30,5 +30,22 @@ public function tieneHorasRegistradas($usuario_id, $fecha) {
     return $stmt->fetchColumn() !== false;
     }
 
+  public function registrarPagoCompensatorio(Pago $pago) {
+        try {
+            $sql = "INSERT INTO pagos_compensatorios (usuario_id, monto, fecha, archivo_url, estado) 
+                    VALUES (:usuario_id, :monto, :fecha, :archivo_url, :estado)";
 
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':usuario_id', $pago->getUsuarioId(), PDO::PARAM_INT);
+            $stmt->bindValue(':monto', $pago->getMonto());
+            $stmt->bindValue(':fecha', $pago->getFecha());
+            $stmt->bindValue(':archivo_url', $pago->getArchivoUrl());
+            $stmt->bindValue(':estado', $pago->getEstado());
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("[DB_ERROR] " . $e->getMessage());
+            return false;
+        }
+    }
 }

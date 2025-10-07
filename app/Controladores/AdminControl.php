@@ -83,6 +83,58 @@ class AdminControl {
         }
     }
 
+    public function aprobarPagoCompensatorio(){
+        require_once __DIR__ . '/../Modelos/PagoModelo.php'; 
+
+        try {
+            $pago_id = $_POST['pago_id'] ?? null;
+
+            if (!$pago_id || !is_numeric($pago_id)) {
+                throw new Exception("ID de pago Compensatorio inválido.");
+            }
+
+            $modelo = new PagoModelo();
+            $ok = $modelo->aprobarPagoCompensatorio($pago_id);
+
+            if (!$ok) {
+                throw new Exception("Error al aprobar el pago Compensatorio. Intente más tarde.");
+            }
+
+            $this->response(true, ['message' => 'Pago compensatorio aprobado exitosamente.']);
+
+        } catch (Exception $e) {
+            error_log("[PAGOS_APROBAR_ERROR] Admin: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
+            http_response_code(500);
+            $this->response(false, ['error' => $e->getMessage()]);
+        }
+    }
+
+    public function rechazarPagoCompensatorio(){
+    require_once __DIR__ . '/../Modelos/PagoModelo.php'; 
+
+        try {
+            $pago_id = $_POST['pago_id'] ?? null;
+
+            if (!$pago_id || !is_numeric($pago_id)) {
+                throw new Exception("ID de pago inválido.");
+            }
+
+            $modelo = new PagoModelo();
+            $ok = $modelo->rechazarPagoCompensatorio($pago_id);
+
+            if (!$ok) {
+                throw new Exception("Error al rechazar el pago compensatorio. Intente más tarde.");
+            }
+
+            $this->response(true, ['message' => 'Pago rechazado exitosamente.']);
+
+        } catch (Exception $e) {
+            error_log("[COMPENSATORIO_RECHAZAR_ERROR] Admin: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
+            http_response_code(500);
+            $this->response(false, ['error' => $e->getMessage()]);
+        }
+    }
+
     // ===================================
     // JUSTIFICATIVOS
     // ===================================
@@ -203,4 +255,5 @@ class AdminControl {
             $this->response(false, ['error' => $e->getMessage()]);
         }
     }
+    
 }

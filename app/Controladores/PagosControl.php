@@ -74,6 +74,40 @@ class PagosControl {
         exit;
     }
 
+  public function IngresarPagoCompensatorio() {
+    try {
+        $usuario_id = $_SESSION['usuario_id'] ?? null;
+        $monto = $_POST['monto'] ?? null;
+        if (!$monto || !is_numeric($monto) || $monto <= 0) 
+            throw new Exception("El campo 'monto' es obligatorio y debe ser mayor a 0.");
+
+        $uploader = new Uploads('/var/www/html/public/uploads/'); 
+        $archivo_url = $uploader->subirArchivo('archivo');
+        if (!$archivo_url) throw new Exception("Error al subir el archivo.");
+
+        $fecha = date('Y-m-d');
+        $estado = 'pendiente';
+
+        $pago = new Pago($usuario_id, null, $monto, $fecha, $archivo_url, $estado, null);
+
+        $modelo = new PagoModelo();
+        $ok = $modelo->registrarPagoCompensatorio($pago);
+
+        if (!$ok) {
+            if(file_exists($_SERVER['DOCUMENT_ROOT'] . $archivo_url)) {
+                unlink($_SERVER['DOCUMENT_ROOT'] . $archivo_url);
+            }
+            throw new Exception("Error al registrar el pago. Intente más tarde.");
+        }
+
+        echo json_encode(['success' => true, 'message' => 'Pago compensatorio registrado exitosamente.']);
+    } catch (Exception $e) {
+        error_log("[PAGOS_ERROR] User: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit;
+}
     /* ============================================================
        OBTENER FECHA LÍMITE DE PAGO
     ============================================================ */
