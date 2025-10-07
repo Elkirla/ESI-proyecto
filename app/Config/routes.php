@@ -23,19 +23,20 @@ $routes = [
         "/pagosusuario"        => "PagosControl@verPagosUsuario",
         "/fecha-limite"        => "PagosControl@obtenerFechaLimite",
         "/obtener-mensualidad" => "PagosControl@obtenerMensualidad",
+        "/pagos-compensatorios"=> "PagosControl@verPagosCompensatorios",
 
         // ======================
         // PAGOS (admin)
         // ======================
         "/pagosadmin"              => "AdminControl@verPagosAdmin",
         "/listar-pago-deudas"      => "AdminControl@listarPagosDeudas",
-        "/listar-pagos-compensatorios" => "AdminControl@listarPagosCompensatorios",
+        "/pagos-compensatorios-admin" => "AdminControl@listarPagosCompensatorios",
 
         // ======================
         // HORAS
         // ======================
         "/horasusuario"     => "HorasControl@verHorasUsuario",
-        "/horasadmin"       => "HorasControl@verHorasAdmin",
+        "/horasadmin"       => "AdminControl@verHorasAdmin",
         "/horas-semanales"  => "HorasControl@verHorasSemanales",
 
         // ======================

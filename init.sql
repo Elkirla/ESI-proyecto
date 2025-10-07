@@ -85,6 +85,7 @@ CREATE TABLE pagos_mensuales (
 
 CREATE TABLE Pagos_Deudas(
     id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATE NOT NULL,
     usuario_id INT NOT NULL,
     correo VARCHAR(100) NOT NULL,
     mes VARCHAR(20) NOT NULL,

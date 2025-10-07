@@ -137,12 +137,12 @@ class PagosControl {
     /* ============================================================
     OBTENER PAGOS COMPENSATORIOS DEL USUARIO LOGUEADO
     ============================================================ */
-    public function verPagosUsuario() {
+    public function verPagosCompensatorios() {
         $usuario_id = $_SESSION['usuario_id'] ?? null; 
 
         $this->listado->listadoComun(
             "pagos_compensatorios",
-            ["monto", "fecha", "estado", "entrega"],
+            ["monto", "fecha", "estado", "archivo_url"],
             ["usuario_id" => $usuario_id],
             ["fecha", "DESC"]
         );

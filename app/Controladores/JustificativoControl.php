@@ -7,7 +7,6 @@ public function __construct() {
     require_once __DIR__ . '/../Controladores/ListadoControl.php';
     require_once __DIR__ . '/../Config/uploads.php';
     require_once __DIR__ . '/../Entidades/justificativo.php';
-    session_start();
 }
 
     //Ingresar Justificativo

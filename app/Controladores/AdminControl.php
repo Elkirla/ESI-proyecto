@@ -4,14 +4,14 @@ private $listado;
     public function __construct() { 
         header('Content-Type: application/json; charset=utf-8');
         require_once __DIR__ . '/../Controladores/ListadoControl.php';
-        session_start();
         $this->listado = new ListadoControl();
-
+        
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
             http_response_code(404);
             include __DIR__ . '/../Vistas/404.php';
             exit;
         }
+
     }
 
     // ===================================
@@ -159,7 +159,7 @@ private $listado;
     public function listarPagosCompensatorios() { 
         $this->listado->listadoComun(
             "pagos_compensatorios",
-            ["id", "usuario_id", "monto", "fecha", "archivo_url", "estado", "entrega"],
+            ["id", "usuario_id", "monto", "fecha", "archivo_url", "estado"],
             [],
             ["fecha", "DESC"]
         );
@@ -309,5 +309,17 @@ private $listado;
             null,
             1
         );
+}
+    // ===================================
+    // HORAS
+    // ===================================
+
+public function verHorasAdmin() {
+    $this->listado->listadoComun(
+        "horas_trabajadas",
+        ["fecha", "horas"],
+        [],                       
+        ["fecha", "DESC"]
+    );
 }
 }

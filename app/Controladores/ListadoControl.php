@@ -5,7 +5,6 @@ class ListadoControl {
     public function __construct() {
         require_once __DIR__ . '/../Modelos/ReporteModelo.php';
         $this->modelo = new ReporteModelo();
-        session_start();
         header('Content-Type: application/json; charset=utf-8');
     }
 

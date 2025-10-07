@@ -1,4 +1,8 @@
 <?php
+// Iniciar sesión si no está iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 spl_autoload_register(function($class){
     $paths = [
