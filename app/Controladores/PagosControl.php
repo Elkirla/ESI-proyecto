@@ -147,6 +147,31 @@ class PagosControl {
     }
 
     /* ============================================================
+    OBTENER PAGOS COMPENSATORIOS DEL USUARIO LOGUEADO
+    ============================================================ */
+    public function verPagosUsuario() {
+        $usuario_id = $_SESSION['usuario_id'] ?? null; 
+
+        $this->listado->listadoComun(
+            "pagos_compensatorios",
+            ["monto", "fecha", "estado", "entrega"],
+            ["usuario_id" => $usuario_id],
+            ["fecha", "DESC"]
+        );
+    }
+
+    /* ============================================================
+       OBTENER TODOS LOS PAGOS COMPENSATORIOS(ADMIN)
+    ============================================================ */
+    public function verPagosAdmin() { 
+        $this->listado->listadoAdmin(
+            "pagos_compensatorios",
+            ["id", "usuario_id", "monto", "fecha", "archivo_url", "estado", "entrega"],
+            [],
+            ["fecha", "DESC"]
+        );
+    }
+    /* ============================================================
        LISTAR PAGOS CON DEUDAS (ADMIN)
     ============================================================ */
     public function listarPagosDeudas() { 
@@ -157,6 +182,8 @@ class PagosControl {
             ["fecha", "DESC"]
         );
     }
+    
+
 
     /* ============================================================
        OBTENER MENSUALIDAD CONFIGURADA

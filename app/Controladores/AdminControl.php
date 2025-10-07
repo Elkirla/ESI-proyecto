@@ -83,6 +83,10 @@ class AdminControl {
         }
     }
 
+    // ===================================
+    // PAGOS COMPENSATORIOS
+    // ===================================
+
     public function aprobarPagoCompensatorio(){
         require_once __DIR__ . '/../Modelos/PagoModelo.php'; 
 
@@ -135,6 +139,9 @@ class AdminControl {
         }
     }
 
+    public function listarPagosCompensatorios(){
+        
+    }
     // ===================================
     // JUSTIFICATIVOS
     // ===================================
