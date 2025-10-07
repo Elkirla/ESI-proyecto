@@ -29,26 +29,4 @@ class ListadoControl {
             echo json_encode(["error" => $e->getMessage()]);
         }
     }
-
-    // listado solo para administradores
-    public function listadoAdmin($tabla, $columnas, $condiciones = [], $orden = null, $limite = null) {
-        if ($_SESSION['rol'] !== 'administrador') {
-            http_response_code(404);
-            include __DIR__ . '/../Vistas/404.php';
-            return;
-        }
-        try {
-            $arreglo = $this->modelo->listadoUniversalSimple(
-                $tabla,
-                $columnas,
-                $condiciones,
-                $orden,
-                $limite
-            );
-            echo json_encode($arreglo);
-        } catch (Exception $e) {
-            http_response_code(403);
-            echo json_encode(["error" => $e->getMessage()]);
-        }
-    }
 }

@@ -63,14 +63,4 @@ public function listarJustificativos() {
         ["fecha", "DESC"]
     );
 }
-
-public function listarJustificativosAdmin() {
-    $listado = new ListadoControl();
-    $listado->listadoAdmin(
-        "justificativos",
-        ["usuario_id", "fecha", "motivo", "archivo_url", "estado"],
-        [],                    
-        ["fecha", "DESC"]
-    );
-}
 }

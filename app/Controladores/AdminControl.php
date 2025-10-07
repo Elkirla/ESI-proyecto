@@ -1,10 +1,11 @@
 <?php
 class AdminControl {
-
+private $listado;
     public function __construct() { 
         header('Content-Type: application/json; charset=utf-8');
         require_once __DIR__ . '/../Controladores/ListadoControl.php';
         session_start();
+        $this->listado = new ListadoControl();
 
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
             http_response_code(404);
@@ -83,6 +84,22 @@ class AdminControl {
         }
     }
 
+    public function verPagosAdmin() { 
+        $this->listado->listadoComun(
+            "pagos_mensuales",
+            ["id", "usuario_id", "mes", "monto", "fecha", "archivo_url", "estado", "entrega"],
+            [],
+            ["fecha", "DESC"]
+        );
+    }
+    public function listarPagosDeudas() { 
+        $this->listado->listadoComun(
+            "Pagos_Deudas",
+            ["usuario_id", "correo", "mes", "monto"],
+            [],
+            ["fecha", "DESC"]
+        );
+    }
     // ===================================
     // PAGOS COMPENSATORIOS
     // ===================================
@@ -139,9 +156,15 @@ class AdminControl {
         }
     }
 
-    public function listarPagosCompensatorios(){
-        
+    public function listarPagosCompensatorios() { 
+        $this->listado->listadoComun(
+            "pagos_compensatorios",
+            ["id", "usuario_id", "monto", "fecha", "archivo_url", "estado", "entrega"],
+            [],
+            ["fecha", "DESC"]
+        );
     }
+
     // ===================================
     // JUSTIFICATIVOS
     // ===================================
@@ -191,6 +214,14 @@ class AdminControl {
         }
     }
 
+    public function listarJustificativosAdmin() {
+    $this->listado->listadoComun(
+        "justificativos",
+        ["usuario_id", "fecha", "motivo", "archivo_url", "estado"],
+        [],                    
+        ["fecha", "DESC"]
+    );
+}
     // ===================================
     // NOTIFICACIONES
     // ===================================
@@ -262,5 +293,21 @@ class AdminControl {
             $this->response(false, ['error' => $e->getMessage()]);
         }
     }
-    
+    public function cargarUsuariosPendientes() {
+    $this->listado->listadoComun(
+        "usuarios",
+        ["id", "nombre", "apellido"],
+        ["estado" => "pendiente"]
+    );
+}
+    public function ObtenerUsuarioPorId() {
+        $id = $_POST['id'] ?? null;
+        $this->listado->listadoComun(
+            "usuarios",
+            ["nombre", "apellido", "telefono", "email", "ci"],
+            ["id" => $id],
+            null,
+            1
+        );
+}
 }
