@@ -165,7 +165,7 @@ class PagosControl {
     public function verPagosDeuda() {
         $usuario_id = $_SESSION['usuario_id'] ?? null; 
         $this->listado->listadoComun(
-            "pagos_deudas",
+            "Pagos_Deudas",
             ["fecha", "correo", "meses", "monto"],
             ["usuario_id" => $usuario_id],
             ["fecha", "DESC"]
