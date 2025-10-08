@@ -119,4 +119,9 @@ public function registrar(){
             echo json_encode(['success' => false, 'error' => 'Error interno del servidor']);
         }
     }
+    public function logout() {
+        session_destroy();
+        header('Location: /login');
+        exit;
+    }
 }
