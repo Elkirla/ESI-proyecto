@@ -55,4 +55,38 @@ class HorasControl {
             ["clave" => "horas_semanales"]
         );
     }
+    public function verValorSemanal(){
+        $this->listado->listadoComun(
+            "configuracion",
+            ["valor"],
+            ["clave" => "valor_semanal"]
+        );
+    }
+    public function calcularsaldoCompensatorio() {
+        try {
+        $horas = $_POST['horas'] ?? null;
+        $valorsemanal = $_POST['valor_semanal'] ?? null;
+        $horassemanales = $_POST['horas_semanales'] ?? null;
+
+        if (!$horas || !$valorsemanal) {
+            echo json_encode(['success' => false, 'error' => 'Faltan datos']);
+            return;
+        }
+        // Validar que horas sea un valor coherente, entre 0 y horas semanales x 4 (un mes de trabajo)
+        if ($horas < 0 || $horas > ($horassemanales * 4)) {
+            echo json_encode(['success' => false, 'error' => 'Valor de horas no válido']);
+            return;
+        }
+        //Que sea un número
+        if (!is_numeric($horas) || !is_numeric($valorsemanal)) {
+            echo json_encode(['success' => false, 'error' => 'Horas y valor semanal deben ser números']);
+            return;
+        }
+        // Cálculo del saldo compensatorio
+        $saldo = ($horas / $horassemanales) * $valorsemanal;
+        echo json_encode(['success' => true, 'saldo' => "$"+round($saldo, 2)]);
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
 }

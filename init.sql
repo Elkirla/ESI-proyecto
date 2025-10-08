@@ -122,6 +122,8 @@ INSERT INTO configuracion (clave, valor) VALUES ('mensualidad', '30000');
 
 INSERT INTO configuracion (clave, valor) VALUES ('horas_semanales', '21');
 
+INSERT INTO configuracion (clave, valor) VALUES ('valor_semanal', '700');
+
 /*
 
 

@@ -20,26 +20,28 @@ $routes = [
         // ======================
         // PAGOS (usuario)
         // ======================
-        "/pagosusuario"        => "PagosControl@verPagosUsuario",
-        "/fecha-limite"        => "PagosControl@obtenerFechaLimite",
-        "/obtener-mensualidad" => "PagosControl@obtenerMensualidad",
-        "/pagos-compensatorios"=> "PagosControl@verPagosCompensatorios",
-        "/actualizarPagoDeudas"=> "PagosControl@ActualizarDeudaPago",
-        "/verPagosDeuda"       => "PagosControl@verPagosDeuda",
+        "/pagosusuario"              => "PagosControl@verPagosUsuario",
+        "/fecha-limite"              => "PagosControl@obtenerFechaLimite",
+        "/obtener-mensualidad"       => "PagosControl@obtenerMensualidad",
+        "/pagos-compensatorios"      => "PagosControl@verPagosCompensatorios",
+        "/actualizarPagoDeudas"      => "PagosControl@ActualizarDeudaPago",
+        "/verPagosDeuda"             => "PagosControl@verPagosDeuda",
 
         // ======================
         // PAGOS (admin)
         // ======================
-        "/pagosadmin"              => "AdminControl@verPagosAdmin",
-        "/listar-pagodeudas"      => "AdminControl@listarPagosDeudas",
+        "/pagosadmin"                 => "AdminControl@verPagosAdmin",
+        "/listar-pagodeudas"          => "AdminControl@listarPagosDeudas",
         "/pagos-compensatorios-admin" => "AdminControl@listarPagosCompensatorios",
 
         // ======================
         // HORAS
         // ======================
-        "/horasusuario"     => "HorasControl@verHorasUsuario",
-        "/horasadmin"       => "AdminControl@verHorasAdmin",
-        "/horas-semanales"  => "HorasControl@verHorasSemanales",
+        "/horasusuario"                => "HorasControl@verHorasUsuario",
+        "/horasadmin"                  => "AdminControl@verHorasAdmin",
+        "/horas-semanales"             => "HorasControl@verHorasSemanales",
+        "/valor-semanal"               => "HorasControl@verValorSemanal",
+        "/calcular-saldo-compensatorio"=> "HorasControl@calcularsaldoCompensatorio",
 
         // ======================
         // JUSTIFICATIVOS
@@ -63,7 +65,7 @@ $routes = [
         // ======================
         // SESIÓN
         // ======================
-        "/logout"           => "AuthControl@logout",
+        "/logout"=> "AuthControl@logout",
     ],
 
     "POST" => [
