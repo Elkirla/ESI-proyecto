@@ -41,7 +41,6 @@ $routes = [
         "/horasadmin"                  => "AdminControl@verHorasAdmin",
         "/horas-semanales"             => "HorasControl@verHorasSemanales",
         "/valor-semanal"               => "HorasControl@verValorSemanal",
-        "/calcular-saldo-compensatorio"=> "HorasControl@calcularsaldoCompensatorio",
 
         // ======================
         // JUSTIFICATIVOS
@@ -82,6 +81,7 @@ $routes = [
         "/pago"                   => "PagosControl@IngresarPago",
         "/pago-compensatorio"     => "PagosControl@IngresarPagoCompensatorio",
         "/cambiar-fecha-limite"   => "PagosControl@cambiarFechaLimite",
+        "/calcular-saldo-compensatorio"=> "HorasControl@calcularsaldoCompensatorio",
 
         // ======================
         // PAGOS (admin)

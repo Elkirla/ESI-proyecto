@@ -62,31 +62,62 @@ class HorasControl {
             ["clave" => "valor_semanal"]
         );
     }
-    public function calcularsaldoCompensatorio() {
-        try {
+public function calcularSaldoCompensatorio() {
+    try {
+        // Recibir datos
         $horas = $_POST['horas'] ?? null;
-        $valorsemanal = $_POST['valor_semanal'] ?? null;
-        $horassemanales = $_POST['horas_semanales'] ?? null;
+        $valorSemanal = $_POST['valor_semanal'] ?? null;
+        $horasSemanales = $_POST['horas_semanales'] ?? null;
 
-        if (!$horas || !$valorsemanal) {
-            echo json_encode(['success' => false, 'error' => 'Faltan datos']);
+        // Validaciones básicas
+        if ($horas === null || $valorSemanal === null || $horasSemanales === null) {
+            echo json_encode(['success' => false, 'error' => 'Faltan datos.']);
             return;
         }
-        // Validar que horas sea un valor coherente, entre 0 y horas semanales x 4 (un mes de trabajo)
-        if ($horas < 0 || $horas > ($horassemanales * 4)) {
-            echo json_encode(['success' => false, 'error' => 'Valor de horas no válido']);
+
+        // Asegurarse que los valores sean numéricos
+        if (!is_numeric($horas) || !is_numeric($valorSemanal) || !is_numeric($horasSemanales)) {
+            echo json_encode(['success' => false, 'error' => 'Los valores deben ser numéricos.']);
             return;
         }
-        //Que sea un número
-        if (!is_numeric($horas) || !is_numeric($valorsemanal)) {
-            echo json_encode(['success' => false, 'error' => 'Horas y valor semanal deben ser números']);
+
+        // Convertir a float (por seguridad)
+        $horas = floatval($horas);
+        $valorSemanal = floatval($valorSemanal);
+        $horasSemanales = floatval($horasSemanales);
+
+        // Validar rango de horas (no más del total mensual ni negativas)
+        $maxHoras = $horasSemanales * 4; // límite razonable de 4 semanas
+        if ($horas < 0 || $horas > $maxHoras) {
+            echo json_encode(['success' => false, 'error' => "El valor de horas no puede superar $maxHoras."]);
             return;
         }
-        // Cálculo del saldo compensatorio
-        $saldo = ($horas / $horassemanales) * $valorsemanal;
-        echo json_encode(['success' => true, 'saldo' => "$"+round($saldo, 2)]);
-        } catch (Exception $e) {
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-        }
+
+        // Calcular saldo compensatorio
+        $saldo = ($horas / $horasSemanales) * $valorSemanal;
+
+        // Devolver JSON con formato limpio
+        echo json_encode([
+            'success' => true,
+            'saldo' => round($saldo, 2),
+            'mensaje' => 'Cálculo exitoso.'
+        ]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+}
+
+    public function calcularHorasSemanales() {
+        //Horas totales trabajadas por el usuario en la semana actual
+    }
+    public function CalcularHorasDeuda($id_usuario){
+        //Solicitamos las horas del usuario
+        //Justificativos aprobados
+        //Horas compensatorias aprobadas
+        //Recorrera las horas del usuario y calculara si tiene deuda o no
+        //Si encuentra una semana la cual las horas son menores a 21 nos fijamos si hay un justificativo aprobado o horas compensatorias
+        //Hay que ver cuanto cubren las horas compensatorias 
+        //Si no hay ni justificativo ni horas compensatorias se le suma la deuda
+        //Calculamos cuantas horas totales tiene de deuda y lo devolvemos
     }
 }
