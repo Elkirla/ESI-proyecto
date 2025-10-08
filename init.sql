@@ -88,7 +88,7 @@ CREATE TABLE Pagos_Deudas(
     fecha DATE NOT NULL,
     usuario_id INT NOT NULL,
     correo VARCHAR(100) NOT NULL,
-    mes VARCHAR(20) NOT NULL,
+    meses VARCHAR(20) NOT NULL,
     monto DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (correo) REFERENCES usuarios(email)
@@ -123,7 +123,7 @@ INSERT INTO configuracion (clave, valor) VALUES ('mensualidad', '30000');
 INSERT INTO configuracion (clave, valor) VALUES ('horas_semanales', '21');
 
 /*
-docker exec -it esi-proyecto-db-1 mysql -u usuariodb -ppassword cooperativa -e "SELECT * FROM usuarios;"
+
 
 docker exec -it esi-proyecto-db-1 mysql -u usuariodb -ppassword cooperativa -e "UPDATE usuarios SET estado='activo' WHERE email='correo@gmail.com';"
 

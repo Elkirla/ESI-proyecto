@@ -39,7 +39,13 @@ public function registrarPagoCompensatorio(Pago $pago) {
         ':estado'      => $pago->getEstado()
     ]);
 }
-
+public function getFechaLimitePago() {
+    $sql = "SELECT valor FROM configuracion WHERE clave = 'fecha_limite_pago'";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? intval($result['valor']) : 10; // Valor por defecto
+}
 public function setFechaLimitePago($nuevaFecha) {
     $sql = "UPDATE configuracion SET valor = :fecha WHERE clave = 'fecha_limite_pago'";
     $stmt = $this->db->prepare($sql);
@@ -73,4 +79,30 @@ public function rechazarPagoCompensatorio($pagoId) {
     $stmt->execute([':pagoId' => $pagoId]);
     return $stmt->rowCount() > 0;
 }
+
+public function IngresarPagoDeuda($datos) {
+    try {
+        // 1. Eliminar cálculo anterior
+        $sql_delete = "DELETE FROM Pagos_Deudas WHERE usuario_id = :usuario_id";
+        $stmt = $this->db->prepare($sql_delete);
+        $stmt->execute([':usuario_id' => $datos['usuario_id']]);
+
+        // 2. Insertar nuevo cálculo
+        $sql_insert = "INSERT INTO Pagos_Deudas (fecha, usuario_id, correo, meses, monto)
+                       VALUES (:fecha, :usuario_id, :correo, :meses, :monto)";
+        $stmt = $this->db->prepare($sql_insert);
+        return $stmt->execute([
+            ':fecha'      => $datos['fecha'],
+            ':usuario_id' => $datos['usuario_id'],
+            ':correo'     => $datos['correo'],
+            ':meses'      => $datos['meses'],
+            ':monto'      => $datos['monto']
+        ]);
+
+    } catch (Exception $e) {
+        error_log("[MODELO_DEUDA_ERROR] " . $e->getMessage());
+        return false;
+    }
+}
+
 }

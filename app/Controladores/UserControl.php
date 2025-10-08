@@ -14,7 +14,7 @@ public function cargarDatosUsuario() {
     }
     $listado->listadoComun(
     "usuarios",
-    ["nombre", "apellido", "telefono", "email", "ci"],
+    ["*"],
     ["id" => $idusuario], 
     null,
     1
