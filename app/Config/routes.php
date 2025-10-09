@@ -82,6 +82,8 @@ $routes = [
         "/pago-compensatorio"     => "PagosControl@IngresarPagoCompensatorio",
         "/cambiar-fecha-limite"   => "PagosControl@cambiarFechaLimite",
         "/calcular-saldo-compensatorio"=> "HorasControl@calcularsaldoCompensatorio",
+        "/ingresar-pago-compensatorio" => "PagoCompensatorioControl@IngresarPagoCompensatorio",
+        "/ver-pagos-compensatorios"     => "PagoCompensatorioControl@verPagosCompensatorios",
 
         // ======================
         // PAGOS (admin)

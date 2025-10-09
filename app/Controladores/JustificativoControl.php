@@ -17,6 +17,7 @@ public function __construct() {
 
         $usuario_id = $_SESSION['usuario_id'] ?? null;
         $fecha = $_POST['fecha'] ?? null;
+        $fecha_final = $_POST['fecha_final'] ?? null;
         $motivo = $_POST['motivo'] ?? null;
 
         if (!$usuario_id || !$fecha || !$motivo) {
@@ -28,7 +29,7 @@ public function __construct() {
         $uploader = new Uploads('/var/www/html/public/uploads/'); 
         $archivo_url = $uploader->subirArchivo('archivo'); // <- "archivo" es el name del input
 
-        $justificativo = new justificativo($usuario_id, $fecha, $motivo, $archivo_url);
+        $justificativo = new justificativo($usuario_id, $fecha, $fecha_final, $motivo, $archivo_url);
 
         $ok = $modelo->registrarJustificativo($justificativo);
 

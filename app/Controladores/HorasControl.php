@@ -111,13 +111,5 @@ public function calcularSaldoCompensatorio() {
         //Horas totales trabajadas por el usuario en la semana actual
     }
     public function CalcularHorasDeuda($id_usuario){
-        //Solicitamos las horas del usuario
-        //Justificativos aprobados
-        //Horas compensatorias aprobadas
-        //Recorrera las horas del usuario y calculara si tiene deuda o no
-        //Si encuentra una semana la cual las horas son menores a 21 nos fijamos si hay un justificativo aprobado o horas compensatorias
-        //Hay que ver cuanto cubren las horas compensatorias 
-        //Si no hay ni justificativo ni horas compensatorias se le suma la deuda
-        //Calculamos cuantas horas totales tiene de deuda y lo devolvemos
     }
 }

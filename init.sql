@@ -46,7 +46,7 @@ CREATE TABLE horas_trabajadas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     fecha DATE NOT NULL,
-    horas INT NOT NULL,
+    horas DECIMAL(5,2) NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     UNIQUE (usuario_id, fecha)
 );
@@ -55,9 +55,11 @@ CREATE TABLE justificativos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     fecha DATE NOT NULL,
+    fecha_final DATE DEFAULT NULL,
     motivo TEXT NOT NULL,
     archivo_url VARCHAR(255),
     estado ENUM('pendiente', 'aprobado', 'rechazado') DEFAULT 'pendiente',
+    horas_equivalentes DECIMAL(5,2) DEFAULT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
@@ -68,6 +70,9 @@ CREATE TABLE pagos_compensatorios (
     fecha DATE NOT NULL,
     archivo_url VARCHAR(255),
     estado ENUM('pendiente', 'aprobado', 'rechazado') DEFAULT 'pendiente',
+    horas DECIMAL(5,2) DEFAULT 0,
+    fecha_inicio DATE DEFAULT NULL,
+    fecha_fin DATE DEFAULT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
@@ -93,11 +98,30 @@ CREATE TABLE Pagos_Deudas(
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (correo) REFERENCES usuarios(email)
 );
-
-CREATE TABLE Horas_deuda(
+CREATE TABLE Semana_deudas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    horas INT NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    horas_trabajadas DECIMAL(5,2) NOT NULL,
+    horas_faltantes DECIMAL(5,2) NOT NULL,
+    horas_justificadas DECIMAL(5,2) DEFAULT 0,
+    horas_compensadas DECIMAL(5,2) DEFAULT 0,
+    motivo_justificacion TEXT DEFAULT NULL,
+    pago_compensatorio_id INT DEFAULT NULL,
+    procesado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_usuario_semana (usuario_id, fecha_inicio),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (pago_compensatorio_id) REFERENCES pagos_compensatorios(id)
+);
+
+CREATE TABLE Horas_deuda (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    horas_acumuladas DECIMAL(8,2) NOT NULL DEFAULT 0,
+    horas_deuda_total DECIMAL(8,2) DEFAULT 0,
+    fecha_ultimo_calculo DATE DEFAULT NULL,
+    primera_semana_pendiente DATE DEFAULT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
@@ -116,13 +140,12 @@ CREATE TABLE configuracion (
     valor VARCHAR(255) NOT NULL
 );
 
-INSERT INTO configuracion (clave, valor) VALUES ('fecha_limite_pago', '10');
-
-INSERT INTO configuracion (clave, valor) VALUES ('mensualidad', '30000');
-
-INSERT INTO configuracion (clave, valor) VALUES ('horas_semanales', '21');
-
-INSERT INTO configuracion (clave, valor) VALUES ('valor_semanal', '700');
+INSERT INTO configuracion (clave, valor) VALUES 
+('fecha_limite_pago', '10'),
+('mensualidad', '30000'),
+('horas_semanales', '21'),
+('valor_semanal', '700'),
+('cuota_semanal', '21');
 
 /*
 
