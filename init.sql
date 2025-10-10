@@ -20,6 +20,19 @@ CREATE TABLE entrega (
 INSERT INTO entrega (nombre) VALUES ('Atrasado');
 INSERT INTO entrega (nombre) VALUES ('En hora');
 
+CREATE TABLE configuracion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    clave VARCHAR(50) UNIQUE NOT NULL,
+    valor VARCHAR(255) NOT NULL
+);
+
+INSERT INTO configuracion (clave, valor) VALUES 
+('fecha_limite_pago', '10'),
+('mensualidad', '30000'),
+('horas_semanales', '21'),
+('valor_semanal', '700'),
+('cuota_semanal', '21');
+
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     rol_id INT NOT NULL,
@@ -111,13 +124,14 @@ CREATE TABLE Semana_deudas (
     pago_compensatorio_id INT DEFAULT NULL,
     procesado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE KEY uq_usuario_semana (usuario_id, fecha_inicio),
+    UNIQUE (usuario_id, fecha_inicio, fecha_fin) 
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (pago_compensatorio_id) REFERENCES pagos_compensatorios(id)
 );
 
 CREATE TABLE Horas_deuda (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
+    usuario_id INT NOT NULL UNIQUE,  
     horas_acumuladas DECIMAL(8,2) NOT NULL DEFAULT 0,
     horas_deuda_total DECIMAL(8,2) DEFAULT 0,
     fecha_ultimo_calculo DATE DEFAULT NULL,
@@ -134,21 +148,7 @@ CREATE TABLE Notificaciones(
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
-CREATE TABLE configuracion (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    clave VARCHAR(50) UNIQUE NOT NULL,
-    valor VARCHAR(255) NOT NULL
-);
-
-INSERT INTO configuracion (clave, valor) VALUES 
-('fecha_limite_pago', '10'),
-('mensualidad', '30000'),
-('horas_semanales', '21'),
-('valor_semanal', '700'),
-('cuota_semanal', '21');
-
 /*
-
 
 docker exec -it esi-proyecto-db-1 mysql -u usuariodb -ppassword cooperativa -e "UPDATE usuarios SET estado='activo' WHERE email='correo@gmail.com';"
 
