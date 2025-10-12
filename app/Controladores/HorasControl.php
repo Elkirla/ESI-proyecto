@@ -118,14 +118,6 @@ public function CalcularHorasDeuda($id_usuario) {
 
         $horas_trabajadas_array = $this->obtenerHorasTrabajadas($id_usuario);
         
-        echo json_encode([
-            'debug' => 'semana_actual',
-            'inicio_semana' => $inicio_semana,
-            'fin_semana' => $fin_semana,
-            'horas_trabajadas' => $horas_trabajadas_array,
-            'count_horas_trabajadas' => count($horas_trabajadas_array)
-        ]);
-        
         $horas_trabajadas_semana_actual = $this->calcularHorasEnSemana(
             $horas_trabajadas_array, 
             new DateTime($inicio_semana), 
@@ -225,8 +217,7 @@ private function obtenerHorasSemanales() {
     return floatval($data[0]['valor']);
 }
 
-private function obtenerHorasTrabajadas($usuario_id) {
-    // Desactivar errores temporalmente
+private function obtenerHorasTrabajadas($usuario_id) { 
     $error_reporting = error_reporting(0);
     
     ob_start();
@@ -391,7 +382,16 @@ private function obtenerPagoCompensatorioParaSemana($pagos, $fecha_inicio, $fech
 private function haySuperposicionFechas($inicio1, $fin1, $inicio2, $fin2) {
     return ($inicio1 <= $fin2) && ($inicio2 <= $fin1);
 }
-    public function verHorasDeudasUsuario(){
+    public function actualizarDeudaHorasUsuario(){
         $this->CalcularHorasDeuda($this->usuario_id);
+}
+public function verDeudasHorasUsuario(){
+    $this->listado->listadoComun(
+        "Horas_deuda",
+        ["horas_acumuladas", "primera_semana_pendiente"],
+        ["usuario_id" => $this->usuario_id],
+        [],
+        1
+    );
 }
 }

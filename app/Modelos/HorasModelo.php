@@ -45,7 +45,7 @@ public function tieneHorasRegistradas($usuario_id, $fecha) {
                 horas_justificadas, horas_compensadas, motivo_justificacion, pago_compensatorio_id)
                 VALUES
                 (:usuario_id, :fecha_inicio, :fecha_fin, :horas_trabajadas, :horas_faltantes,
-                 :horas_justificadas, :horas_compensadas, :motivo_justificacion, :pago_compensatorio_id)";
+                :horas_justificadas, :horas_compensadas, :motivo_justificacion, :pago_compensatorio_id)";
             $stmt = $this->db->prepare($sql_insert);
 
             foreach ($deudas_semanales as $d) {

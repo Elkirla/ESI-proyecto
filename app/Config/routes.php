@@ -41,7 +41,9 @@ $routes = [
         "/horasadmin"     => "AdminControl@verHorasAdmin",
         "/horas-semanales"=> "HorasControl@verHorasSemanales",
         "/valor-semanal"  => "HorasControl@verValorSemanal",
-        "/deudas-horas"   => "HorasControl@verHorasDeudasUsuario",
+        "/deudas-horas"   => "HorasControl@actualizarDeudaHorasUsuario",
+        "/ver-deudas-horas" => "HorasControl@verDeudasHorasUsuario",
+        "/horas-deuda-admin" => "AdminControl@verDeudasHorasAdmin",
 
         // ======================
         // JUSTIFICATIVOS

@@ -322,4 +322,13 @@ public function verHorasAdmin() {
         ["fecha", "DESC"]
     );
 }
+public function verDeudasHorasAdmin() {
+    $this->listado->listadoComun(
+        "Horas_deuda",
+        ["usuario_id", "horas_acumuladas", "primera_semana_pendiente"],
+        [],
+        [],
+        null
+    );
+}
 }
