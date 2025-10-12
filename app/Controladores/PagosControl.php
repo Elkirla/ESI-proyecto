@@ -13,7 +13,7 @@ class PagosControl {
     }
 
     /* ============================================================
-       REGISTRAR NUEVO PAGO
+    REGISTRAR NUEVO PAGO
     ============================================================ */
     public function IngresarPago() {
         try {
@@ -73,7 +73,7 @@ class PagosControl {
     }
 
     /* ============================================================
-       OBTENER FECHA LÍMITE DE PAGO
+    OBTENER FECHA LÍMITE DE PAGO
     ============================================================ */
     public function obtenerFechaLimite() {
         $this->listado->listadoComun(
@@ -84,7 +84,7 @@ class PagosControl {
     }
 
     /* ============================================================
-       OBTENER PAGOS DEL USUARIO
+    OBTENER PAGOS DEL USUARIO
     ============================================================ */
     public function verPagosUsuario() {
         $usuario_id = $_SESSION['usuario_id'] ?? null; 
@@ -97,7 +97,7 @@ class PagosControl {
     }
 
     /* ============================================================
-       OBTENER MENSUALIDAD CONFIGURADA
+    OBTENER MENSUALIDAD CONFIGURADA
     ============================================================ */
     public function obtenerMensualidad() {  
         $this->listado->listadoComun(
@@ -108,7 +108,7 @@ class PagosControl {
     }
 
     /* ============================================================
-       OBTENER DEUDAS USUARIO
+    OBTENER DEUDAS USUARIO
     ============================================================ */
     public function verPagosDeuda() {
         $usuario_id = $_SESSION['usuario_id'] ?? null; 
@@ -121,7 +121,7 @@ class PagosControl {
     }
 
     /* ============================================================
-       CALCULAR PAGO DE DEUDAS
+    CALCULAR PAGO DE DEUDAS
     ============================================================ */
 public function CalcularPagoDeudas($usuario_id) {
     try {
@@ -221,7 +221,7 @@ public function CalcularPagoDeudas($usuario_id) {
 }
 
     /* ============================================================
-       MÉTODOS AUXILIARES PRIVADOS
+    MÉTODOS AUXILIARES PRIVADOS
     ============================================================ */
     private function responderJson($status, $message) {
         echo json_encode(['status' => $status, 'message' => $message]);

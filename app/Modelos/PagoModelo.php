@@ -89,7 +89,7 @@ public function IngresarPagoDeuda($datos) {
 
         // 2. Insertar nuevo cálculo
         $sql_insert = "INSERT INTO Pagos_Deudas (fecha, usuario_id, correo, meses, monto)
-                       VALUES (:fecha, :usuario_id, :correo, :meses, :monto)";
+        VALUES (:fecha, :usuario_id, :correo, :meses, :monto)";
         $stmt = $this->db->prepare($sql_insert);
         return $stmt->execute([
             ':fecha'      => $datos['fecha'],
