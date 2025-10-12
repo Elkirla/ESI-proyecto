@@ -111,6 +111,7 @@ CREATE TABLE Pagos_Deudas(
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (correo) REFERENCES usuarios(email)
 );
+
 CREATE TABLE Semana_deudas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -124,7 +125,7 @@ CREATE TABLE Semana_deudas (
     pago_compensatorio_id INT DEFAULT NULL,
     procesado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE KEY uq_usuario_semana (usuario_id, fecha_inicio),
-    UNIQUE (usuario_id, fecha_inicio, fecha_fin) 
+    UNIQUE (usuario_id, fecha_inicio, fecha_fin),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (pago_compensatorio_id) REFERENCES pagos_compensatorios(id)
 );

@@ -37,11 +37,11 @@ $routes = [
         // ======================
         // HORAS
         // ======================
-        "/horasusuario"                => "HorasControl@verHorasUsuario",
-        "/horasadmin"                  => "AdminControl@verHorasAdmin",
-        "/horas-semanales"             => "HorasControl@verHorasSemanales",
-        "/valor-semanal"               => "HorasControl@verValorSemanal",
-        "/deudas-horas"      => "HorasControl@verHorasDeudasUsuario",
+        "/horasusuario"   => "HorasControl@verHorasUsuario",
+        "/horasadmin"     => "AdminControl@verHorasAdmin",
+        "/horas-semanales"=> "HorasControl@verHorasSemanales",
+        "/valor-semanal"  => "HorasControl@verValorSemanal",
+        "/deudas-horas"   => "HorasControl@verHorasDeudasUsuario",
 
         // ======================
         // JUSTIFICATIVOS
