@@ -22,18 +22,19 @@
 
 <div class="menu-container" id="menucontainer">
     <img src="public/imagenes/menu.png" alt="menu hamburguesa" class="menu-icon" id="menucerrar">
- <p class="separador-menu"></p>
+<p class="separador-menu"></p>
     <div class="menubotones">
-      <button><a href="#logrado">Novedades</a></button>
-      <button><a href="#footer">Contactanos</a></button>
-      <button><a href="#comunidadtxt">Sobre nosotros</a></button>
-      <button class="loginbtton"><a href="/login">Log in</a></button>
-   </div>    
-   <div id="menucontactos">
-      <p class="menu-text">Email: info@cooperativafenec.com</p>
-      <p class="menu-text">Teléfono: +123 456 7890</p>
-      <p class="menu-text">Dirección: Calle Principal 123, Ciudad</p>    
-   </div>
+    <button><a href="#logrado">Novedades</a></button>
+    <button><a href="#footer">Contactanos</a></button>
+    <button><a href="#comunidadtxt">Sobre nosotros</a></button>
+    <button class="loginbtton"><a href="/login">Log in</a></button>
+</div>    
+
+<div id="menucontactos">
+    <p class="menu-text">Email: info@cooperativafenec.com</p>
+    <p class="menu-text">Teléfono: +123 456 7890</p>
+    <p class="menu-text">Dirección: Calle Principal 123, Ciudad</p>    
+</div>
 </div> 
 
 <div class="hero-container">
@@ -81,7 +82,7 @@
         </div> 
     </div>
         <button class="slider-btn next">›</button>
-     <div class="slider-dots"></div>
+    <div class="slider-dots"></div>
 </div>
 
 <div class="info-slide" id="infoslide">
@@ -96,7 +97,7 @@
     <div class="conseguidocont" id="logradotxt">
         <h2>Hemos logrado</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut incidunt maiores. </p><br>
-       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut incidunt maiores. </p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut incidunt maiores. </p>
     </div>
     <div class="metas" id="metastxt">
         <h2>Apuntamos a</h2>
@@ -108,7 +109,7 @@
     <h2>Instrucciones para el registro</h2>
     <p>Para unirte a nuestra cooperativa, sigue estos simples pasos:</p> 
     <p>Haz clic en el botón "Registrarse" a continuación.</p>
-    <button class="registro-button"><a href="registro.php">Registrarse</a></button>
+    <button class="registro-button"><a href="/registro">Registrarse</a></button>
     <p>Completa el formulario de registro con tus datos personales.</p>
     <p>Acepta los términos y condiciones de la cooperativa.</p>
     <p>Verifica tu correo electrónico para activar tu cuenta.</p>
