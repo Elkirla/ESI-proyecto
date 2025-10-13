@@ -30,10 +30,11 @@ public function tieneHorasRegistradas($usuario_id, $fecha) {
     return $stmt->fetchColumn() !== false;
     }
 
-  public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $horas_totales_deuda, $primera_semana_pendiente) {
+public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $horas_totales_deuda, $primera_semana_pendiente) {
     try {
         $this->db->beginTransaction();
- 
+
+        // 1️⃣ Insertar o actualizar cada semana de deuda
         $sql_insert = "INSERT INTO Semana_deudas
             (usuario_id, fecha_inicio, fecha_fin, horas_trabajadas, horas_faltantes,
             horas_justificadas, horas_compensadas, motivo_justificacion, pago_compensatorio_id, procesado_en)
@@ -66,7 +67,11 @@ public function tieneHorasRegistradas($usuario_id, $fecha) {
             ]);
         }
 
-        // Actualizar / upsert tabla Horas_deuda
+        // 2️⃣ Calcular horas faltantes reales de la semana actual
+        $ultima_semana = end($deudas_semanales);
+        $horas_acumuladas_semana_actual = $ultima_semana['horas_faltantes'] ?? 0;
+
+        // 3️⃣ Actualizar tabla Horas_deuda correctamente
         $sql_upsert = "INSERT INTO Horas_deuda
             (usuario_id, horas_acumuladas, horas_deuda_total, fecha_ultimo_calculo, primera_semana_pendiente)
             VALUES (:usuario_id, :horas_acumuladas, :horas_deuda_total, CURDATE(), :primera_semana_pendiente)
@@ -79,8 +84,8 @@ public function tieneHorasRegistradas($usuario_id, $fecha) {
         $stmt = $this->db->prepare($sql_upsert);
         $stmt->execute([
             ':usuario_id' => $usuario_id,
-            ':horas_acumuladas' => $horas_totales_deuda,
-            ':horas_deuda_total' => $horas_totales_deuda,
+            ':horas_acumuladas' => $horas_acumuladas_semana_actual, // ✅ Solo la semana actual
+            ':horas_deuda_total' => $horas_totales_deuda,            // ✅ Total acumulado histórico
             ':primera_semana_pendiente' => $primera_semana_pendiente
         ]);
 
@@ -92,6 +97,7 @@ public function tieneHorasRegistradas($usuario_id, $fecha) {
         error_log("[MODELO_GUARDAR_DEUDAS_HORAS_ERROR] " . $e->getMessage());
         return false;
     }
-  }
+}
+
 
 }

@@ -335,12 +335,16 @@ private function calcularDeudasSemanales($fecha_desde, $fecha_actual, $horas_sem
 
             $horas_faltantes = $diferencia_horas - $horas_justificadas - $horas_compensadas;
 
-            if ($horas_faltantes > 0) {
-                $horas_totales_deuda += $horas_faltantes;
-                if ($primera_semana_pendiente === null) {
-                    $primera_semana_pendiente = $fecha_desde->format('Y-m-d');
-                }
-            }
+if ($horas_faltantes > 0) {
+    $horas_totales_deuda += $horas_faltantes;
+    if ($primera_semana_pendiente === null) {
+        $primera_semana_pendiente = $fecha_desde->format('Y-m-d');
+    }
+} else {
+    // Si no hay deuda en la semana, no suma al total
+    $horas_faltantes = 0;
+}
+
         }
 
         $deudas_semanales[] = [
