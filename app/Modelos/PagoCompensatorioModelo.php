@@ -1,10 +1,10 @@
 <?php
+require_once __DIR__ . '/../Config/database.php';
 class PagoCompensatorioModelo {
     private $db;
 
-    public function __construct() {
-        require_once __DIR__ . '/../Config/Conexion.php';
-        $this->db = Conexion::conectar();
+    public function __construct() { 
+        $this->db = Database::getConnection();
     }
 
     public function insertar(PagoCompensatorio $pago) {

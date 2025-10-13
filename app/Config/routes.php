@@ -33,6 +33,7 @@ $routes = [
         "/pagosadmin"                 => "AdminControl@verPagosAdmin",
         "/listar-pagodeudas"          => "AdminControl@listarPagosDeudas",
         "/pagos-compensatorios-admin" => "AdminControl@listarPagosCompensatorios",
+        "/testpagoscompensatorios"    => "PagoCompensatorioControl@CrearPagoCompensatorioTest",
 
         // ======================
         // HORAS
