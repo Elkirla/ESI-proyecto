@@ -229,24 +229,12 @@ private function obtenerHorasTrabajadas($usuario_id) {
     );
     $output = ob_get_clean();
     
-    // Restaurar configuración de errores
     error_reporting($error_reporting);
     
-    echo json_encode([
-        'debug' => 'obtenerHorasTrabajadas_clean',
-        'output' => $output
-    ]);
-    
     $data = json_decode($output, true);
-    
-    echo json_encode([
-        'debug' => 'obtenerHorasTrabajadas_decoded',
-        'data' => $data,
-        'is_array' => is_array($data)
-    ]);
-    
     return is_array($data) ? $data : [];
 }
+
 
 private function obtenerJustificativosAprobados($usuario_id) {
     ob_start();
@@ -291,21 +279,36 @@ private function calcularHorasEnSemana($horas_trabajadas, $fecha_inicio, $fecha_
 
 private function obtenerFechaPrimerRegistro($usuario_id) {
     $horas = $this->obtenerHorasTrabajadas($usuario_id);
-    return !empty($horas) ? $horas[0]['fecha'] : date('Y-m-d');
+    if (empty($horas)) {
+        return date('Y-m-d');
+    }
+
+    // Buscar la fecha mínima en el array para evitar dependencias de orden
+    $min = null;
+    foreach ($horas as $h) {
+        if (empty($h['fecha'])) continue;
+        if ($min === null || $h['fecha'] < $min) $min = $h['fecha'];
+    }
+    return $min ?? date('Y-m-d');
 }
+
 
 private function calcularDeudasSemanales($fecha_desde, $fecha_actual, $horas_semanales, $horas_trabajadas, $justificativos, $pagos_compensatorios, $usuario_id) {
     $deudas_semanales = [];
     $horas_totales_deuda = 0;
     $primera_semana_pendiente = null;
 
+    // Asegurarse de empezar en el lunes de la semana del primer registro
     $fecha_desde->modify('monday this week');
 
     while ($fecha_desde <= $fecha_actual) {
         $fecha_fin_semana = clone $fecha_desde;
-        $fecha_fin_semana->modify('sunday');
+        $fecha_fin_semana->modify('sunday this week');
 
-        if ($fecha_fin_semana > $fecha_actual) break;
+        // Si la semana termina después de la fecha actual, la acotamos a fecha_actual
+        if ($fecha_fin_semana > $fecha_actual) {
+            $fecha_fin_semana = clone $fecha_actual;
+        }
 
         $horas_semana = $this->calcularHorasEnSemana($horas_trabajadas, $fecha_desde, $fecha_fin_semana);
         $justificativo_semana = $this->obtenerJustificativoParaSemana($justificativos, $fecha_desde, $fecha_fin_semana);
@@ -321,13 +324,13 @@ private function calcularDeudasSemanales($fecha_desde, $fecha_actual, $horas_sem
             $diferencia_horas = $horas_semanales - $horas_semana;
 
             if ($justificativo_semana) {
-                $horas_justificadas = min($diferencia_horas, $justificativo_semana['horas_equivalentes'] ?? $diferencia_horas);
-                $motivo_justificacion = $justificativo_semana['motivo'];
+                $horas_justificadas = min($diferencia_horas, floatval($justificativo_semana['horas_equivalentes'] ?? $diferencia_horas));
+                $motivo_justificacion = $justificativo_semana['motivo'] ?? null;
             }
 
             if ($pago_compensatorio_semana && ($diferencia_horas - $horas_justificadas) > 0) {
-                $horas_compensadas = min(($diferencia_horas - $horas_justificadas), $pago_compensatorio_semana['horas']);
-                $pago_compensatorio_id = $pago_compensatorio_semana['id'];
+                $horas_compensadas = min(($diferencia_horas - $horas_justificadas), floatval($pago_compensatorio_semana['horas'] ?? 0));
+                $pago_compensatorio_id = $pago_compensatorio_semana['id'] ?? null;
             }
 
             $horas_faltantes = $diferencia_horas - $horas_justificadas - $horas_compensadas;
@@ -351,11 +354,14 @@ private function calcularDeudasSemanales($fecha_desde, $fecha_actual, $horas_sem
             'pago_compensatorio_id' => $pago_compensatorio_id
         ];
 
+        // Avanzar al siguiente lunes
         $fecha_desde->modify('+1 week');
+        // Si la siguiente semana empieza después de fecha_actual, el while terminará
     }
 
     return [$deudas_semanales, $horas_totales_deuda, $primera_semana_pendiente];
 }
+
 
 private function obtenerJustificativoParaSemana($justificativos, $fecha_inicio, $fecha_fin) {
     $inicio = $fecha_inicio->format('Y-m-d');

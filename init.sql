@@ -130,6 +130,9 @@ CREATE TABLE Semana_deudas (
     FOREIGN KEY (pago_compensatorio_id) REFERENCES pagos_compensatorios(id)
 );
 
+ALTER TABLE Semana_deudas
+ADD UNIQUE KEY uk_usuario_fecha_inicio (usuario_id, fecha_inicio);
+
 CREATE TABLE Horas_deuda (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL UNIQUE,  
