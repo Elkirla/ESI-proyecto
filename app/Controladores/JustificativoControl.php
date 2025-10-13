@@ -26,9 +26,11 @@ public function __construct() {
         }
 
         // Subir archivo usando la clase Uploads
+        /*
         $uploader = new Uploads('/var/www/html/public/uploads/'); 
         $archivo_url = $uploader->subirArchivo('archivo'); // <- "archivo" es el name del input
-
+        */
+        
         $justificativo = new justificativo($usuario_id, $fecha, $fecha_final, $motivo, $archivo_url);
 
         $ok = $modelo->registrarJustificativo($justificativo);
@@ -49,8 +51,6 @@ public function __construct() {
         exit;
     }
 }
-
-//Listados
 
 public function listarJustificativos() {
     $listado = new ListadoControl();

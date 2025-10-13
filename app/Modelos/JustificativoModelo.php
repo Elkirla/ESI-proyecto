@@ -9,7 +9,7 @@ class JustificativoModelo{
     }
 
         public function registrarJustificativo(justificativo $justificativo) {
-        $sql = "INSERT INTO justificativos (usuario_id, fecha, fecha_final motivo, archivo_url, estado) 
+        $sql = "INSERT INTO justificativos (usuario_id, fecha, fecha_final, motivo, archivo_url, estado) 
                 VALUES (:usuario_id, :fecha, :fecha_final, :motivo, :archivo_url, :estado)";
         $stmt = $this->db->prepare($sql);
 

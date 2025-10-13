@@ -49,8 +49,7 @@ $routes = [
         // JUSTIFICATIVOS
         // ======================
         "/listar-justificativos"        => "JustificativoControl@listarJustificativos",
-        "/listar-justificativos-admin"  => "AdminControl@listarJustificativosAdmin",
-
+        "/listar-justificativos-admin"  => "AdminControl@listarJustificativosAdmin", 
         // ======================
         // USUARIOS
         // ======================
