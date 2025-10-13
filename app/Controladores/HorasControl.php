@@ -62,49 +62,14 @@ class HorasControl {
             ["clave" => "valor_semanal"]
         );
     }
-public function calcularSaldoCompensatorio() {
-    try {
-        // Recibir datos
-        $horas = $_POST['horas'] ?? null;
-        $valorSemanal = $_POST['valor_semanal'] ?? null;
-        $horasSemanales = $_POST['horas_semanales'] ?? null;
+public function calcularSaldoCompensatorio($horas) {
+    $monto =0; 
+    $horas_totales=$this->obtenerHorasSemanales(); 
+    $valor_semanal=$this->ValorSemanal();
+    // Clasica regla de tres si que si
+    $monto= ($horas * $valor_semanal) / $horas_totales;
+    return $monto;
 
-        // Validaciones básicas
-        if ($horas === null || $valorSemanal === null || $horasSemanales === null) {
-            echo json_encode(['success' => false, 'error' => 'Faltan datos.']);
-            return;
-        }
-
-        // Asegurarse que los valores sean numéricos
-        if (!is_numeric($horas) || !is_numeric($valorSemanal) || !is_numeric($horasSemanales)) {
-            echo json_encode(['success' => false, 'error' => 'Los valores deben ser numéricos.']);
-            return;
-        }
-
-        // Convertir a float (por seguridad)
-        $horas = floatval($horas);
-        $valorSemanal = floatval($valorSemanal);
-        $horasSemanales = floatval($horasSemanales);
-
-        // Validar rango de horas (no más del total mensual ni negativas)
-        $maxHoras = $horasSemanales * 4; // límite razonable de 4 semanas
-        if ($horas < 0 || $horas > $maxHoras) {
-            echo json_encode(['success' => false, 'error' => "El valor de horas no puede superar $maxHoras."]);
-            return;
-        }
-
-        // Calcular saldo compensatorio
-        $saldo = ($horas / $horasSemanales) * $valorSemanal;
-
-        // Devolver JSON con formato limpio
-        echo json_encode([
-            'success' => true,
-            'saldo' => round($saldo, 2),
-            'mensaje' => 'Cálculo exitoso.'
-        ]);
-    } catch (Exception $e) {
-        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-    }
 } 
 public function CalcularHorasDeuda($id_usuario) {
     try {
@@ -124,7 +89,7 @@ public function CalcularHorasDeuda($id_usuario) {
             new DateTime($fin_semana)
         );
 
-        // Calcular deuda actual (sin valores negativos)
+        // Calcular deuda actual  
         $horas_faltantes_actual = max(0, $horas_semanales - $horas_trabajadas_semana_actual);
  
         $justificativos = $this->obtenerJustificativosAprobados($id_usuario);
@@ -366,6 +331,24 @@ if ($horas_faltantes > 0) {
     return [$deudas_semanales, $horas_totales_deuda, $primera_semana_pendiente];
 }
 
+private function ValorSemanal() {
+    ob_start();
+    $this->listado->listadoComun(
+        "configuracion",
+        ["valor"],
+        ["clave" => "valor_semanal"],
+        null,
+        1
+    );
+    $output = ob_get_clean();
+    $data = json_decode($output, true);
+
+    if (!is_array($data) || empty($data[0]['valor'])) {
+        throw new Exception("No se pudo obtener el valor semanal");
+    }
+
+    return floatval($data[0]['valor']);
+}
 
 private function obtenerJustificativoParaSemana($justificativos, $fecha_inicio, $fecha_fin) {
     $inicio = $fecha_inicio->format('Y-m-d');
