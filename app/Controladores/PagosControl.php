@@ -25,16 +25,15 @@ class PagosControl {
                 throw new Exception("Su sesión ha expirado. Por favor, inicie sesión nuevamente.");
             }
 
-            // Validar mes
-            $mes = $_POST['mes'] ?? null;
-            if (!$mes) {
-                throw new Exception("El campo 'mes' es obligatorio.");
-            }
+            // Obtenemos el mes actual como un numero (1-12)
+            $mes = date('m');
+            $mes = ltrim($mes, '0'); // Eliminar ceros a la izquierda
 
-            // Validar monto
-            $monto = $_POST['monto'] ?? null;
-            if (!$monto || !is_numeric($monto) || $monto <= 0) {
-                throw new Exception("El campo 'monto' es obligatorio y debe ser mayor a 0.");
+            // Validar que no exista un pago pendiente o aprobado para el mes actual
+            $existe_pago = $modelo->existePagoPendienteOAprobado($usuario_id, $mes);
+            if ($existe_pago) {
+                throw new Exception("Ya existe un pago pendiente o aprobado para el mes actual.");
+                return;
             }
 
             // Subir archivo
@@ -43,6 +42,7 @@ class PagosControl {
             if (!$archivo_url) {
                 throw new Exception("Debe adjuntar un comprobante de pago.");
             }
+            $monto = $this->obtenerMensualidadValor();
 
             // Determinar estado según fecha límite
             $fecha = date('Y-m-d');
@@ -54,11 +54,6 @@ class PagosControl {
             // Registrar en BD
             $pago = new Pago($usuario_id, $mes, $monto, $fecha, $archivo_url, $estado, $entrega);
             $ok = $modelo->registrarPago($pago);
-
-            if (!$ok) {
-                $this->eliminarArchivo($archivo_url);
-                throw new Exception("Error al registrar el pago. Intente más tarde.");
-            }
 
             echo json_encode([
                 'success' => true,
@@ -183,6 +178,22 @@ public function CalcularPagoDeudas($usuario_id) {
 MÉTODOS AUXILIARES NUEVOS PARA CÁLCULO MENSUAL
 ============================================================*/
 
+private function getFechaLimitePago() {
+    ob_start();
+    $this->obtenerFechaLimite();
+    $output = ob_get_clean();
+    $data = json_decode($output, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new Exception("Error al decodificar JSON de fecha límite: " . json_last_error_msg());
+    }
+
+    if (!is_array($data) || empty($data) || !isset($data[0]['valor'])) {
+        throw new Exception("No se pudo obtener la fecha límite de pago");
+    }
+
+    return intval($data[0]['valor']);
+}
 private function calcularDeudasMensuales($fecha_desde, $fecha_actual, $mensualidad, $pagos_aprobados, $usuario_id, $correo) {
     $deudas_mensuales = [];
     $meses_totales_deuda = 0;
