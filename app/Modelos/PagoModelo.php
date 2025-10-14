@@ -39,13 +39,7 @@ public function registrarPagoCompensatorio(Pago $pago) {
         ':estado'      => $pago->getEstado()
     ]);
 }
-public function getFechaLimitePago() {
-    $sql = "SELECT valor FROM configuracion WHERE clave = 'fecha_limite_pago'";
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? intval($result['valor']) : 10; // Valor por defecto
-}
+
 public function setFechaLimitePago($nuevaFecha) {
     $sql = "UPDATE configuracion SET valor = :fecha WHERE clave = 'fecha_limite_pago'";
     $stmt = $this->db->prepare($sql);
@@ -66,41 +60,61 @@ public function rechazarPago($pagoId) {
     return $stmt->rowCount() > 0;
 }
 
-public function aprobarPagoCompensatorio($pagoId) {
-    $sql = "UPDATE pagos_compensatorios SET estado = 'aprobado' WHERE id = :pagoId";
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute([':pagoId' => $pagoId]);
-    return $stmt->rowCount() > 0;
-}
-
-public function rechazarPagoCompensatorio($pagoId) {
-    $sql = "UPDATE pagos_compensatorios SET estado = 'rechazado' WHERE id = :pagoId";
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute([':pagoId' => $pagoId]);
-    return $stmt->rowCount() > 0;
-}
-
-public function IngresarPagoDeuda($datos) {
+public function guardarDeudasMensualesCompletas($usuario_id, $deudas_mensuales, $meses_totales_deuda, $monto_total, $primer_mes_pendiente) {
     try {
-        // 1. Eliminar cálculo anterior
-        $sql_delete = "DELETE FROM Pagos_Deudas WHERE usuario_id = :usuario_id";
-        $stmt = $this->db->prepare($sql_delete);
-        $stmt->execute([':usuario_id' => $datos['usuario_id']]);
+        $this->db->beginTransaction();
 
-        // 2. Insertar nuevo cálculo
-        $sql_insert = "INSERT INTO Pagos_Deudas (fecha, usuario_id, correo, meses, monto)
-        VALUES (:fecha, :usuario_id, :correo, :meses, :monto)";
+        // Eliminar deudas mensuales anteriores
+        $sql_delete = "DELETE FROM Deudas_Mensuales WHERE usuario_id = :usuario_id";
+        $stmt = $this->db->prepare($sql_delete);
+        $stmt->execute([':usuario_id' => $usuario_id]);
+
+        $sql_insert = "INSERT INTO Deudas_Mensuales
+            (usuario_id, correo, mes, fecha_inicio, fecha_fin, monto, adeudado, tiene_pago, procesado_en)
+            VALUES
+            (:usuario_id, :correo, :mes, :fecha_inicio, :fecha_fin, :monto, :adeudado, :tiene_pago, NOW())";
+
         $stmt = $this->db->prepare($sql_insert);
-        return $stmt->execute([
-            ':fecha'      => $datos['fecha'],
-            ':usuario_id' => $datos['usuario_id'],
-            ':correo'     => $datos['correo'],
-            ':meses'      => $datos['meses'],
-            ':monto'      => $datos['monto']
+
+        foreach ($deudas_mensuales as $deuda) {
+            $stmt->execute([
+                ':usuario_id' => $deuda['usuario_id'],
+                ':correo' => $deuda['correo'],
+                ':mes' => $deuda['mes'],  
+                ':fecha_inicio' => $deuda['fecha_inicio'],
+                ':fecha_fin' => $deuda['fecha_fin'],
+                ':monto' => $deuda['monto'],
+                ':adeudado' => $deuda['adeudado'],
+                ':tiene_pago' => $deuda['tiene_pago']
+            ]);
+        }
+
+        // ctualizar tabla Pagos_Deudas
+        $sql_upsert = "INSERT INTO Pagos_Deudas
+            (fecha, usuario_id, correo, meses, monto, primer_mes_pendiente)
+            VALUES (CURDATE(), :usuario_id, :correo, :meses, :monto, :primer_mes_pendiente)
+            ON DUPLICATE KEY UPDATE
+                fecha = VALUES(fecha),
+                correo = VALUES(correo),
+                meses = VALUES(meses),
+                monto = VALUES(monto),
+                primer_mes_pendiente = VALUES(primer_mes_pendiente)";
+
+        $stmt = $this->db->prepare($sql_upsert);
+        $stmt->execute([
+            ':usuario_id' => $usuario_id,
+            ':correo' => $deudas_mensuales[0]['correo'] ?? '',
+            ':meses' => $meses_totales_deuda,
+            ':monto' => $monto_total,
+            ':primer_mes_pendiente' => $primer_mes_pendiente
         ]);
 
+        $this->db->commit();
+        return true;
+
     } catch (Exception $e) {
-        error_log("[MODELO_DEUDA_ERROR] " . $e->getMessage());
+        $this->db->rollBack();
+        error_log("[MODELO_GUARDAR_DEUDAS_MENSUALES_ERROR] " . $e->getMessage());
         return false;
     }
 }

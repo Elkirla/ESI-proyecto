@@ -28,4 +28,21 @@ class PagoCompensatorioModelo {
         $stmt->execute([$usuario_id, $fecha_inicio, $fecha_fin]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function aprobarPagoCompensatorio($pagoId) {
+        $sql = "UPDATE pagos_compensatorios 
+                SET estado = 'aprobado' 
+                WHERE id = :pagoId";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':pagoId' => $pagoId]);
+        return $stmt->rowCount() > 0;
+}
+
+    public function rechazarPagoCompensatorio($pagoId) {
+        $sql = "UPDATE pagos_compensatorios 
+                SET estado = 'rechazado' 
+                WHERE id = :pagoId";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':pagoId' => $pagoId]);
+        return $stmt->rowCount() > 0;
+}
 }

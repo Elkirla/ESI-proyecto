@@ -101,13 +101,31 @@ CREATE TABLE pagos_mensuales (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
-CREATE TABLE Pagos_Deudas(
+CREATE TABLE Deudas_Mensuales (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    fecha DATE NOT NULL,
     usuario_id INT NOT NULL,
     correo VARCHAR(100) NOT NULL,
-    meses VARCHAR(20) NOT NULL,
+    mes VARCHAR(20) NOT NULL,  
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
     monto DECIMAL(10,2) NOT NULL,
+    adeudado TINYINT(1) DEFAULT 0,
+    tiene_pago TINYINT(1) DEFAULT 0,
+    procesado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_usuario_mes (usuario_id, mes),  
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (correo) REFERENCES usuarios(email)
+);
+
+-- Tabla resumen de deudas (única por usuario)
+CREATE TABLE Pagos_Deudas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATE NOT NULL,
+    usuario_id INT NOT NULL UNIQUE,
+    correo VARCHAR(100) NOT NULL,
+    meses INT NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    primer_mes_pendiente DATE DEFAULT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (correo) REFERENCES usuarios(email)
 );

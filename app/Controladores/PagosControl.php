@@ -47,7 +47,7 @@ class PagosControl {
             // Determinar estado según fecha límite
             $fecha = date('Y-m-d');
             $diaActual = intval(date('d'));
-            $diaLimite = $modelo->getFechaLimitePago();
+            $diaLimite = $this->getFechaLimitePago();
             $estado = 'pendiente';
             $entrega = ($diaActual <= $diaLimite) ? 'en_hora' : 'atrasado';
 
@@ -130,89 +130,48 @@ public function CalcularPagoDeudas($usuario_id) {
         }
 
         // Obtener información del usuario
-        ob_start();
-        $this->listado->listadoComun(
-            "usuarios",
-            ["*"],                      
-            ["id" => $usuario_id],       
-            null,                        
-            1                            
-        );
-        $jsonUsuario = ob_get_clean();
-        $usuario = json_decode($jsonUsuario, true);
-
-        if (!$usuario || !isset($usuario[0])) {
-            return $this->responderJson("error", "No se encontró información del usuario.");
-        }
-
-        $fecha_inicio = $usuario[0]['fecha_registro'] ?? null;
-        $correo = $usuario[0]['email'] ?? null;
+        $usuario_info = $this->obtenerUsuarioInfo($usuario_id);
+        $fecha_inicio = $usuario_info['fecha_registro'] ?? null;
+        $correo = $usuario_info['email'] ?? null;
 
         if (!$fecha_inicio) {
             return $this->responderJson("error", "No se encontró la fecha de registro del usuario.");
         }
 
-        // Obtener mensualidad de la tabla configuracion
+        // Obtener mensualidad
         $mensualidad = $this->obtenerMensualidadValor();
 
-        // Obtener pagos aprobados para este usuario
+        // Obtener pagos aprobados
         $pagos_aprobados = $this->obtenerPagosAprobados($usuario_id);
-
-        // Obtener último cálculo de deuda (si existe)
-        $ultimo_calculo = $this->obtenerUltimoCalculoDeuda($usuario_id);
 
         $fecha_desde = new DateTime($fecha_inicio);
         $fecha_actual = new DateTime();
 
-        // Si hay un cálculo previo, empezar desde el mes siguiente al último cálculo
-        if ($ultimo_calculo && isset($ultimo_calculo['fecha'])) {
-            $fecha_desde = new DateTime($ultimo_calculo['fecha']);
-            $fecha_desde->modify('+1 month');
-        }
+        // Calcular meses con deuda
+        list($deudas_mensuales, $meses_totales_deuda, $primer_mes_pendiente) = $this->calcularDeudasMensuales(
+            $fecha_desde,
+            $fecha_actual,
+            $mensualidad,
+            $pagos_aprobados,
+            $usuario_id,
+            $correo
+        );
 
-        // Si la fecha desde es mayor que la actual, no hay meses para verificar
-        if ($fecha_desde > $fecha_actual) {
-            $meses_adeudados = 0;
-            $monto_total = 0;
-        } else {
-            // Calcular meses con deuda considerando pagos aprobados
-            $deuda_meses = [];
-            $periodo = new DatePeriod(
-                $fecha_desde,
-                new DateInterval('P1M'),
-                $fecha_actual
-            );
-
-            foreach ($periodo as $fecha) {
-                $mes_actual = $fecha->format('Y-m');
-                
-                // Verificar si hay pago aprobado para este mes
-                $tiene_pago = $this->tienePagoAprobadoParaMes($pagos_aprobados, $mes_actual);
-                
-                if (!$tiene_pago) {
-                    $deuda_meses[] = $mes_actual;
-                }
-            }
-
-            $meses_adeudados = count($deuda_meses);
-            $monto_total = $meses_adeudados * $mensualidad;
-        }
-
-        // Guardar deuda
+        // Guardar deudas detalladas
         $modelo = new PagoModelo();
-        $datos = [
-            'fecha'      => $fecha_actual->format('Y-m-d'),
-            'usuario_id' => $usuario_id,
-            'correo'     => $correo,
-            'meses'      => $meses_adeudados,
-            'monto'      => $monto_total
-        ];
+        $guardado = $modelo->guardarDeudasMensualesCompletas(
+            $usuario_id,
+            $deudas_mensuales,
+            $meses_totales_deuda,
+            $mensualidad * $meses_totales_deuda,
+            $primer_mes_pendiente
+        );
 
-        if (!$modelo->IngresarPagoDeuda($datos)) {
+        if (!$guardado) {
             return $this->responderJson("error", "No se pudo registrar la deuda en la base de datos.");
         }
 
-        return $this->responderJson("ok", "Cálculo de deuda actualizado correctamente. Meses adeudados: " . $meses_adeudados . ", Monto: " . $monto_total);
+        return $this->responderJson("ok", "Cálculo de deuda actualizado correctamente. Meses adeudados: " . $meses_totales_deuda . ", Monto: " . ($mensualidad * $meses_totales_deuda));
 
     } catch (Exception $e) {
         error_log("[CALCULAR_DEUDA_ERROR] " . $e->getMessage());
@@ -220,18 +179,87 @@ public function CalcularPagoDeudas($usuario_id) {
     }
 }
 
-    /* ============================================================
-    MÉTODOS AUXILIARES PRIVADOS
-    ============================================================ */
-    private function responderJson($status, $message) {
-        echo json_encode(['status' => $status, 'message' => $message]);
-    }
-    private function eliminarArchivo($ruta) {
-        $rutaCompleta = $_SERVER['DOCUMENT_ROOT'] . $ruta;
-        if (file_exists($rutaCompleta)) {
-            unlink($rutaCompleta);
+/* ============================================================
+MÉTODOS AUXILIARES NUEVOS PARA CÁLCULO MENSUAL
+============================================================*/
+
+private function calcularDeudasMensuales($fecha_desde, $fecha_actual, $mensualidad, $pagos_aprobados, $usuario_id, $correo) {
+    $deudas_mensuales = [];
+    $meses_totales_deuda = 0;
+    $primer_mes_pendiente = null;
+
+    // Asegurarse de empezar desde el primer día del mes
+    $fecha_desde->modify('first day of this month');
+    $fecha_actual->modify('first day of this month');
+
+    $mes_actual = clone $fecha_desde;
+
+    while ($mes_actual <= $fecha_actual) {
+        $mes_nombre = $this->obtenerNombreMes($mes_actual);
+        $fecha_fin_mes = clone $mes_actual;
+        $fecha_fin_mes->modify('last day of this month');
+
+        // Verificar si hay pago aprobado para este mes
+        $mes_formato = $mes_actual->format('Y-m');
+        $tiene_pago = $this->tienePagoAprobadoParaMes($pagos_aprobados, $mes_formato);
+        
+        $adeudado = !$tiene_pago;
+        
+        if ($adeudado) {
+            $meses_totales_deuda++;
+            if ($primer_mes_pendiente === null) {
+                $primer_mes_pendiente = $mes_actual->format('Y-m-d');
+            }
         }
+
+        $deudas_mensuales[] = [
+            'usuario_id' => $usuario_id,
+            'correo' => $correo,
+            'mes' => $mes_nombre, // Ej: "Enero 2024"
+            'fecha_inicio' => $mes_actual->format('Y-m-d'),
+            'fecha_fin' => $fecha_fin_mes->format('Y-m-d'),
+            'monto' => $adeudado ? $mensualidad : 0,
+            'adeudado' => $adeudado ? 1 : 0,
+            'tiene_pago' => $tiene_pago ? 1 : 0
+        ];
+
+        // Avanzar al siguiente mes
+        $mes_actual->modify('+1 month');
     }
+
+    return [$deudas_mensuales, $meses_totales_deuda, $primer_mes_pendiente];
+}
+
+private function obtenerNombreMes(DateTime $fecha) {
+    $meses_espanol = [
+        1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
+        5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
+        9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
+    ];
+    
+    $mes_numero = (int)$fecha->format('n');
+    $anio = $fecha->format('Y');
+    
+    return $meses_espanol[$mes_numero] . ' ' . $anio;
+}
+
+private function obtenerUsuarioInfo($usuario_id) {
+    ob_start();
+    $this->listado->listadoComun(
+        "usuarios",
+        ["fecha_registro", "email"],
+        ["id" => $usuario_id],
+        null,
+        1
+    );
+    $output = ob_get_clean();
+    $data = json_decode($output, true);
+
+    if (empty($data) || !isset($data[0])) {
+        throw new Exception("Error al obtener información del usuario");
+    }
+    return $data[0];
+}
 
 private function obtenerMensualidadValor() {
     ob_start();
@@ -268,40 +296,6 @@ private function obtenerPagosAprobados($usuario_id) {
     return is_array($data) ? $data : [];
 }
 
-private function obtenerUltimoCalculoDeuda($usuario_id) {
-    ob_start();
-    $this->listado->listadoComun(
-        "pagos_deudas",
-        ["fecha", "correo"],
-        ["usuario_id" => $usuario_id],
-        ["fecha", "DESC"],
-        1
-    );
-    $output = ob_get_clean();
-    $data = json_decode($output, true);
-
-    if (is_array($data) && !empty($data) && isset($data[0])) {
-        return $data[0];
-    }
-    
-    return null;
-}
-    private function obtenerUsuarioInfo($usuario_id) {
-        ob_start();
-        $this->listado->listadoComun(
-            "usuarios",
-            ["fecha_inicio", "email"],
-            ["id" => $usuario_id],
-            null,
-            1
-        );
-        $output = ob_get_clean();
-        $data = json_decode($output, true);
-
-        if (empty($data)) throw new Exception("Error al obtener información del usuario");
-        return $data[0];
-    }
-
 private function tienePagoAprobadoParaMes($pagos_aprobados, $mes_buscado) {
     if (empty($pagos_aprobados)) {
         return false;
@@ -325,6 +319,10 @@ private function tienePagoAprobadoParaMes($pagos_aprobados, $mes_buscado) {
     }
     
     return false;
+}
+
+private function responderJson($status, $message) {
+    echo json_encode(['status' => $status, 'message' => $message]);
 }
     public function ActualizarDeudaPago() {
         $usuario_id = $_SESSION['usuario_id'] ?? null; 

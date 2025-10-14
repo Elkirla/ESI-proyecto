@@ -84,8 +84,8 @@ public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $hor
         $stmt = $this->db->prepare($sql_upsert);
         $stmt->execute([
             ':usuario_id' => $usuario_id,
-            ':horas_acumuladas' => $horas_acumuladas_semana_actual, // ✅ Solo la semana actual
-            ':horas_deuda_total' => $horas_totales_deuda,            // ✅ Total acumulado histórico
+            ':horas_acumuladas' => $horas_acumuladas_semana_actual,  
+            ':horas_deuda_total' => $horas_totales_deuda,             
             ':primera_semana_pendiente' => $primera_semana_pendiente
         ]);
 

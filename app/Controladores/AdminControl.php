@@ -225,15 +225,9 @@ private $listado;
     // ===================================
     // NOTIFICACIONES
     // ===================================
-    public function CrearNotificacion() {  
+    public function CrearNotificacion($usuario_id, $mensaje) {  
         require_once __DIR__ . '/../Modelos/NotiModelo.php';
-        try {
-            $usuario_id = $_POST['usuario_id'] ?? null;
-            $mensaje = $_POST['mensaje'] ?? null;
-
-            if (!$usuario_id || !$mensaje) {
-                throw new Exception("Faltan parámetros.");
-            }
+        try { 
 
             $modelo = new NotiModelo();
             if (!$modelo->InsertarNoti($usuario_id, $mensaje)) {
