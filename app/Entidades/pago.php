@@ -8,7 +8,15 @@ class Pago {
     private $estado;
     private $entrega;
 
-    public function __construct($usuario_id, $mes = null, $monto, $fecha, $archivo_url, $estado, $entrega = null) {
+    public function __construct(
+        $usuario_id,
+        $mes,
+        $monto,
+        $fecha,
+        $archivo_url,
+        $estado,
+        $entrega
+    ) {
         $this->usuario_id = $usuario_id;
         $this->mes = $mes;
         $this->monto = $monto;

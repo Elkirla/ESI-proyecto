@@ -121,8 +121,8 @@ public function guardarDeudasMensualesCompletas($usuario_id, $deudas_mensuales, 
 public function existePagoPendienteOAprobado($usuario_id, $mes) {
     $sql = "SELECT COUNT(*) FROM pagos_mensuales 
             WHERE usuario_id = :usuario_id 
-              AND mes = :mes 
-              AND estado IN ('pendiente', 'aprobado')";
+            AND mes = :mes 
+            AND estado IN ('pendiente', 'aprobado')";
     $stmt = $this->db->prepare($sql);
     $stmt->execute([
         ':usuario_id' => $usuario_id,

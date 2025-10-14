@@ -15,57 +15,46 @@ class PagosControl {
     /* ============================================================
     REGISTRAR NUEVO PAGO
     ============================================================ */
-    public function IngresarPago() {
-        try {
-            $modelo = new PagoModelo();
+public function IngresarPago() {
+    try {
+        error_log("Inicio IngresarPago");
 
-            // Validar sesión
-            $usuario_id = $_SESSION['usuario_id'] ?? null;
-            if (!$usuario_id) {
-                throw new Exception("Su sesión ha expirado. Por favor, inicie sesión nuevamente.");
-            }
+        $modelo = new PagoModelo();
+        $usuario_id = $_SESSION['usuario_id'] ?? null;
+        if (!$usuario_id) throw new Exception("Sesión expirada.");
 
-            // Obtenemos el mes actual como un numero (1-12)
-            $mes = date('m');
-            $mes = ltrim($mes, '0'); // Eliminar ceros a la izquierda
+        $mes = date('m');
+        error_log("Mes actual: $mes");
 
-            // Validar que no exista un pago pendiente o aprobado para el mes actual
-            $existe_pago = $modelo->existePagoPendienteOAprobado($usuario_id, $mes);
-            if ($existe_pago) {
-                throw new Exception("Ya existe un pago pendiente o aprobado para el mes actual.");
-                return;
-            }
-
-            // Subir archivo
-            $uploader = new Uploads('/var/www/html/public/uploads/'); 
-            $archivo_url = $uploader->subirArchivo('archivo');
-            if (!$archivo_url) {
-                throw new Exception("Debe adjuntar un comprobante de pago.");
-            }
-            $monto = $this->obtenerMensualidadValor();
-
-            // Determinar estado según fecha límite
-            $fecha = date('Y-m-d');
-            $diaActual = intval(date('d'));
-            $diaLimite = $this->getFechaLimitePago();
-            $estado = 'pendiente';
-            $entrega = ($diaActual <= $diaLimite) ? 'en_hora' : 'atrasado';
-
-            // Registrar en BD
-            $pago = new Pago($usuario_id, $mes, $monto, $fecha, $archivo_url, $estado, $entrega);
-            $ok = $modelo->registrarPago($pago);
-
-            echo json_encode([
-                'success' => true,
-                'message' => 'Pago registrado exitosamente. Estará pendiente de verificación.'
-            ]);
-
-        } catch (Exception $e) {
-            error_log("[PAGOS_ERROR] User: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
-            http_response_code(500);
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        if ($modelo->existePagoPendienteOAprobado($usuario_id, $mes)) {
+            echo json_encode(['success' => true, 'message' => 'Ya has ingresado un pago este mes.']);
+            return;
         }
+
+        $uploader = new Uploads('/var/www/html/public/uploads/');
+        $archivo_url = $uploader->subirArchivo('archivo');
+        error_log("Archivo URL: $archivo_url");
+
+        if (!$archivo_url) throw new Exception("Debe adjuntar un comprobante de pago.");
+
+        $monto = $this->obtenerMensualidadValor();
+        error_log("Monto obtenido: $monto");
+
+        $diaLimite = $this->getFechaLimitePago();
+        $fecha = date('Y-m-d');
+        $diaActual = intval(date('d'));
+        $estado = 'pendiente';
+        $entrega = ($diaActual <= $diaLimite) ? 'en_hora' : 'atrasado';
+
+        $pago = new Pago($usuario_id, $mes, $monto, $fecha, $archivo_url, $estado, $entrega);
+        $modelo->registrarPago($pago);
+
+        echo json_encode(['success' => true, 'message' => 'Pago registrado exitosamente.']);
+    } catch (Exception $e) {
+        error_log("[ERROR_PAGO] " . $e->getMessage());
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
+}
 
     /* ============================================================
     OBTENER FECHA LÍMITE DE PAGO
@@ -180,18 +169,16 @@ MÉTODOS AUXILIARES NUEVOS PARA CÁLCULO MENSUAL
 
 private function getFechaLimitePago() {
     ob_start();
-    $this->obtenerFechaLimite();
+    $this-> listado->listadoComun(
+        "configuracion",
+        ["valor"],
+        ["clave" => "fecha_limite_pago"]
+    );
     $output = ob_get_clean();
     $data = json_decode($output, true);
-
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        throw new Exception("Error al decodificar JSON de fecha límite: " . json_last_error_msg());
+    if (empty($data) || !isset($data[0]['valor'])) {
+        return 5; // Valor por defecto si no se encuentra
     }
-
-    if (!is_array($data) || empty($data) || !isset($data[0]['valor'])) {
-        throw new Exception("No se pudo obtener la fecha límite de pago");
-    }
-
     return intval($data[0]['valor']);
 }
 private function calcularDeudasMensuales($fecha_desde, $fecha_actual, $mensualidad, $pagos_aprobados, $usuario_id, $correo) {
