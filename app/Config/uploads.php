@@ -15,9 +15,17 @@ class Uploads {
         $this->maxSize = $maxSize;
 
         // Asegurar directorio
-        if (!is_dir($this->uploadsDir)) {
-            mkdir($this->uploadsDir, 0755, true);
+$uploadDir = '/var/www/html/public/uploads/';
+
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0775, true);
+    chown($uploadDir, 'www-data');
+    chgrp($uploadDir, 'www-data');
+}
+        if (!is_writable($this->uploadsDir)) {
+            throw new Exception("El directorio de subidas no es escribible.");
         }
+
     }
 
     public function subirArchivo($fileInputName) {
