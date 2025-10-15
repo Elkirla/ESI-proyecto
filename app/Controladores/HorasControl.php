@@ -148,8 +148,54 @@ private function obtenerHorasFaltantesSemanaAlternativo($usuario_id, $fecha_inic
     }
 }
 
-public function obtenerHorasTrabajadasSemana($usuario_id) {
- 
+public function obtenerHorasTrabajadasSemana() {
+    try {
+        // Obtener el rango de la semana actual
+        $semana = $this->obtenerSemanaActual();
+        $fecha_inicio = $semana['inicio'];
+        
+        error_log("Buscando horas trabajadas para usuario: $this->usuario_id, fecha_inicio: $fecha_inicio");
+  
+        ob_start();
+        $this->listado->listadoComun(
+            "Semana_deudas",
+            ["horas_trabajadas", "fecha_inicio", "fecha_fin"],
+            [
+                "usuario_id" => $this->usuario_id,
+                "fecha_inicio" => $fecha_inicio
+            ],
+            null,
+            1
+        );
+        $output = ob_get_clean();
+        error_log("Respuesta de listadoComun: " . $output);
+        
+        $data = json_decode($output, true);
+
+        if (is_array($data) && count($data) > 0) {
+            $horas_trabajadas = (float) $data[0]['horas_trabajadas'];
+            error_log("Horas trabajadas encontradas: " . $horas_trabajadas);
+            
+            echo json_encode([
+                'success' => true,
+                'horas_trabajadas' => $horas_trabajadas,
+                'fecha_inicio' => $data[0]['fecha_inicio'],
+                'fecha_fin' => $data[0]['fecha_fin']
+            ]);
+        } else {
+            // Si no encuentra por fecha_inicio exacta, buscar alternativamente
+            error_log("No se encontró por fecha_inicio exacta, buscando alternativa...");
+            $this->obtenerHorasTrabajadasSemanaAlternativo($fecha_inicio);
+        }
+
+    } catch (Exception $e) {
+        error_log("Error al obtener horas trabajadas: " . $e->getMessage());
+        echo json_encode([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'horas_trabajadas' => 0
+        ]);
+    }
 }
 
 public function calcularSaldoCompensatorio($horas) {
