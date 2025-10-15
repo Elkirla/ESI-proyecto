@@ -6,7 +6,7 @@ class PagosControl {
         require_once __DIR__ . '/../Entidades/pago.php'; 
         require_once __DIR__ . '/../Modelos/PagoModelo.php';
         require_once __DIR__ . '/../Controladores/ListadoControl.php';
-        require_once __DIR__ . '/../Config/uploads.php';
+
         header('Content-Type: application/json; charset=utf-8');
 
         $this->listado = new ListadoControl();
@@ -16,6 +16,7 @@ class PagosControl {
     REGISTRAR NUEVO PAGO
     ============================================================ */
 public function IngresarPago() {
+    require_once __DIR__ . '/../Config/uploads.php';
     try {
         error_log("Inicio IngresarPago");
 

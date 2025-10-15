@@ -25,8 +25,8 @@ $routes = [
         "/obtener-mensualidad"       => "PagosControl@obtenerMensualidad",
         "/pagos-compensatorios"      => "PagosControl@verPagosCompensatorios",
         "/actualizarPagoDeudas"      => "PagosControl@ActualizarDeudaPago",
-        "/verPagosDeuda"             => "PagosControl@verPagosDeuda",
-
+        "/verPagosDeuda"             => "PagosControl@verPagosDeuda", 
+ 
         // ======================
         // PAGOS (admin)
         // ======================

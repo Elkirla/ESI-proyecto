@@ -62,6 +62,96 @@ class HorasControl {
             ["clave" => "valor_semanal"]
         );
     }
+public function obtenerHorasFaltantesSemana($usuario_id) {
+    try {
+        // Obtener el rango de la semana actual
+        $semana = $this->obtenerSemanaActual();
+        $fecha_inicio = $semana['inicio'];
+        
+        error_log("Buscando deudas para usuario: $usuario_id, fecha_inicio: $fecha_inicio");
+
+        // Obtener horas faltantes usando ListadoControl - SOLO por fecha_inicio
+        require_once __DIR__ . '/../Controladores/ListadoControl.php';
+        $listadoControl = new ListadoControl();
+
+        ob_start();
+        $listadoControl->listadoComun(
+            "Semana_deudas",
+            ["horas_faltantes", "fecha_inicio", "fecha_fin"],
+            [
+                "usuario_id" => $usuario_id,
+                "fecha_inicio" => $fecha_inicio
+                // Eliminamos fecha_fin del filtro ya que puede variar
+            ],
+            null,
+            1
+        );
+        $output = ob_get_clean();
+        error_log("Respuesta de listadoComun: " . $output);
+        
+        $data = json_decode($output, true);
+
+        if (is_array($data) && count($data) > 0) {
+            error_log("Deuda encontrada: " . print_r($data[0], true));
+            return (float) $data[0]['horas_faltantes'];
+        } else {
+            // Si no encuentra por fecha_inicio exacta, buscamos cualquier deuda de esta semana
+            error_log("No se encontró por fecha_inicio exacta, buscando en rango...");
+            return $this->obtenerHorasFaltantesSemanaAlternativo($usuario_id, $fecha_inicio);
+        }
+
+    } catch (Exception $e) {
+        error_log("Error al obtener horas faltantes: " . $e->getMessage());
+        return 0;
+    }
+}
+
+private function obtenerHorasFaltantesSemanaAlternativo($usuario_id, $fecha_inicio_semana) {
+    try {
+        require_once __DIR__ . '/../Controladores/ListadoControl.php';
+        $listadoControl = new ListadoControl();
+
+        // Buscar cualquier deuda del usuario en la semana actual
+        ob_start();
+        $listadoControl->listadoComun(
+            "Semana_deudas",
+            ["horas_faltantes", "fecha_inicio", "fecha_fin"],
+            [
+                "usuario_id" => $usuario_id
+            ],
+            ["fecha_inicio DESC"], // Ordenar por la más reciente
+            1
+        );
+        $output = ob_get_clean();
+        $data = json_decode($output, true);
+
+        if (is_array($data) && count($data) > 0) {
+            $deuda = $data[0];
+            error_log("Deuda más reciente encontrada: " . print_r($deuda, true));
+            
+            // Verificar si la deuda más reciente es de esta semana
+            $fechaDeuda = new DateTime($deuda['fecha_inicio']);
+            $fechaInicioSemana = new DateTime($fecha_inicio_semana);
+            
+            if ($fechaDeuda->format('Y-W') === $fechaInicioSemana->format('Y-W')) {
+                return (float) $deuda['horas_faltantes'];
+            } else {
+                throw new Exception("La deuda más reciente no es de esta semana");
+            }
+        } else {
+            throw new Exception("No se encontraron deudas para el usuario");
+        }
+
+    } catch (Exception $e) {
+        error_log("Error en método alternativo: " . $e->getMessage());
+        throw new Exception("No se encontraron deudas para la semana actual");
+    }
+}
+
+public function obtenerHorasTrabajadasSemana($usuario_id) {
+ 
+}
+
 public function calcularSaldoCompensatorio($horas) {
     $monto =0; 
     $horas_totales=$this->obtenerHorasSemanales(); 
@@ -69,14 +159,13 @@ public function calcularSaldoCompensatorio($horas) {
     // Clasica regla de tres si que si
     $monto= ($horas * $valor_semanal) / $horas_totales;
     return $monto;
-
-} 
+}
 public function CalcularHorasDeuda($id_usuario) {
     try {
         $horasModelo = new HorasModelo(); 
         $horas_semanales = $this->obtenerHorasSemanales();
 
-        // CORRECCIÓN: Calcular correctamente la semana actual
+        //Calcular la semana actual
         $semana_actual = $this->obtenerSemanaActual();
         $inicio_semana = $semana_actual['inicio'];
         $fin_semana = $semana_actual['fin'];
@@ -140,22 +229,17 @@ public function CalcularHorasDeuda($id_usuario) {
 MÉTODOS AUXILIARES PRIVADOS CORREGIDOS
 ===========================================================*/
 
-private function obtenerSemanaActual() {
+public function obtenerSemanaActual() {
     $hoy = new DateTime();
-    $dia_semana = (int)$hoy->format('N'); // 1 (lunes) a 7 (domingo)
     
+    // Siempre calcular desde el lunes de esta semana
     $inicio_semana = clone $hoy;
-    $fin_semana = clone $hoy;
+    $inicio_semana->modify('monday this week');
     
-    if ($dia_semana == 7) {
-        // Domingo: semana del lunes anterior al domingo actual
-        $inicio_semana->modify('monday this week');
-        // $fin_semana ya es el domingo actual
-    } else {
-        // Lunes a sábado: semana del lunes actual al domingo siguiente
-        $inicio_semana->modify('monday this week');
-        $fin_semana->modify('sunday this week');
-    }
+    $fin_semana = clone $inicio_semana;
+    $fin_semana->modify('+6 days'); // Domingo
+    
+    error_log("Semana calculada: " . $inicio_semana->format('Y-m-d') . " a " . $fin_semana->format('Y-m-d'));
     
     return [
         'inicio' => $inicio_semana->format('Y-m-d'),
