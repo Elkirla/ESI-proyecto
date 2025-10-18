@@ -24,12 +24,10 @@ public function __construct() {
             echo json_encode(['success' => false, 'error' => 'Faltan datos']);
             return;
         }
-
-        // Subir archivo usando la clase Uploads
-        /*
+ 
         $uploader = new Uploads('/var/www/html/public/uploads/'); 
         $archivo_url = $uploader->subirArchivo('archivo'); // <- "archivo" es el name del input
-        */
+ 
         
         $justificativo = new justificativo($usuario_id, $fecha, $fecha_final, $motivo, $archivo_url);
 
