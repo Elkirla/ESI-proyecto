@@ -1,340 +1,166 @@
+/* Fuente general */
 body {
-    margin: 0;
-    padding: 0;
-    height: auto;
-    overflow-x: hidden; 
-    background-color: #000000;
-}
-p  {
-    font-family: 'Montserrat', sans-serif; 
-    font-size: 1rem;
-    padding: 0;
-    margin: 5px;
-    justify-content: center;
-    text-align: center; 
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
 }
 
-h2 {
-     display: inline-block; 
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-weight: 300; 
-    font-size: 2.5rem;
-    margin: 10px;
-    left:3.5%;
-    text-align: center;
-  
-}
- 
-.header {
-    display: none;
-    z-index: 2; 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    background-color: #00000070;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.regresar_flecha {
-    width: 35px; 
-    height: 35px;
-    margin-left: 16px;
-    cursor: pointer; 
-}
-
-.logoheader{
-    width: 55px; 
-    height: 55px;
-    margin-left: 16px;
-}
-.menu {
-    width: 35px;  
-    height: 35px;  
-    margin-right: 16px;
-    cursor: pointer;  
-}
-.separador {
-    position: fixed;
-    top: 55px; 
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #ffffff; 
-}
-
+/* Contenedor principal izquierdo */
 .login-container {
-    display: flex;
-    position: absolute;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end; 
-    box-sizing: border-box;
-    height: 100vh;
-    width: 100%;
-    top: 0px;
-    padding: 0 5%; 
-    color: white;
-    background: linear-gradient(to left, 
-            rgb(0, 0, 0),   
-            rgba(0, 0, 0, 0.432),  
-            rgba(0, 0, 0, 0)    
-        );
-}
-.login-container a{
-    color: white;
-    text-decoration: none;
-}
-.login-container a:hover {
-    color: #003cff;
-    text-decoration: underline;
-}
-.login-column {
-    margin-top: 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    box-sizing: border-box;
-    margin: 0px;
-    gap: 5px; 
+  width: 50%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-#form-login {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    justify-content: center;  
-    min-width: 450px; 
-    height: auto; 
-    max-height: 80%; 
-    background-color: #000000;
-    border-radius: 0px;
-    padding: 30px;
-    margin: 0px;
-    margin-top: 30px; 
-    margin-right: 0px; 
+/* Botón de regresar */
+.regresar-container {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 80px;
+  height: 40px;
+  background-color: #5F7DDE;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  cursor: pointer;
+  border-right: 5px solid #2e4ba5;
+  border-bottom: 5px solid #2e4ba5;
+  border-radius: 0 10px 10px 0;  
 }
-#link-registro {
-    font-size: 0.8rem;
-    color: #ffffff;
-    text-decoration: none;
+
+
+.regresar-container img {
+  width: 40px; 
+}
+
+/* Título */
+.login-container h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #000;
+}
+
+/* Formulario */
+.login-column {
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  max-width: 300px;
 }
 
 .input-field {
-    width: 85%; 
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1.2rem;
-    box-sizing: border-box;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  font-size: 1.1rem;
 }
 
+/* Botón ingresar */
 .boton-login {
-    background-color: transparent;
-    color: white;
-    border: none;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.4rem;
-    cursor: pointer;
-    border-radius: 3px;
-    padding: 10px 20px;
+  background-color: #dc931d;
+  font-size: 1rem;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  border-right: 5px solid #b17400;
+  border-bottom: 5px solid #b17400;
+  transition: 0.2s ease;
 }
 
 .boton-login:hover {
-    color: #000000; 
-    background-color: white;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;  
+  background-color: #2e4ba5;
+  border-right: 5px solid #1c316f;
+  border-bottom: 5px solid #1c316f;
 }
 
-.avatar-icon {
-    width: 60%;
-    min-width: 300px;
-    border-radius: 50%;
-    margin: 0;
-    background: #fff;
-    object-fit:cover;
-    margin-top: 0;
-    box-shadow: 0 2px 8px #0005;
+/* Contenedor derecho */
+.Lado-derecho-container {
+  width: 50%;
+  background: linear-gradient(to left, #5F7DDE 90%, #ffffff 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
 }
 
-#login-ingresar {
-    width: 85%;
+/* Título derecho */
+.Lado-derecho-container h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
- 
-.footer-container {
-    position: absolute;
-    top: 109VH;
-    left: 0;
+
+/* Icono */
+.Lado-derecho-container img {
+  width: 80px;
+  margin-bottom: 15px;
+}
+
+/* Texto */
+.Lado-derecho-container p {
+  width: 60%;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  margin-bottom: 25px;
+  font-family: 'Montserrat', sans-serif;
+
+}
+
+/* Botón registrar */
+.Lado-derecho-container button {
+  background-color: #2e4ba5;
+  font-size: 1rem;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  width: 250px;
+  border-right: 5px solid #1c316f;
+  border-bottom: 5px solid #1c316f;
+  transition: 0.2s ease;
+}
+
+.Lado-derecho-container button:hover {
+  background-color: #dc931d;
+  border-right: 5px solid #b17400;
+  border-bottom: 5px solid #b17400;
+}
+
+.Lado-derecho-container button a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Responsividad */
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+  }
+
+  .login-container,
+  .Lado-derecho-container {
     width: 100%;
-    height: 120%;
-    background: linear-gradient(to bottom, 
-        #000000 0%, 
-        #00071b 20%, 
-        #010c2e8f 80%, 
-        #02175791 100%);
-    color: white;
-    padding: 40px 10%;
-    box-sizing: border-box;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
-}
+    height: 50%;
+  }
 
-.footer-column {
-    width: 30%;
-    margin-bottom: 30px;
-}
-
-.footer-column h3 {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ffffff;
-    padding-bottom: 10px;
-}
-
-.footer-column p, .footer-column a {
-    color: #cccccc;
-    line-height: 1.6;
-    text-decoration: none;
-}
-
-.footer-column a:hover {
-    color: #ffffff;
-    text-decoration: underline;
-}
-
-.footer-column ul {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-column ul li {
-    margin-bottom: 10px;
-}
-
-.social-icons {
-    display: flex;
-    gap: 15px;
-}
-
-.social-icons img {
-    width: 30px;
-    height: 30px;
-    transition: transform 0.3s;
-}
-
-.social-icons img:hover {
-    transform: scale(1.2);
-}
-
-.footer-bottom {
-    width: 100%;
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid #ffffff;
-    margin-top: 20px;
-    font-size: 14px;
-    color: #999999;
-}
-
-/*Responsividad*/
-@media (min-width: 1741px) {
-#h1{
-    font-size: 6rem;
-    margin-top: 3%;
-    left: 3%;
-}
-#link-registro {
-    font-size: 1rem;
-}
-.footer-column p{
-    font-size: 1.2rem;
-}
-.footer-column h3{
-    font-size: 2rem;
-}
-.footer-column a{
-    font-size: 1.2rem;
-}
-}
-
-/* Móvil */
-@media (max-width: 500px) {
-    .login-column {
-        align-items: start;
-        justify-content: start;
-        padding: 0;
-    }
-
-    .login-container {
-        display: flex;
-        height: 90vh;
-        align-items: center;
-        justify-content: center;
-        align-content: center;
-    }
-    
-
-    #img-login {
-        display: none;
-    }
-    .avatar-icon {
-        padding: 0;
-    }
-    .input-field {
-        width: 100%;
-    }
-
-    .footer-container {
-        top: 100vh;
-        height: auto;
-        padding: 30px 5%;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 40px;
-    }
-
-    .footer-column {
-        width: 100%;
-        margin-bottom: 0;
-        padding-bottom: 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .footer-column:last-child {
-        border-bottom: none;
-    }
-
-    .footer-column h3 {
-        font-size: 24px;
-        margin-bottom: 15px;
-    }
-
-    .footer-column p, 
-    .footer-column a, 
-    .footer-column li {
-        font-size: 16px;
-    }
-
-    .footer-column ul {
-        padding-left: 20px;
-    }
-
-    .social-icons {
-        justify-content: flex-start;
-        margin-top: 15px;
-    }
-
-    .footer-bottom {
-        margin-top: 30px;
-        padding-top: 30px;
-        font-size: 0.8rem;
-    }
+  .Lado-derecho-container {
+    background: linear-gradient(to top, #5F7DDE 80%, #ffffff 100%);
+  }
 }

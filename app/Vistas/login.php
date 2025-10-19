@@ -5,61 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="public/css/login.css">
     <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <title>Login</title>
 </head>
-<body>
-<div class="header">
-    <a href="/">
-        <img src="public/imagenes/regresar.png" alt="regresar boton" class="regresar_flecha">
-    </a>
-    <img src="public/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
-    <p class="separador"></p>
-</div>
+<body> 
 
 <div class="login-container"> 
-  <form class="login-column" id="form-login" autocomplete="on">
-    <img src="public/imagenes/Login-Avatar.png" alt="Avatar" class="avatar-icon">
-    <h2>¡Bienvenido de nuevo!</h2>
+
+  <div class="regresar-container">
+    <a href="/">
+    <img src="public/imagenes/flecha.png" alt="flecha_icon">
+    </a>
+  </div>
+
+  <h1>Ingrese con su usuario</h1>
+  <form class="login-column" id="form-login" autocomplete="on"> 
     <input type="email" name="email" placeholder="Email" id="Email" class="input-field" required>
     <input type="password" name="password" placeholder="Contraseña" id="password" class="input-field" required>
     <input type="submit" value="Iniciar Sesión" class="boton-login">
-    <p id="link-registro">
-      Si no tienes una cuenta puedes registrarte <a href="/registro">aquí</a>.
-    </p>
   </form>
 </div>
+ 
+<div class="Lado-derecho-container">
+  <h2>¿Sin cuenta?</h2>
+  <img src="public/imagenes/persona-mas.png" alt="usuario_icon">
+  <p>Crea una solicitud para participar de nuestra cooperativa.</p>
+  <a href="/registro"><button>Registrar</button></a>
+</div>
 
-    <div class="footer-container">
-    <div class="footer-column">
-        <h3>Contacto</h3>
-        <p>Email: info@cooperativafenec.com</p>
-        <p>Teléfono: +123 456 7890</p>
-        <p>Dirección: Calle Principal 123, Ciudad</p>
-    </div>
-
-    <div class="footer-column">
-        <h3>Enlaces rápidos</h3>
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Novedades</a></li>
-            <li><a href="#">Sobre nosotros</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-    </div>
-
-    <div class="footer-column">
-        <h3>Redes sociales</h3>
-        <div class="social-icons">
-            <a href="https://twitter.com/" target="_blank"><img src="  public/imagenes/twitter.png" alt="Twitter"></a>
-            <a href="https://facebook.com/" target="_blank"><img src=" public/imagenes/facebook.png" alt="Facebook"></a>
-            <a href="https://instagram.com/" target="_blank"><img src="public/imagenes/instagram.png" alt="Instagram"></a>
-            <a href="https://linkedin.com/" target="_blank"><img src=" public/imagenes/linkedin.png" alt="LinkedIn"></a>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <p>&copy; 2025 FENEC. Todos los derechos reservados.</p>
-    </div>
 <script src="public/js/login.js"></script>
 </body>
 </html>
