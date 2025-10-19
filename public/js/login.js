@@ -30,19 +30,19 @@ document.addEventListener('DOMContentLoaded', function() {
         // ✅ redirigir según el rol
         if (resultado.rol === "administrador") {
         window.location.href = "/dashboard-admin";
-        alert("Bienido de vuelta");
+        //Bienvenido
 
         } else {
         window.location.href = "/dashboard-usuario";
-        alert("Bienido de vuelta");
+        //Bienvenido
         }
 
       } else {
-        alert("Error: " + (resultado.error || "Credenciales inválidas ❌"));
+        //Problema
       }
     } catch (err) {
       console.error("Error en la petición:", err);
-      alert("Hubo un problema en el servidor ❌");
+        //Problema
     } finally {
       // Restaurar botón
       submitBtn.value = originalText;

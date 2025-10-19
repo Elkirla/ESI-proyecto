@@ -5,86 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="public/css/registro.css">
     <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <title>Registro</title>
 </head>
-<body>
-
-<div class="header">
-    <a href="/">
-        <img src="public/imagenes/regresar.png" alt="regresar boton" class="regresar_flecha">
-    </a>
-    <img src="public/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
-    <p class="separador"></p>
-</div>
-
-<div class="registrar-container">
-
-<form method="post" class="registro-column" action="/registro" id="form-registro" autocomplete="on">
-          <h2>¡Regístrate!</h2>
-            <div id="nombre-completo">
-            <input type="text" placeholder="Nombre(s)" id="nombre" name="nombre" class="input-field" required>
-            <input type="text" placeholder="Apellido(s)" id="apellido" name="apellido" class="input-field" required>
-            </div>
-            <input type="text" id="ci" name="ci" placeholder="Cédula de Identidad" class="input-field" maxlength="15" pattern="[0-9]+" required>
-            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="input-field" placeholder="Fecha de nacimiento" required>
-            <select id="genero" name="genero" class="input-field" required>
-                <option value="">Selecciona tu género</option>
-                <option value="masculino">Masculino</option>
-                <option value="femenino">Femenino</option>
-                <option value="otro">Otro</option>
-                <option value="prefiero_no_decirlo">Prefiero no decirlo</option>
-            </select>
-            <input type="tel" id="telefono" name="telefono" placeholder="Teléfono" class="input-field" pattern="[0-9]{7,15}" maxlength="15" required>
-            <input type="email" placeholder="Email" id="email" name="email" class="input-field" required>
-            <input type="password" placeholder="Contraseña" id="password" name="password" class="input-field" minlength="8" required>
-            <input type="password" placeholder="Confirmar contraseña" id="confirm_password" name="confirm_password" class="input-field" minlength="8" required>
-            <label class="input-field" id="terminos-label">
-                <input type="checkbox" id="terminos" name="terminos" required>
-                <p>Acepto los términos y condiciones</p>
-            </label>
-            <input type="submit" value="Registrarse" class="input-field registro-button">
-            <p id="link-login">¿Ya tienes una cuenta? Puedes iniciar sesión <a href="/login">aquí</a>.</p>
-        </form>
-    <div class="registro-column" id="img-registro"></div>
-</div>
- 
-
-
-<div class="footer-container">
-    <div class="footer-column">
-        <h3>Contacto</h3>
-        <p>Email: info@cooperativafenec.com</p>
-        <p>Teléfono: +123 456 7890</p>
-        <p>Dirección: Calle Principal 123, Ciudad</p>
-    </div>
-    <div class="footer-column">
-        <h3>Enlaces rápidos</h3>
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Novedades</a></li>
-            <li><a href="#">Sobre nosotros</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-    </div>
-    <div class="footer-column">
-        <h3>Redes sociales</h3>
-        <div class="social-icons">
-            <a href="https://twitter.com/" target="_blank"><img src="public/imagenes/twitter.png" alt="Twitter"></a>
-            <a href="https://facebook.com/" target="_blank"><img src="public/imagenes/facebook.png" alt="Facebook"></a>
-            <a href="https://instagram.com/" target="_blank"><img src="public/imagenes/instagram.png" alt="Instagram"></a>
-            <a href="https://linkedin.com/" target="_blank"><img src="public/imagenes/linkedin.png" alt="LinkedIn"></a>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2025 FENEC. Todos los derechos reservados.</p>
-    </div>
-    
-    <div class="Errores"> 
+<body> 
+        <div class="Errores"> 
         <h2>Error al registrar</h2>
         <p>Debe cumplir con los siguientes requisitos:</p>
         <div id="mensaje-error"></div> 
         <button>Aceptar</button>
     </div>
+<div class="regresar-container">
+    <a href="/">
+    <img src="public/imagenes/flecha.png" alt="flecha_icon">
+    </a>
+</div>
+
+<div class="yaregistrado-container">
+    <h2>¿Ya registrado?</h2>
+    <img src="public/imagenes/key.png" alt="flecha_icon">
+    <p>Ingresa a tu cuenta de manera rápida, segura y sencilla.</p>
+    <a href="/login"><button>Ingresar</button></a> 
+</div>
+<div class="registrar-container">
+
+
+<h1>Solicita una cuenta</h1>
+<form method="post" class="registro-column" action="/registro" id="form-registro" autocomplete="on">  
+
+  <input type="text" placeholder="Nombre(s)" id="nombre" name="nombre" class="input-field" required>
+
+  <input type="text" placeholder="Apellido(s)" id="apellido" name="apellido" class="input-field" required>
+
+  <input type="text" id="ci" name="ci" placeholder="Cédula de Identidad" class="input-field" maxlength="15" pattern="[0-9]+" required>
+ 
+  <div class="telefono-container">
+<select id="pais" name="pais" class="select-pais" required>
+  <option value="+598" selected>🇺🇾 +598 </option>
+  <option value="+54">🇦🇷 +54 </option>
+  <option value="+55">🇧🇷 +55 </option>
+  <option value="+56">🇨🇱 +56  </option>
+  <option value="+57">🇨🇴 +57 </option>
+  <option value="+34">🇪🇸 +34 </option>
+  <option value="+1">🇺🇸 +1 </option>
+  <option value="+52">🇲🇽 +52  </option>
+</select>
+
+<input 
+  type="number" 
+  id="telefono" 
+  name="telefono" 
+  placeholder="Teléfono" 
+  class="input-field telefono-input" 
+  min="100000" 
+  max="999999999999999" 
+  required>
+
+  </div>
+
+  <input type="email" placeholder="Email" id="email" name="email" class="input-field" required>
+
+  <input type="password" placeholder="Contraseña" id="password" name="password" class="input-field"  >
+
+  <input type="password" placeholder="Confirmar contraseña" id="confirm_password" name="confirm_password" class="input-field"  >
+  
+  <input type="submit" value="Registrarse" class="input-field registro-button"> 
+
+</form>
+
+</div> 
 </div>
 <script src="public/js/registro.js"></script>
 </body>
