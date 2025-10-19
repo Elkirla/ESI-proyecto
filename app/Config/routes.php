@@ -26,14 +26,15 @@ $routes = [
         "/pagos-compensatorios"      => "PagosControl@verPagosCompensatorios",
         "/actualizarPagoDeudas"      => "PagosControl@ActualizarDeudaPago",
         "/verPagosDeuda"             => "PagosControl@verPagosDeuda", 
- 
+        "/pagosal-dia"               => "PagosControl@verEstadoPagos",
+
         // ======================
         // PAGOS (admin)
         // ======================
         "/pagosadmin"                 => "AdminControl@verPagosAdmin",
         "/listar-pagodeudas"          => "AdminControl@listarPagosDeudas",
         "/pagos-compensatorios-admin" => "AdminControl@listarPagosCompensatorios", 
-
+ 
         // ======================
         // HORAS
         // ======================

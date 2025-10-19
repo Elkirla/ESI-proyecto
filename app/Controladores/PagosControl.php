@@ -80,6 +80,35 @@ public function IngresarPago() {
             ["fecha", "DESC"]
         );
     }
+/* ============================================================
+OBTENER ESTADO DE LOS PAGOS DEL USUARIO
+============================================================ */
+public function verEstadoPagos() {
+    try {
+        $usuario_id = $_SESSION['usuario_id'] ?? null;  
+
+        // Obtener todos los pagos aprobados
+        $pagos_aprobados = $this->obtenerPagosAprobados($usuario_id);
+
+        // Obtener el mes actual  
+        $mes_actual = date('m');
+
+        // Verificar si tiene un pago aprobado para el mes actual
+        $al_dia = $this->tienePagoAprobadoParaMes($pagos_aprobados, $mes_actual);
+ 
+        echo json_encode([
+            'success' => true, 
+            'estado' => $al_dia ? 'al_dia' : 'atrasado', 
+        ]);
+    } catch (Exception $e) {
+        error_log("[ERROR_ESTADO_PAGO] " . $e->getMessage());
+        echo json_encode([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+}
+
 
     /* ============================================================
     OBTENER MENSUALIDAD CONFIGURADA
