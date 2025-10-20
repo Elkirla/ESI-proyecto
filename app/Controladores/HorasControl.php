@@ -14,11 +14,11 @@ class HorasControl {
     public function IngresarHoras() {
         require_once __DIR__ . '/../Entidades/hora.php'; 
         try {
-            $modelo = new HorasModelo();
-            $fecha = $_POST['fecha'] ?? null;
-            $horas = $_POST['horas'] ?? null;
-
-            if (!$this->usuario_id || !$fecha || !$horas) {
+            $modelo = new HorasModelo(); 
+            $horas = $_POST['horas'] ?? null;  
+            $fecha = date('Y-m-d'); 
+            
+            if (!$this->usuario_id|| !$horas) {
                 echo json_encode(['success' => false, 'error' => 'Faltan datos']);
                 return;
             } elseif ($modelo->tieneHorasRegistradas($this->usuario_id, $fecha)) {
