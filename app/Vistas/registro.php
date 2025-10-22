@@ -9,12 +9,16 @@
     <title>Registro</title>
 </head>
 <body> 
-        <div class="Errores"> 
+  
+<div class="errores-container">
+    <div class="Errores">  
         <h2>Error al registrar</h2>
         <p>Debe cumplir con los siguientes requisitos:</p>
         <div id="mensaje-error"></div> 
         <button>Aceptar</button>
     </div>
+</div>   
+
 <div class="regresar-container">
     <a href="/">
     <img src="public/imagenes/flecha.png" alt="flecha_icon">

@@ -5,13 +5,12 @@ private $listado;
         header('Content-Type: application/json; charset=utf-8');
         require_once __DIR__ . '/../Controladores/ListadoControl.php';
         $this->listado = new ListadoControl();
-        
+ 
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
             http_response_code(404);
             include __DIR__ . '/../Vistas/404.php';
             exit;
-        }
-
+        } 
     }
 
     // ===================================
@@ -266,27 +265,53 @@ private $listado;
         }
     }
 
-    public function AceptarUsuario() {
-        require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
-        try {
-            $correo = $_POST['mensaje'] ?? null;
-            if (!$correo) {
-                throw new Exception("Correo no recibido.");
-            }
+public function AceptarUsuario() {
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
+    require_once __DIR__ . '/../Controladores/UnidadControl.php';
 
-            $modelo = new UsuarioModelo();
-            $ok = $modelo->aceptarUsuario($correo);
-
-            if (!$ok) {
-                throw new Exception("No se pudo actualizar en la BD.");
-            }
-
-            $this->response(true);
-
-        } catch (Exception $e) {
-            $this->response(false, ['error' => $e->getMessage()]);
+    try {
+        $usuario_id = $_POST['usuario_id'] ?? null;
+        if (!$usuario_id) {
+            throw new Exception("ID de usuario no recibido.");
         }
+
+        $modelo = new UsuarioModelo();
+        $unidadcontrol = new UnidadControl();
+ 
+        // Calcular la unidad con menos ocupación
+        $unidad_id = $unidadcontrol->CalcularUnidad();
+ 
+        // Asignar al usuario a la unidad
+        $modelo->AsignarUnidad($usuario_id, $unidad_id);
+ 
+        // Cambiar el estado del usuario a "activo"
+        $ok = $modelo->aceptarUsuario($usuario_id);
+
+        if (!$ok) {
+            throw new Exception("No se pudo actualizar el usuario en la base de datos.");
+        }
+
+        // Obtener info de la unidad asignada (para devolver en el JSON)
+        $unidad = $unidadcontrol->ObtenerUnidadPorId($unidad_id);
+
+        $this->response(true, [
+            "mensaje" => "Usuario aceptado y asignado correctamente.",
+            "usuario_id" => $usuario_id,
+            "unidad_asignada" => [
+                "id" => $unidad["id"],
+                "codigo" => $unidad["codigo"]
+            ],
+            "nuevo_estado" => "activo"
+        ]);
+
+    } catch (Exception $e) {
+        $this->response(false, ['error' => $e->getMessage()]);
     }
+}
+
+
+ 
+
     public function cargarUsuariosPendientes() {
     $this->listado->listadoComun(
         "usuarios",
@@ -304,6 +329,18 @@ private $listado;
             1
         );
 }
+    // ===================================
+    // UNIDADES
+    // ===================================
+
+    public function CrearUnidad(){
+
+    }
+
+    public function CambiarEstadoUnidad(){
+
+    }
+
     // ===================================
     // HORAS
     // ===================================

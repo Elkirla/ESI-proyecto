@@ -11,30 +11,6 @@
 </head>
 <body>
 
-<div class="Cambio-contraseña" id="Cambio-contraseña">
-    <div class="Form-cambiarcontraseña">
-        <div class="flecha">
-            <img src="public/imagenes/regresar.png" alt="regresar_icon" id="regresar_icon">
-            <h2>Cambiar Contraseña</h2>
-        </div>
-        <form action="" class="form">
-            <div class="input">
-                <label for="contraseña-actual">Contraseña Actual:</label>
-                <input type="password" id="contraseña-actual" name="contraseña-actual" required>
-            </div>
-            <div class="input">
-                <label for="nueva-contraseña">Nueva Contraseña:</label>
-                <input type="password" id="nueva-contraseña" name="nueva-contraseña" required>
-            </div>
-            <div class="input">
-                <label for="confirmar-contraseña">Confirmar Nueva Contraseña:</label>
-                <input type="password" id="confirmar-contraseña" name="confirmar-contraseña" required>
-            </div>
-            <button type="submit" id="btn-guardar-contraseña">Confirmar</button>
-        </form>
-    </div>
-</div>
-
 <div class="notificaciónes-container">
     <div class="notificaciónes" id="notificaciónes">
         <h3>Notificaciones</h3>
@@ -61,13 +37,13 @@
             <h2 id="nombre_usuario">nombre</h2>
         </div>
         <div class="estado">
-            <h3>Estado de pagos </h3> <h3>Al dia</h3>
+            <h3>Estado de pagos </h3> <h3 id="EstadoPagosID"></h3>
         </div>
         <div class="h">
-        <h3>Horas Trabajadas </h3> <h3>Horas</h3>
+        <h3>Horas Trabajadas </h3> <h3 id="HorasTrabajadasID">Horas</h3>
         </div>
         <div class="u">
-        <h3>Unidad Habitacional </h3> <h3>Cimientos</h3>
+        <h3>Unidad Habitacional </h3> <h3 id="UnidadInicioID">Cimientos</h3>
         </div>   
     </div>
 

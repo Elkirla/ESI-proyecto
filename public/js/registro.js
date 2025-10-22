@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const errorDiv = document.querySelector('.Errores');
+    const errorDiv = document.querySelector('.errores-container');
     const mensajeError = document.getElementById('mensaje-error');
     const aceptarBtn = errorDiv?.querySelector('button');
 

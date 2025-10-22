@@ -28,6 +28,15 @@ class UsuarioModelo {
         ]);
     }
 
+    public function AsignarUnidad($usuario_id, $unidad_id) {
+    $sql = "INSERT INTO usuarios_unidades (usuario_id, unidad_id) VALUES (:usuario_id, :unidad_id)";
+    $stmt = $this->db->prepare($sql);
+    return $stmt->execute([
+        ':usuario_id' => $usuario_id,
+        ':unidad_id' => $unidad_id
+    ]);
+}
+
     public function VerificarLogin($email, $password) {
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         
@@ -63,9 +72,10 @@ class UsuarioModelo {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([':email' => $email]);
     }
-    public function aceptarUsuario($email) {
-        $sql = "UPDATE usuarios SET estado = 'activo' WHERE email = :email";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([':email' => $email]);
-    }
+public function aceptarUsuario($usuario_id) {
+    $sql = "UPDATE usuarios SET estado = 'activo' WHERE id = :usuario_id";
+    $stmt = $this->db->prepare($sql);
+    return $stmt->execute([':usuario_id' => $usuario_id]);
+}
+
 }

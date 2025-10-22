@@ -17,10 +17,7 @@ class HomeControl {
         $this->verificarSesion();
         include __DIR__ . "/../Vistas/dashboard.php";
     }  
-        private function verificarSesion($rolRequerido = null) {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        private function verificarSesion($rolRequerido = null) { 
         
         if (!isset($_SESSION['usuario_id'])) {
             header('Location: /login');

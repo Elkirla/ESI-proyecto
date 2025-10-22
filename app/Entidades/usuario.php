@@ -10,6 +10,7 @@ class usuario {
     private $password;
     private $estado;
     private $fecha_registro;
+    private $unidades = [];
 
     public function __construct() {}
  
@@ -23,6 +24,7 @@ class usuario {
     public function getPassword() { return $this->password; }
     public function getEstado() { return $this->estado; }
     public function getFechaRegistro() { return $this->fecha_registro; }
+    public function getUnidades() { return $this->unidades; }
  
     public function setId($id) { $this->id = $id; }    
     public function setTelefono($telefono) { $this->telefono = $telefono; }
@@ -34,4 +36,5 @@ class usuario {
     public function setPassword($password) { $this->password = $password; }
     public function setEstado($estado) { $this->estado = $estado; }
     public function setFechaRegistro($fecha_registro) { $this->fecha_registro = $fecha_registro; }
+    public function setUnidades($unidades) { $this->unidades = $unidades; }
 }

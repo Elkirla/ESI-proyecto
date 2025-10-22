@@ -26,7 +26,7 @@ $routes = [
         "/pagos-compensatorios"      => "PagosControl@verPagosCompensatorios",
         "/actualizarPagoDeudas"      => "PagosControl@ActualizarDeudaPago",
         "/verPagosDeuda"             => "PagosControl@verPagosDeuda", 
-        "/pagosal-dia"               => "PagosControl@verEstadoPagos",
+        "/VerEstadoPagos"            => "PagosControl@verEstadoPagos",
 
         // ======================
         // PAGOS (admin)
@@ -52,13 +52,14 @@ $routes = [
         // ======================
         "/listar-justificativos"        => "JustificativoControl@listarJustificativos",
         "/listar-justificativos-admin"  => "AdminControl@listarJustificativosAdmin", 
+        
         // ======================
         // USUARIOS
         // ======================
         "/usuariodatos"        => "UserControl@cargarDatosUsuario",
         "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes",
-        "/usuario-por-id"      => "AdminControl@ObtenerUsuarioPorId",
-        
+        "/usuario-por-id"      => "AdminControl@ObtenerUsuarioPorId", 
+
         // ======================
         // NOTIFICACIONES
         // ======================

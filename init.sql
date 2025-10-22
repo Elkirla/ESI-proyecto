@@ -32,7 +32,7 @@ INSERT INTO configuracion (clave, valor) VALUES
 ('horas_semanales', '21'),
 ('valor_semanal', '700'),
 ('cuota_semanal', '21');
-
+ 
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     rol_id INT NOT NULL,
@@ -46,13 +46,25 @@ CREATE TABLE usuarios (
     fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
-
+ 
 CREATE TABLE unidades_habitacionales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(20) UNIQUE NOT NULL,
-    descripcion TEXT,
-    usuario_id INT UNIQUE,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    estado ENUM('Cimientos','Estructura','Terminaciones','Finalizada') NOT NULL
+);
+
+INSERT INTO unidades_habitacionales (codigo, estado) VALUES 
+('U-001', 'Cimientos' ),
+('U-002', 'Estructura' ),
+('U-003', 'Terminaciones' );
+
+CREATE TABLE usuarios_unidades (
+    usuario_id INT NOT NULL,
+    unidad_id INT NOT NULL,
+    fecha_asignacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (usuario_id, unidad_id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (unidad_id) REFERENCES unidades_habitacionales(id) ON DELETE CASCADE
 );
 
 CREATE TABLE horas_trabajadas (
