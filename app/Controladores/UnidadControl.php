@@ -4,13 +4,14 @@ require_once __DIR__ . '/../Entidades/unidad.php';
 require_once __DIR__ . '/../Controladores/ListadoControl.php';
 
 class UnidadControl {
-
+    private $usuario_id;
     private $listado;
     private $unidadModelo;
 
     public function __construct() {
         $this->listado = new ListadoControl();
         $this->unidadModelo = new UnidadModelo();
+        $this->usuario_id = $_SESSION['usuario_id'] ?? null;
     }
  
 public function CalcularUnidad() {
@@ -23,7 +24,7 @@ public function CalcularUnidad() {
     $ocupaciones = [];
 
     foreach ($unidades as $unidad) {
-        $usuarios = $this->ListarUsuarios($unidad['id']); //26
+        $usuarios = $this->ListarUsuarios($unidad['id']);
         $ocupaciones[$unidad['id']] = count($usuarios);
     }
  
@@ -74,6 +75,13 @@ private function ListarUsuarios($unidad_id) {
     }
 
     return $data;
+}
+public function ObtenerDatosUnidad() {
+    $this->listado->listadoComun(
+        "unidades_habitacionales",
+        ["codigo", "estado"],
+        ["id" => $this->usuario_id]
+    );
 }
 public function ObtenerUnidadPorId($id) {
     ob_start();

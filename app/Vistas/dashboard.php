@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="public/css/dashboard.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="icon" href="public/imagenes/logo.png" type="icon">
     <title>Página usuario</title>
 </head>
@@ -22,6 +24,9 @@
 
      <div class="heder"></div>
     <div class="sider">
+        <div class="opcion-div"></div>
+        <a href="/logout">Cerrar sesión</a>
+        <h1>Cooperativa</h1>
         <button id="btn-inicio">Inicio</button>
         <button id="btn-mi-perfil">Mi perfil</button>
         <button id="btn-pagos">Pagos</button>
@@ -30,22 +35,32 @@
         <button id="btn-mensajes">Mensajes</button>
         <button id="btn-soporte">Soporte</button>
     </div>
+
 <div class="info">
-    <div class="inicio section">
-        <div class="h2">
-            <h2>Bienvenido</h2>
-            <h2 id="nombre_usuario">nombre</h2>
+
+<div class="inicio section" id="inicio"> 
+    <h2 id="nombre_usuario"></h2> 
+    
+    <div class="InfoInicio">
+        <div class="info-item">
+            <img src="public/imagenes/dinero.png" alt="dinero_icon">
+            <h3>Pagos</h3>
+            <h3 id="EstadoPagosID"></h3>
         </div>
-        <div class="estado">
-            <h3>Estado de pagos </h3> <h3 id="EstadoPagosID"></h3>
+
+        <div class="info-item">
+            <img src="public/imagenes/reloj.png" alt="reloj_icon">
+            <h3 id="HorasTrabajadasID">Horas</h3>  
         </div>
-        <div class="h">
-        <h3>Horas Trabajadas </h3> <h3 id="HorasTrabajadasID">Horas</h3>
+
+        <div class="info-item">
+            <img src="public/imagenes/casa.png" alt="casa_icon">
+            <h3 id="UnidadInicioID"></h3>
         </div>
-        <div class="u">
-        <h3>Unidad Habitacional </h3> <h3 id="UnidadInicioID">Cimientos</h3>
-        </div>   
     </div>
+</div>
+
+
 
     <div class="mi-perfil section">
         <div class="texto-icono">
@@ -57,8 +72,7 @@
             <p id="Apellido-datos"></p>
             <p id="Telefono-datos"></p>
             <p id="Correo-datos"></p>
-        </div>
-        <button id="btn-cambiarcontraseña" class="but">Cambiar Contraseña</button>
+        </div> 
     </div>
  
 <div class="pagos section"> 

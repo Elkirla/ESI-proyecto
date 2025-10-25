@@ -98,7 +98,7 @@ public function verEstadoPagos() {
  
         echo json_encode([
             'success' => true, 
-            'estado' => $al_dia ? 'al_dia' : 'atrasado', 
+            'estado' => $al_dia ? 'Al día' : 'atrasados', 
         ]);
     } catch (Exception $e) {
         error_log("[ERROR_ESTADO_PAGO] " . $e->getMessage());

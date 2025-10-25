@@ -38,14 +38,14 @@ $routes = [
         // ======================
         // HORAS
         // ======================
-        "/horasusuario"            => "HorasControl@verHorasUsuario",
-        "/horasadmin"              => "AdminControl@verHorasAdmin",
-        "/horas-semanales"         => "HorasControl@verHorasSemanales",
-        "/valor-semanal"           => "HorasControl@verValorSemanal",
-        "/actualizar-deuda-horas"  => "HorasControl@actualizarDeudaHorasUsuario",
-        "/ver-deudas-horas"        => "HorasControl@verDeudasHorasUsuario",
-        "/horas-deuda-admin"       => "AdminControl@verDeudasHorasAdmin",
-        "/horastrabajadas-semana"  => "HorasControl@obtenerHorasTrabajadasSemana",
+        "/horasusuario"           => "HorasControl@verHorasUsuario",
+        "/horasadmin"             => "AdminControl@verHorasAdmin",
+        "/horas-semanales"        => "HorasControl@verHorasSemanales",
+        "/valor-semanal"          => "HorasControl@verValorSemanal",
+        "/actualizar-deuda-horas" => "HorasControl@actualizarDeudaHorasUsuario",
+        "/ver-deudas-horas"       => "HorasControl@verDeudasHorasUsuario",
+        "/horas-deuda-admin"      => "AdminControl@verDeudasHorasAdmin",
+        "/VerHorasTrabajadas"     => "HorasControl@obtenerHorasTrabajadasSemana",
 
         // ======================
         // JUSTIFICATIVOS
@@ -60,6 +60,11 @@ $routes = [
         "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes",
         "/usuario-por-id"      => "AdminControl@ObtenerUsuarioPorId", 
 
+        // ======================
+        // UNIDADES HABITACIONALES
+        // ======================
+        "/obtenerdatosunidad" => "UnidadControl@ObtenerDatosUnidad",
+        
         // ======================
         // NOTIFICACIONES
         // ======================

@@ -62,7 +62,18 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('.' + navigationMap[btnId]).style.display = 'block';
         });
     });
-    
+    const marcador = document.querySelector(".opcion-div");
+    const botones = document.querySelectorAll(".sider button");
+
+    botones.forEach(boton => {
+        boton.addEventListener("click", () => {
+            // Calcula la posición vertical del botón dentro del sider
+            const offsetTop = boton.offsetTop;
+            
+            // Ajustamos un poco para centrar el marcador
+            marcador.style.top = offsetTop - 5 + "px";
+        });
+    });
     // Envío de horas
     enviarHorasBtn.addEventListener('click', enviarHoras);
     
@@ -81,12 +92,50 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     async function cargarDatosInicio(){
-        //Cargamos el estado de los pagos
-        
-        //Cargamos las horas trabajadas
+try {
+    // Estado de pagos
+    fetch("/VerEstadoPagos", { method: "GET" })
+        .then(response => response.json())
+        .then(data => {
+            EstadoInicio.innerText = data.estado;
 
-        //cargamos la unidad habitacional
+            // Cambiar color según el estado
+            if (data.estado === "Al día") {
+                EstadoInicio.style.color = "#54FD32";
+            } else {
+                EstadoInicio.style.color = "#e67474ff";
+            }
+        })
+        .catch(error => {
+            console.error("Error al consultar estado:", error);
+            EstadoInicio.innerText = "Error de conexión";
+            EstadoInicio.style.color = "gray";
+        });
 
+} catch (error) {
+    console.error("Error al cargar datos del usuario:", error);
+}
+
+        //Horas trabajadas
+        try {
+        fetch("/VerHorasTrabajadas", { method: "GET" })
+        .then(response => response.json()) 
+        .then(data => {
+        HorasInicio.innerText = data.horas + " horas registradas";
+        })
+        }catch (error) {
+            console.error("Error al cargar datos del usuario:", error);
+        }
+        //Unidad habitacional
+        try {
+        fetch("/obtenerdatosunidad", { method: "GET" })
+        .then(response => response.json())
+        .then(data => { 
+        UnidadInicio.innerText = "Unidad " + data[0].codigo + " en " + data[0].estado;  
+        })
+        }catch (error) {
+            console.error("Error al cargar datos del usuario:", error);
+        }
     }
     async function cargarHoraLista() {
         try {
@@ -126,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Como data es un array, tomamos el primer elemento
             const usuario = data[0];
             
-            nombreUsuario.innerText = usuario.nombre;
+            nombreUsuario.innerText = "Bienvenido "+usuario.nombre;
             nombreDatos.innerText = "Nombre: " + usuario.nombre;
             apellidoDatos.innerText = "Apellido: " + usuario.apellido;
             telefonoDatos.innerText = "Telefono: " + usuario.telefono;
@@ -134,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error("Error al cargar datos del usuario:", error);
             agregarNotificacion("Error al cargar los datos del usuario", "error");
-        }
+        } 
     }
     
     function cargarHora() {
@@ -163,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const formData = new FormData();
-        formData.append("fecha", fechaActual); // enviamos en formato MySQL
+        formData.append("fecha", fechaActual);  
         formData.append("horas", horas);
         
         try {
