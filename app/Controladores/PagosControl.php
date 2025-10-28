@@ -21,8 +21,7 @@ public function IngresarPago() {
         error_log("Inicio IngresarPago");
 
         $modelo = new PagoModelo();
-        $usuario_id = $_SESSION['usuario_id'] ?? null;
-        if (!$usuario_id) throw new Exception("Sesión expirada.");
+        $usuario_id = $_SESSION['usuario_id'] ?? null; 
 
         $mes = date('m');
         error_log("Mes actual: $mes");

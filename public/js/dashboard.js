@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Elementos de pagos
     const enviarPagoBtn = document.getElementById('btn-pagar');
     const formPago = document.getElementById('form-pago');
-    
+    const estadopagos = document.getElementById("EstadoPagos-pagos");
     // ========== CONFIGURACIÓN INICIAL ==========
     cargarDatos();
      
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'btn-mi-perfil': 'mi-perfil',
         'btn-pagos': 'pagos',
         'btn-horas': 'horas',
-        'btn-unidad': 'unidad',
+        'btn-deudas': 'deudas',
         'btn-mensajes': 'mensajes',
         'btn-soporte': 'soporte'
     };
@@ -85,12 +85,85 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // ========== FUNCIONES PRINCIPALES ==========
     function cargarDatos() {
+        calcularDeudas();
         datosUsuario();
         cargarHora();
         cargarHoraLista();
         cargarDatosInicio();
+        cargarpagos();
     }
     
+async function calcularDeudas() {
+    try { 
+        await fetch("/actualizarPagoDeudas", { method: "POST" });
+ 
+        await fetch("/actualizar-deuda-horas", { method: "POST" });
+
+        console.log("Deudas actualizadas correctamente.");
+    } catch (error) {
+        console.error("Error calculando deudas:", error);
+    }
+}
+
+// Ejecutar la función
+calcularDeudas();
+
+async function cargarpagos() {
+    try {
+        // 1. Obtener fecha límite
+        const fechaResp = await fetch("/fecha-limite");
+        const fechaData = await fechaResp.json();
+        const fechaLimite = fechaData[0].valor;
+        document.getElementById("FechaLimite").innerText = fechaLimite; 
+
+        // 2. Obtener monto mensual
+        const mensualidadResp = await fetch("/obtener-mensualidad");
+        const mensualidadData = await mensualidadResp.json();
+        const montoMensual = mensualidadData[0].valor;
+        document.getElementById("MontoMensual").innerText = `Monto: $${montoMensual}`;
+
+        // 3. Obtener mes actual
+        const pagosResp = await fetch("/pagosusuario");
+        const pagosData = await pagosResp.json();
+        if(pagosData.length > 0) {
+            document.getElementById("mes").innerText = `Mes: ${pagosData[0].mes}`;
+        }
+
+        // 4. Llenar la tabla de pagos
+        const tabla = document.querySelector(".tablaPagos table");
+        // Limpiar filas anteriores
+        tabla.querySelectorAll("tr:not(:first-child)").forEach(row => row.remove());
+        pagosData.forEach(pago => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${pago.mes}</td>
+                <td>${pago.monto}</td>
+                <td>${pago.entrega}</td>
+                <td>${pago.estado}</td>
+            `;
+            tabla.appendChild(fila);
+        });
+
+        // 5. Monto semanal compensatorio
+        const semanalResp = await fetch("/valor-semanal");
+        const semanalData = await semanalResp.json();
+        document.getElementById("MontoCompensatorio").innerText = `Monto semanal: $${semanalData[0].valor}`;
+
+        // 6. Horas restantes
+        const horasResp = await fetch("/verHorasDeudaSemanal");
+        const horasData = await horasResp.json();
+        document.getElementById("HorasRestantes").innerText = `Horas restantes: ${horasData.horas_faltantes}`;
+
+        // 7. Monto total a pagar
+        const saldoResp = await fetch("/saldo-compensatorio");
+        const saldoData = await saldoResp.json();
+        document.getElementById("MontoTotal").innerText = `Monto total: $${saldoData.monto}`;
+
+    } catch (error) {
+        console.error("Error cargando los pagos:", error);
+    }
+}
+
     async function cargarDatosInicio(){
 try {
     // Estado de pagos
@@ -102,8 +175,10 @@ try {
             // Cambiar color según el estado
             if (data.estado === "Al día") {
                 EstadoInicio.style.color = "#54FD32";
+                estadopagos.innerHTML = "Al día";
             } else {
                 EstadoInicio.style.color = "#e67474ff";
+                estadopagos.innerHTML = "Pendiente";
             }
         })
         .catch(error => {
@@ -126,12 +201,13 @@ try {
         }catch (error) {
             console.error("Error al cargar datos del usuario:", error);
         }
+
         //Unidad habitacional
         try {
         fetch("/obtenerdatosunidad", { method: "GET" })
         .then(response => response.json())
         .then(data => { 
-        UnidadInicio.innerText = "Unidad " + data[0].codigo + " en " + data[0].estado;  
+        UnidadInicio.innerText = "Unidad " + data.codigo + " en " + data.estado;  
         })
         }catch (error) {
             console.error("Error al cargar datos del usuario:", error);
@@ -305,4 +381,24 @@ try {
         notificacionesContainer.style.display = 'none';
         listaNotificaciones.innerHTML = '';
     }
+const btnComprobante = document.querySelector('.botones-comp button:first-child');
+const btnCompensatorio = document.querySelector('.botones-comp button:nth-child(2)');
+const divPago = document.querySelector('.IngresarPago');
+const divCompensatorio = document.querySelector('.IngresarCompensatorio');
+
+btnComprobante.addEventListener('click', () => {
+  divPago.style.display = 'flex';
+  divCompensatorio.style.display = 'none';
+  btnComprobante.classList.add('active');
+  btnCompensatorio.classList.remove('active');
+});
+
+btnCompensatorio.addEventListener('click', () => {
+  divPago.style.display = 'none';
+  divCompensatorio.style.display = 'flex';
+  btnCompensatorio.classList.add('active');
+  btnComprobante.classList.remove('active');
+});
+
+
 });

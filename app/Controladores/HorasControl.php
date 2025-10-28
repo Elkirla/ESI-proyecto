@@ -185,7 +185,39 @@ public function obtenerHorasTrabajadasSemana() {
         ]);
     }
 }
- 
+public function verHorasDeudaSemanal() {
+    try {
+        $usuario_id = $this->usuario_id;
+        if (!$usuario_id) {
+            echo json_encode(['success' => false, 'error' => 'Usuario no identificado']);
+            return;
+        }
+
+        // Obtener la semana actual
+        $semana_actual = $this->obtenerSemanaActual();
+        $inicio_semana = $semana_actual['inicio'];
+
+        // Obtener las horas faltantes para la semana actual
+        $horas_faltantes = $this->obtenerHorasFaltantesSemana($usuario_id);
+
+        echo json_encode([
+            'success' => true,
+            'horas_faltantes' => $horas_faltantes,
+            'rango_semana' => [
+                'inicio' => $semana_actual['inicio'],
+                'fin' => $semana_actual['fin']
+            ]
+        ]);
+
+    } catch (Exception $e) {
+        error_log("Error en verHorasDeudaSemanal: " . $e->getMessage());
+        echo json_encode([
+            'success' => false,
+            'horas_faltantes' => 0,
+            'error' => $e->getMessage()
+        ]);
+    }
+}
 public function calcularSaldoCompensatorio($horas) {
     $monto =0; 
     $horas_totales=$this->obtenerHorasSemanales(); 
@@ -193,6 +225,15 @@ public function calcularSaldoCompensatorio($horas) {
     // Clasica regla de tres si que si
     $monto= ($horas * $valor_semanal) / $horas_totales;
     return $monto;
+}
+public function SaldoCompensatorioUsuario(){
+    $horas=$this->obtenerHorasFaltantesSemana($this->usuario_id);
+    $monto=$this->calcularSaldoCompensatorio($horas);
+    echo json_encode([
+        'success' => true,
+        'horas' => $horas,
+        'monto' => $monto
+    ]);
 }
 public function CalcularHorasDeuda($id_usuario) {
     try {

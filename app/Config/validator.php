@@ -9,7 +9,7 @@ class validator {
         if (!preg_match('/[0-9]/', $password)) $errors[] = "Debe tener al menos un número.";
         if (!preg_match('/[\W]/', $password)) $errors[] = "Debe tener al menos un símbolo.";
 
-        return $errors;
+        return $errors; 
     }
     public function Email($email) {
         return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;

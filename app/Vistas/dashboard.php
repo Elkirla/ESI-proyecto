@@ -31,7 +31,7 @@
         <button id="btn-mi-perfil">Mi perfil</button>
         <button id="btn-pagos">Pagos</button>
         <button id="btn-horas">Horas</button>
-        <button id="btn-unidad">Unidad</button>
+        <button id="btn-deudas">Deudas</button>
         <button id="btn-mensajes">Mensajes</button>
         <button id="btn-soporte">Soporte</button>
     </div>
@@ -59,12 +59,9 @@
         </div>
     </div>
 </div>
-
-
-
+ 
     <div class="mi-perfil section">
         <div class="texto-icono">
-            <span class="material-symbols-outlined">person</span>
             <span>Mi perfil</span>
         </div>
         <div class="datos"> 
@@ -76,87 +73,71 @@
     </div>
  
 <div class="pagos section"> 
-    <h2>Mis Pagos</h2>
-    <div class="fila">
-        <h3>Debiendo  |  0</h3> 
-        <h3> Proximo pago  | 10 dias</h3>
+    <div class="PagosHeaderDiv">
+        <h2 class="PagosTitulo">MIS PAGOS</h2>
+        <h2 id="EstadoPagos-pagos"></h2>
     </div>
-    <label for="filtro">Filtro</label>
-    <select id="filtro" class="color">
-        <option value="todos">Todos</option>
-        <option value="pendientes">Pendientes</option>
-        <option value="aprobados">Aprobados</option>
-        <option value="atrasados">Atrasados</option>
-    </select>
-    <table>
-    <tr>
-       <th>Mes</th>
-       <th>Dia</th>
-       <th>Monto</th>
-       <th>Estado</th>
-    </tr>
-    <tr>
-        <td>Mayo</td>
-        <td>12</td>
-        <td>$20.000</td>
-        <td class="pendiente">Pendiente</td>          
-    </tr>
-    <tr>
-        <td>Abril</td>
-        <td>14</td>
-        <td>$20.000</td>
-        <td class="aprovado">Aprobado</td>          
-    </tr>
-    <tr>
-        <td>Maarzo</td>
-        <td>21</td>
-        <td>$20.000</td>
-        <td class="atrasado">Atrasado</td>          
-    </tr>
-     <tr>
-        <td>Febrero</td>
-        <td>14</td>
-        <td>$20.000</td>
-        <td class="atrasado">Aprovado</td>          
-    </tr>
-</table>
-    <h2>Subir comprobantes</h2>
-<div class="comprovante">
-    <form action="" class="form-pago" id="form-pago" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="archivo" class="file-label">
-                <span>📎 Seleccionar comprobante</span>
-                <input type="file" name="archivo" id="archivo" accept=".jpg,.jpeg,.png,.pdf">
-            </label>
-            <small>Formatos permitidos: JPG, PNG, PDF (Máx. 5MB)</small>
-        </div>
-        
-        <div class="form-group">
-    <label for="monto">Monto del pago:</label>
-    <input type="number" id="monto" name="monto" step="0.01" min="0" required>
 
-            <label for="mes">Mes del pago:</label>
-            <select id="mes" name="mes" class="select-mes">
-                <option value="">Seleccione un mes</option>
-                <option value="01">Enero</option>
-                <option value="02">Febrero</option>
-                <option value="03">Marzo</option>
-                <option value="04">Abril</option>
-                <option value="05">Mayo</option>
-                <option value="06">Junio</option>
-                <option value="07">Julio</option>
-                <option value="08">Agosto</option>
-                <option value="09">Septiembre</option>
-                <option value="10">Octubre</option>
-                <option value="11">Noviembre</option>
-                <option value="12">Diciembre</option>
+    <div class="PagosContentDiv">
+         <h3 class="TextFechaLimite">
+             Fecha límite: <span id="FechaLimite"></span>
+         </h3>
+
+
+         <div class="filtropagos">
+            <select id="filtro-pagos">
+                <option value="todos">Mes</option>
+                <option value="pendientes">Monto</option>
+                <option value="aprobados">Envio</option>
+                <option value="rechazados">Estado</option>
             </select>
-        </div>
-        
-        <button type="submit" id="btn-pagar" class="but">Enviar Comprobante</button>
-    </form>
+            <input type="text">
+            <button>Aplicar</button>
+         </div>
+
+<div class="tablaPagos">
+    <table>
+        <tr>
+            <th>Mes</th>
+            <th>Monto</th>
+            <th>Envio</th>
+            <th>Estado</th>
+        </tr> 
+    </table>
 </div>
 
+
+       <div class="IngresarComprobanteDiv">
+    <div class="botones-comp">
+        <button class="active">Subir Comprobante</button>
+        <button>Pago Compensatorio</button>
+    </div>
+
+    <div class="IngresarPago">  
+        <div class="info-pago">
+            <p id="MontoMensual">Monto:</p>
+            <p id="mes">Mes:</p> 
+        </div>
+        <form action="" class="form-pago" id="form-pago" enctype="multipart/form-data"> 
+            <input type="file" name="archivo" id="archivo" accept=".jpg,.jpeg,.png,.pdf">
+            <button type="submit" id="btn-pagar" class="but">Subir comprobante</button>
+        </form>
+    </div>
+
+    <div class="IngresarCompensatorio">
+        <div class="info-pago">
+            <p id="MontoCompensatorio">Monto semanal</p>
+            <p id="HorasRestantes">Horas restantes</p>
+            <p id="MontoTotal">Monto total</p> 
+        </div>
+        <form action="" class="form-compensatorio" id="form-compensatorio" enctype="multipart/form-data"> 
+            <input type="file" name="archivo-compensatorio" id="archivo-compensatorio" accept=".jpg,.jpeg,.png,.pdf">
+            <button type="submit" id="btn-compensatorio" class="but">Subir comprobante</button>
+        </form>
+    </div>
+</div>
+
+    </div> 
 </div>
     <div class="horas section">
        <div> <h2>Horas Registradas</h2></div>
@@ -197,7 +178,7 @@
     </div>
 </div>
 
-    <div class="unidad section">
+    <div class="deudas section">
         <h2>Mi unidad habitacional</h2>
         <div class="f1">
             <h3>Numero de unidad</h3> <h3>12</h3>

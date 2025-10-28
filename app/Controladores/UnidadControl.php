@@ -76,18 +76,40 @@ private function ListarUsuarios($unidad_id) {
 
     return $data;
 }
-public function ObtenerDatosUnidad() {
+public function ObtenerDatosUnidad() {  
+    //Obtener la unidad asignada al usuario
+    ob_start();
     $this->listado->listadoComun(
-        "unidades_habitacionales",
-        ["codigo", "estado"],
-        ["id" => $this->usuario_id]
+        "usuarios_unidades",
+        ["unidad_id"],
+        ["usuario_id" => $this->usuario_id]
     );
+    $output = ob_get_clean();
+    $data = json_decode($output, true);
+
+    if (empty($data)) {
+        echo json_encode(["error" => "No se encontró unidad asignada", "unidad"=>null]);
+        return;
+    }
+
+    $unidad_id = $data[0]['unidad_id'];
+
+    //Obtener los datos de la unidad
+    try{
+    $unidad = $this->ObtenerUnidadPorId($unidad_id);
+    echo json_encode($unidad);
+    return;
+    }catch(Exception $e){
+        echo json_encode(["error" => "Unidad no encontrada"]);
+        return;
+    } 
 }
+
 public function ObtenerUnidadPorId($id) {
     ob_start();
     $this->listado->listadoComun(
         "unidades_habitacionales",
-        ["id", "codigo"],
+        ["codigo", "estado"],
         ["id" => $id]
     );
     $output = ob_get_clean();
