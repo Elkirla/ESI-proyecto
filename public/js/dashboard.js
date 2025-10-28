@@ -74,6 +74,33 @@ document.addEventListener('DOMContentLoaded', function() {
             marcador.style.top = offsetTop - 5 + "px";
         });
     });
+    document.querySelector(".filtropagos button").addEventListener("click", () => {
+    const filtro = document.getElementById("filtro-pagos").value; // 'todos', 'pendientes', etc.
+    const valor = document.querySelector(".filtropagos input").value.toLowerCase();
+    const tabla = document.querySelector(".tablaPagos table");
+    const filas = tabla.querySelectorAll("tr:not(:first-child)");
+
+    filas.forEach(fila => {
+        let texto = "";
+        switch (filtro) {
+            case "todos": 
+                texto = fila.innerText.toLowerCase(); 
+                break;
+            case "pendientes": 
+                texto = fila.cells[1].innerText.toLowerCase(); // columna Monto
+                break;
+            case "aprobados": 
+                texto = fila.cells[2].innerText.toLowerCase(); // columna Envio
+                break;
+            case "rechazados": 
+                texto = fila.cells[3].innerText.toLowerCase(); // columna Estado
+                break;
+        }
+        // Mostrar u ocultar fila según si coincide el valor
+        fila.style.display = texto.includes(valor) ? "" : "none";
+    });
+});
+
     // Envío de horas
     enviarHorasBtn.addEventListener('click', enviarHoras);
     
@@ -336,8 +363,8 @@ try {
             
             if (resultado.success) {
                 agregarNotificacion(resultado.message || "Pago registrado exitosamente", 'success');
-                // Limpiar formulario después de éxito
-                formPago.reset();
+                cargarpagos();  // Refrescar datos de pagos       
+                formPago.reset();  // Limpiar formulario después de éxito
             } else {
                 // Mostrar error específico del servidor
                 agregarNotificacion(resultado.error || "Error al procesar el pago", 'error');

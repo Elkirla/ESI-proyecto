@@ -84,16 +84,17 @@
          </h3>
 
 
-         <div class="filtropagos">
-            <select id="filtro-pagos">
-                <option value="todos">Mes</option>
-                <option value="pendientes">Monto</option>
-                <option value="aprobados">Envio</option>
-                <option value="rechazados">Estado</option>
-            </select>
-            <input type="text">
-            <button>Aplicar</button>
-         </div>
+<form class="filtropagos" onsubmit="return false;">
+    <select id="filtro-pagos">
+        <option value="todos">Mes</option>
+        <option value="pendientes">Monto</option>
+        <option value="aprobados">Envio</option>
+        <option value="rechazados">Estado</option>
+    </select>
+    <input type="text">
+    <button type="submit">Aplicar</button>
+</form>
+
 
 <div class="tablaPagos">
     <table>
