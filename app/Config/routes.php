@@ -123,7 +123,9 @@ $routes = [
         // ======================
         "/aprobar-usuario"  => "AdminControl@AceptarUsuario",
         "/rechazar-usuario" => "AdminControl@RechazarUsuario",
-                
+        
+        "/actualizar-DatosUsuario" => "UserControl@ActualizarDatosUsuario",
+
         // ======================
         // NOTIFICACIONES
         // ======================

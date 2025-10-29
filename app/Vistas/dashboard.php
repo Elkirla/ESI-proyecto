@@ -60,17 +60,39 @@
     </div>
 </div>
  
-    <div class="mi-perfil section">
-        <div class="texto-icono">
-            <span>Mi perfil</span>
-        </div>
-        <div class="datos"> 
-            <p id="Nombre-datos"></p>
-            <p id="Apellido-datos"></p>
-            <p id="Telefono-datos"></p>
-            <p id="Correo-datos"></p>
-        </div> 
+<div class="mi-perfil section">
+    <div class="texto-icono">
+        <img src="public/imagenes/usuario.png" alt="usuario_icon"> 
+        <h2>MI PERFIL</h2>
     </div>
+
+    <div id="editar-datos">
+        <button id="btn-editar-datos">
+            <img src="public/imagenes/lapiz.png" alt="lapiz_icon">
+            <p>Editar datos</p>
+        </button>
+    </div>
+
+    <!-- Vista de datos (modo solo lectura) -->
+    <div id="vista-datos" class="datos">
+        <p id="Nombre-datos"></p>
+        <p id="Apellido-datos"></p>
+        <p id="Telefono-datos"></p>
+        <p id="ci-datos"></p>
+    </div>
+
+    <!-- Formulario oculto de edición -->
+    <form id="form-editar-datos" class="datos" style="display:none;">
+        <input type="text" id="input-nombre" placeholder="Nombre">
+        <input type="text" id="input-apellido" placeholder="Apellido">
+        <input type="text" id="input-telefono" placeholder="Teléfono">
+        <input type="text" id="input-ci" placeholder="CI">
+
+        <button type="submit" id="btn-guardar">Guardar cambios</button>
+        <button type="button" id="btn-cancelar">Cancelar</button>
+    </form>
+</div>
+
  
 <div class="pagos section"> 
     <div class="PagosHeaderDiv">

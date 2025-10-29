@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nombreDatos = document.getElementById('Nombre-datos');
     const apellidoDatos = document.getElementById('Apellido-datos');
     const telefonoDatos = document.getElementById('Telefono-datos');
-    const correoDatos = document.getElementById('Correo-datos');
+    const ciDatos = document.getElementById('ci-datos');
     
     // Elementos de horas
     const fechaHoras = document.getElementById('fecha-horas');
@@ -278,11 +278,11 @@ try {
             // Como data es un array, tomamos el primer elemento
             const usuario = data[0];
             
-            nombreUsuario.innerText = "Bienvenido "+usuario.nombre;
-            nombreDatos.innerText = "Nombre: " + usuario.nombre;
-            apellidoDatos.innerText = "Apellido: " + usuario.apellido;
-            telefonoDatos.innerText = "Telefono: " + usuario.telefono;
-            correoDatos.innerText = "Correo: " + usuario.email;
+            nombreUsuario.innerText =  "Bienvenido "+usuario.nombre;
+            nombreDatos.innerText =  usuario.nombre;
+            apellidoDatos.innerText = usuario.apellido;
+            telefonoDatos.innerText =  usuario.telefono;
+            ciDatos.innerText =  usuario.ci;
         } catch (error) {
             console.error("Error al cargar datos del usuario:", error);
             agregarNotificacion("Error al cargar los datos del usuario", "error");
@@ -387,6 +387,68 @@ try {
         }
     }
     
+const btnEditar = document.getElementById("btn-editar-datos");
+const vistaDatos = document.getElementById("vista-datos");
+const formEditar = document.getElementById("form-editar-datos");
+
+btnEditar.addEventListener("click", () => activarEdicion(true));
+
+document.getElementById("btn-cancelar").addEventListener("click", () => activarEdicion(false));
+
+formEditar.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const datos = new FormData();
+    datos.append("nombre", document.getElementById("input-nombre").value);
+    datos.append("apellido", document.getElementById("input-apellido").value);
+    datos.append("telefono", document.getElementById("input-telefono").value);
+    datos.append("ci", document.getElementById("input-ci").value);
+
+    try {
+        const response = await fetch("/actualizar-DatosUsuario", {
+            method: "POST",
+            body: datos
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            actualizarVista();
+            activarEdicion(false);
+            agregarNotificacion(result.success, "success");
+        } else {
+            agregarNotificacion(result.error, "error");
+        }
+
+    } catch (error) {
+        agregarNotificacion("Error de conexión con el servidor", "error");
+    }
+});
+
+
+function activarEdicion(modo) {
+    if (modo) {
+        // Pasar datos actuales al form
+        document.getElementById("input-nombre").value = document.getElementById("Nombre-datos").innerText;
+        document.getElementById("input-apellido").value = document.getElementById("Apellido-datos").innerText;
+        document.getElementById("input-telefono").value = document.getElementById("Telefono-datos").innerText;
+        document.getElementById("input-ci").value = document.getElementById("ci-datos").innerText;
+    }
+
+    vistaDatos.style.display = modo ? "none" : "block";
+    formEditar.style.display = modo ? "block" : "none";
+}
+
+
+function actualizarVista() {
+    document.getElementById("Nombre-datos").innerText = document.getElementById("input-nombre").value;
+    document.getElementById("Apellido-datos").innerText = document.getElementById("input-apellido").value;
+    document.getElementById("Telefono-datos").innerText = document.getElementById("input-telefono").value;
+    document.getElementById("ci-datos").innerText = document.getElementById("input-ci").value;
+}
+
+
+
+
     // ========== FUNCIONES AUXILIARES ==========
     function agregarNotificacion(mensaje, tipo = "info") {
         const item = document.createElement('li');

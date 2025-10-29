@@ -78,4 +78,19 @@ public function aceptarUsuario($usuario_id) {
     return $stmt->execute([':usuario_id' => $usuario_id]);
 }
 
+public function actualizarDatos(Usuario $usuario) {
+    $sql = "UPDATE usuarios 
+            SET nombre = :nombre, apellido = :apellido, telefono = :telefono, ci = :ci
+            WHERE id = :id";
+    
+    $stmt = $this->db->prepare($sql);
+    
+    return $stmt->execute([
+        ':nombre' => $usuario->getNombre(),
+        ':apellido' => $usuario->getApellido(),
+        ':telefono' => $usuario->getTelefono(),
+        ':ci' => $usuario->getCi(),
+        ':id' => $usuario->getId()
+    ]);
+}
 }
