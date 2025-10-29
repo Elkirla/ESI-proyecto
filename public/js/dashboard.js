@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const enviarPagoBtn = document.getElementById('btn-pagar');
     const formPago = document.getElementById('form-pago');
     const estadopagos = document.getElementById("EstadoPagos-pagos");
+    const formComp = document.getElementById('form-compensatorio');
+    const enviarCompBtn = document.getElementById('btn-compensatorio');
+
     // ========== CONFIGURACIÓN INICIAL ==========
     cargarDatos();
      
@@ -107,8 +110,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cerrar notificaciones
     cerrarNotisBtn.addEventListener('click', cerrarNotificaciones);
     
-    // Envío de pagos
+    // Envío de pagos mensuales
     enviarPagoBtn.addEventListener('click', procesarPago);
+
+    // Envío de pagos compensatorios
+    formComp.addEventListener('submit', procesarPagoCompensatorio);
     
     // ========== FUNCIONES PRINCIPALES ==========
     function cargarDatos() {
@@ -302,7 +308,45 @@ try {
         const fechaActual = `${anioCompleto}-${mes}-${dia}`;
         fechaHoras.dataset.mysql = fechaActual;
     }
-    
+
+    async function procesarPagoCompensatorio(e) {
+    e.preventDefault();
+
+    enviarCompBtn.disabled = true;
+    enviarCompBtn.textContent = 'Procesando...';
+
+    try {
+        const formData = new FormData(formComp);
+
+        const respuesta = await fetch('/ingresar-pago-compensatorio', {
+
+            method: "POST",
+            body: formData
+        });
+
+        const contentType = respuesta.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('El servidor respondió con un formato incorrecto');
+        }
+
+        const resultado = await respuesta.json();
+
+if (resultado.success) {
+    agregarNotificacion(resultado.mensaje || "Comprobante subido con éxito ✅", 'success'); 
+} else {
+    agregarNotificacion(resultado.mensaje || resultado.error || "Error al procesar ❌", 'error');
+}
+
+
+    } catch (err) {
+        agregarNotificacion("Error inesperado. Intente más tarde ❌", 'error');
+        console.error(err);
+
+    } finally {
+        enviarCompBtn.disabled = false;
+        enviarCompBtn.textContent = 'Subir comprobante';
+    }
+}
     async function enviarHoras(e) {
         e.preventDefault();
         

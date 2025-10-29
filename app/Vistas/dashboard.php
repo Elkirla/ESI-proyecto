@@ -154,7 +154,7 @@
             <p id="MontoTotal">Monto total</p> 
         </div>
         <form action="" class="form-compensatorio" id="form-compensatorio" enctype="multipart/form-data"> 
-            <input type="file" name="archivo-compensatorio" id="archivo-compensatorio" accept=".jpg,.jpeg,.png,.pdf">
+            <input type="file" name="archivo" id="archivo-compensatorio" accept=".jpg,.jpeg,.png,.pdf">
             <button type="submit" id="btn-compensatorio" class="but">Subir comprobante</button>
         </form>
     </div>
