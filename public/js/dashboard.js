@@ -164,6 +164,7 @@ btnJustificativo.addEventListener('click', () => {
     
     // ========== FUNCIONES PRINCIPALES ==========
     function cargarDatos() {
+        cargarNotisPendientes();
         calcularDeudas();
         datosUsuario();
         cargarHora();
@@ -172,8 +173,87 @@ btnJustificativo.addEventListener('click', () => {
         cargarDatosInicio();
         cargarpagos();
         actualizarGrafico();
+        mostrarDeudas();
     }
+
+async function cargarNotisPendientes() {
     
+}
+async function mostrarDeudas() {
+    try {
+        await Promise.all([
+            cargarDeudasSemanas(),
+            cargarDeudasMensuales(),
+            cargarDeudaTotal()
+        ]);
+    } catch (error) {
+        console.error("Error cargando deudas:", error);
+    }
+}
+
+// ✅ CARGAR DEUDAS POR SEMANA
+async function cargarDeudasSemanas() {
+    const tabla = document.querySelector(".tabla-deudas-horas");
+    try {
+        const res = await fetch('/verTodasDeudasSemanas');
+        const data = await res.json();
+
+        data.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${formatearSemana(item.fecha_inicio, item.fecha_fin)}</td>
+                <td>${item.horas_justificadas}</td>
+                <td>${item.horas_faltantes}</td>
+            `;
+            tabla.appendChild(tr);
+        });
+    } catch (e) {
+        console.error("Error en cargarDeudasSemanas:", e);
+    }
+}
+
+function formatearSemana(inicio, fin) {
+    return `${formatearFecha(inicio)} al ${formatearFecha(fin)}`;
+}
+
+function formatearFecha(fecha) {
+    const f = new Date(fecha);
+    return `${f.getDate()}/${f.getMonth() + 1}`;
+}
+
+async function cargarDeudasMensuales() {
+    const tabla = document.querySelector(".tabla-deudas-pagos");
+    try {
+        const res = await fetch('/verDeudasMensuales');
+        const data = await res.json();
+
+        data.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${item.mes}</td>
+                <td>$ ${item.monto}</td>
+            `;
+            tabla.appendChild(tr);
+        });
+    } catch (e) {
+        console.error("Error en cargarDeudasMensuales:", e);
+    }
+}
+async function cargarDeudaTotal() {
+    try {
+        const res = await fetch('/verPagosDeuda');
+        const data = await res.json();
+
+        if (data.length > 0) {
+            const deuda = data[0];
+            document.getElementById("MontoDeudaTotal").textContent = `Monto total: $ ${deuda.monto}`;
+            document.getElementById("CantidadMesesDeuda").textContent = `Meses adeudados: ${deuda.meses}`;
+        }
+    } catch (e) {
+        console.error("Error en cargarDeudaTotal:", e);
+    }
+}
+
 async function calcularDeudas() {
     try { 
         await fetch("/actualizarPagoDeudas", { method: "POST" });
@@ -191,7 +271,7 @@ async function actualizarGrafico(animar = true) {
 
     const respuesta2 = await fetch("/horas-semanales");
     const data2 = await respuesta2.json();
-    HorasSemanales = data2[0].valor;
+    HorasSemanales = data2[0].valor; 
 
     let porcentajeFinal = (HorasTrabajadas / HorasSemanales) * 100;
     let progressCircle = document.querySelector(".progress-circle");
@@ -273,10 +353,9 @@ async function cargarpagos() {
 
         // 3. Obtener mes actual
         const pagosResp = await fetch("/pagosusuario");
-        const pagosData = await pagosResp.json();
-        if(pagosData.length > 0) {
-            document.getElementById("mes").innerText = `Mes: ${pagosData[0].mes}`;
-        }
+        const pagosData = await pagosResp.json(); 
+            document.getElementById("mes").innerText = `Mes actual: ${new Date().toLocaleString('es-ES', { month: 'long', year: 'numeric' })}`;
+ 
 
         // 4. Llenar la tabla de pagos
         const tabla = document.querySelector(".tablaPagos table");
@@ -306,7 +385,7 @@ async function cargarpagos() {
         // 7. Monto total a pagar
         const saldoResp = await fetch("/saldo-compensatorio");
         const saldoData = await saldoResp.json();
-        document.getElementById("MontoTotal").innerText = `Monto total: $${saldoData.monto}`;
+        document.getElementById("MontoTotal").innerText = `Monto total: $${Math.round(saldoData.monto)}`;
 
     } catch (error) {
         console.error("Error cargando los pagos:", error);

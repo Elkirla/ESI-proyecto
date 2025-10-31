@@ -27,7 +27,7 @@ $routes = [
         "/actualizarPagoDeudas"      => "PagosControl@ActualizarDeudaPago",
         "/verPagosDeuda"             => "PagosControl@verPagosDeuda", 
         "/VerEstadoPagos"            => "PagosControl@verEstadoPagos",
-
+        "/verDeudasMensuales"            => "PagosControl@verMesesDeudaPagos",
         // ======================
         // PAGOS (admin)
         // ======================
@@ -42,11 +42,12 @@ $routes = [
         "/horasadmin"             => "AdminControl@verHorasAdmin",
         "/horas-semanales"        => "HorasControl@verHorasSemanales",
         "/valor-semanal"          => "HorasControl@verValorSemanal",
-        "/ver-deudas-horas"       => "HorasControl@verDeudasHorasUsuario",
+        "/horasDeudasTotal"       => "HorasControl@verDeudasHorasUsuario",
         "/horas-deuda-admin"      => "AdminControl@verDeudasHorasAdmin",
         "/VerHorasTrabajadas"     => "HorasControl@obtenerHorasTrabajadasSemana",
         "/verHorasDeudaSemanal"   => "HorasControl@verHorasDeudaSemanal",
         "/saldo-compensatorio"    => "HorasControl@SaldoCompensatorioUsuario",
+        "/verTodasDeudasSemanas"  => "HorasControl@verTodasDeudasSemanasUsuario",
 
         // ======================
         // JUSTIFICATIVOS

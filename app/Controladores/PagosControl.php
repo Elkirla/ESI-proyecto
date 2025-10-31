@@ -79,6 +79,18 @@ public function IngresarPago() {
             ["fecha", "DESC"]
         );
     }
+    /* ============================================================
+    OBTENER PAGOS DEL USUARIO
+    ============================================================ */
+    public function verMesesDeudaPagos() {
+        $usuario_id = $_SESSION['usuario_id'] ?? null; 
+        $this->listado->listadoComun(
+            "Deudas_Mensuales",
+            ["mes", "monto"],
+            ["usuario_id" => $usuario_id],
+            ["fecha_inicio", "ASC"]
+        );
+    }
 /* ============================================================
 OBTENER ESTADO DE LOS PAGOS DEL USUARIO
 ============================================================ */

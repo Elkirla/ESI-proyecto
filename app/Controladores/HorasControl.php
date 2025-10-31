@@ -48,6 +48,15 @@ class HorasControl {
         );
     }
 
+    public function verTodasDeudasSemanasUsuario(){
+        $this->listado->listadoComun(
+            "Semana_deudas",
+            ["fecha_inicio", "fecha_fin", "horas_faltantes", "horas_justificadas", "horas_compensadas"],
+            ["usuario_id" => $this->usuario_id],
+            ["fecha_inicio","DESC"]
+        );
+    }
+
     public function verHorasSemanales() {
         $this->listado->listadoComun(
             "configuracion",
@@ -540,7 +549,7 @@ private function haySuperposicionFechas($inicio1, $fin1, $inicio2, $fin2) {
 public function verDeudasHorasUsuario(){
     $this->listado->listadoComun(
         "Horas_deuda",
-        ["horas_acumuladas", "primera_semana_pendiente"],
+        ["horas_deuda_total", "primera_semana_pendiente"],
         ["usuario_id" => $this->usuario_id],
         [],
         1

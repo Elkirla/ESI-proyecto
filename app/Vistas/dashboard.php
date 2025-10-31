@@ -66,29 +66,38 @@
         <h2>MI PERFIL</h2>
     </div>
 
-    <div id="editar-datos">
-        <button id="btn-editar-datos">
-            <img src="public/imagenes/lapiz.png" alt="lapiz_icon">
-            <p>Editar datos</p>
-        </button>
-    </div>
- 
-    <div id="vista-datos" class="datos">
-        <p id="Nombre-datos"></p>
-        <p id="Apellido-datos"></p>
-        <p id="Telefono-datos"></p>
-        <p id="ci-datos"></p>
-    </div>
- 
-    <form id="form-editar-datos" class="datos" style="display:none;">
-        <input type="text" id="input-nombre" placeholder="Nombre">
-        <input type="text" id="input-apellido" placeholder="Apellido">
-        <input type="text" id="input-telefono" placeholder="Teléfono">
-        <input type="text" id="input-ci" placeholder="CI">
+    <div class="datosUsuario-container">
+        <div id="editar-datos">
+            <button id="btn-editar-datos">
+                <img src="public/imagenes/lapiz.png" alt="lapiz_icon">
+                <p>Editar datos</p>
+            </button>
+        </div>
+     
+        <div id="vista-datos" class="datos">
+            <p id="Nombre-datos"></p>
+            <p id="Apellido-datos"></p>
+            <p id="Telefono-datos"></p>
+            <p id="ci-datos"></p>
+        </div>
+        
+        <div class="formulario-editar-datos-container">
+            <form id="form-editar-datos" class="datos" style="display:none;">
+                <input type="text" id="input-nombre" placeholder="Nombre">
+                <input type="text" id="input-apellido" placeholder="Apellido">
+                <input type="text" id="input-telefono" placeholder="Teléfono">
+                <input type="text" id="input-ci" placeholder="CI">
+            
+                <div class="form-buttons">
+                    <button type="submit" id="btn-guardar">Guardar cambios</button>
+                    <button type="button" id="btn-cancelar">Cancelar</button>
+                </div>
+            </form>
+        </div>
 
-        <button type="submit" id="btn-guardar">Guardar cambios</button>
-        <button type="button" id="btn-cancelar">Cancelar</button>
-    </form>
+
+    </div>
+
 </div>
 
  
@@ -232,27 +241,46 @@
         </div> 
 </div>
 
-    <div class="deudas section">
-        <h2>Mi unidad habitacional</h2>
-        <div class="f1">
-            <h3>Numero de unidad</h3> <h3>12</h3>
-        </div>
-        <div class="f2"> 
-            <h3>Estado</h3> <h3>Cimientos</h3>
-        </div>
+<div class="deudas section">
+    <div>
+        <h2>HORAS</h2>
+            <table class="tabla-deudas-horas">
+                <tr>
+                    <th>Semana</th>
+                    <th>Horas ingresadas</th>
+                    <th>Horas faltantes</th>
+                </tr>
+            </table>
     </div>
+
+    <div>
+        <h2>PAGOS</h2>
+            <table class="tabla-deudas-pagos">
+                <tr>
+                    <th>Mes</th>
+                    <th>Pago esperado</th> 
+                </tr>
+            </table>
+    </div>
+    <div>
+        <h2>DEUDA TOTAL</h2>
+        <p id="MontoDeudaTotal"></p>
+        <p id="CantidadMesesDeuda"></p>
+    </div>
+</div>
 
     <div class="mensajes section">
         <h2>Mensajes</h2>
-        <textarea id="Recordatorio" placeholder="Recordatorio-se acerca la fecha de pago"></textarea>
+        <div id="notificaciones-mensajes">  
+        </div>
     </div>
 
     <div class="soporte section">
-        <h2>Soporte</h2>
-        <h3>No dude de hacernos saber si ocurre algun inconveniente</h3>
-        <p>- Correo@gmail.com</p>
-        <p>- +099.123.456</p>
-        <p>- +099.222.333</p>
+        <img src="public/imagenes/celular.png" alt="celular_icon">
+        <h2>Soporte al usuario</h2>
+        <h3>Si ha experimentado algún error o tiene alguna duda, consulte al personal por nuestros medios de comunicación </h3>
+        <p>+099.123.456</p> 
+        <p>Correo@gmail.com</p>
     </div>
 </div>
 
