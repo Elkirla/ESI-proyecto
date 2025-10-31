@@ -1,190 +1,147 @@
 <?php
 class AdminControl {
-private $listado;
-    public function __construct() { 
+    private $listado;
+    private $notiControl;
+
+    public function __construct() {
         header('Content-Type: application/json; charset=utf-8');
         require_once __DIR__ . '/../Controladores/ListadoControl.php';
+        require_once __DIR__ . '/../Controladores/NotiControl.php';
         $this->listado = new ListadoControl();
- 
+        $this->notiControl = new NotiControl();
+
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
             http_response_code(404);
             include __DIR__ . '/../Vistas/404.php';
             exit;
-        } 
+        }
     }
 
-    // ===================================
-    // RESPUESTA JSON CENTRALIZADA
-    // ===================================
     private function response($success, $data = []) {
         echo json_encode(array_merge(['success' => $success], $data));
         exit;
     }
 
     // ===================================
-    // DASHBOARD
-    // ===================================
-    public function dashboardAdmin() {
-        include __DIR__ . "/../Vistas/backoffice.php";
-    }  
-
-    // ===================================
-    // PAGOS
+    // PAGOS ✅ con Notificaciones
     // ===================================
     public function aprobarPago() {
-        require_once __DIR__ . '/../Modelos/PagoModelo.php'; 
+        require_once __DIR__ . '/../Modelos/PagoModelo.php';
 
         try {
             $pago_id = $_POST['pago_id'] ?? null;
-
-            if (!$pago_id || !is_numeric($pago_id)) {
-                throw new Exception("ID de pago inválido.");
-            }
+            if (!$pago_id) throw new Exception("ID de pago inválido.");
 
             $modelo = new PagoModelo();
-            $ok = $modelo->aprobarPago($pago_id);
+            $pago = $modelo->obtenerPago($pago_id);
 
-            if (!$ok) {
-                throw new Exception("Error al aprobar el pago. Intente más tarde.");
-            }
+            if (!$modelo->aprobarPago($pago_id))
+                throw new Exception("No se pudo aprobar.");
 
-            $this->response(true, ['message' => 'Pago aprobado exitosamente.']);
+            $this->notiControl->CrearNoti(
+                "Tu pago fue aprobado ✅",
+                $pago['usuario_id']
+            );
 
+            $this->response(true, ['message' => 'Pago aprobado.']);
         } catch (Exception $e) {
-            error_log("[PAGOS_APROBAR_ERROR] Admin: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
-            http_response_code(500);
             $this->response(false, ['error' => $e->getMessage()]);
         }
     }
-    
+
     public function rechazarPago() {
-        require_once __DIR__ . '/../Modelos/PagoModelo.php'; 
+        require_once __DIR__ . '/../Modelos/PagoModelo.php';
+
         try {
             $pago_id = $_POST['pago_id'] ?? null;
-
-            if (!$pago_id || !is_numeric($pago_id)) {
-                throw new Exception("ID de pago inválido.");
-            }
+            if (!$pago_id) throw new Exception("ID inválido.");
 
             $modelo = new PagoModelo();
-            $ok = $modelo->rechazarPago($pago_id);
+            $pago = $modelo->obtenerPago($pago_id);
 
-            if (!$ok) {
-                throw new Exception("No se pudo rechazar el pago.");
-            }
+            $modelo->rechazarPago($pago_id);
 
-            $this->response(true, ['message' => 'Pago rechazado con éxito.']);
+            $this->notiControl->CrearNoti(
+                "Tu pago fue rechazado ❌",
+                $pago['usuario_id']
+            );
 
+            $this->response(true, ['message' => 'Rechazado.']);
         } catch (Exception $e) {
-            error_log("[PAGOS_RECHAZAR_ERROR] Admin: " . ($_SESSION['usuario_id'] ?? 'unknown') . 
-                " - Pago: " . ($pago_id ?? 'none') . " - " . $e->getMessage());
-            http_response_code(500);
             $this->response(false, ['error' => $e->getMessage()]);
         }
     }
 
-    public function verPagosAdmin() { 
-        $this->listado->listadoComun(
-            "pagos_mensuales",
-            ["id", "usuario_id", "mes", "monto", "fecha", "archivo_url", "estado", "entrega"],
-            [],
-            ["fecha", "DESC"]
-        );
-    }
-    public function listarPagosDeudas() { 
-        $this->listado->listadoComun(
-            "Pagos_Deudas",
-            ["usuario_id", "correo", "mes", "monto"],
-            [],
-            ["fecha", "DESC"]
-        );
-    }
     // ===================================
-    // PAGOS COMPENSATORIOS
+    // PAGOS COMPENSATORIOS ✅
     // ===================================
-
-    public function aprobarPagoCompensatorio(){
-        require_once __DIR__ . '/../Modelos/PagoModelo.php'; 
+    public function aprobarPagoCompensatorio() {
+        require_once __DIR__ . '/../Modelos/PagoModelo.php';
 
         try {
             $pago_id = $_POST['pago_id'] ?? null;
-
-            if (!$pago_id || !is_numeric($pago_id)) {
-                throw new Exception("ID de pago Compensatorio inválido.");
-            }
+            if (!$pago_id) throw new Exception("ID inválido.");
 
             $modelo = new PagoModelo();
-            $ok = $modelo->aprobarPagoCompensatorio($pago_id);
+            $pago = $modelo->obtenerPagoCompensatorio($pago_id);
 
-            if (!$ok) {
-                throw new Exception("Error al aprobar el pago Compensatorio. Intente más tarde.");
-            }
+            $modelo->aprobarPagoCompensatorio($pago_id);
 
-            $this->response(true, ['message' => 'Pago compensatorio aprobado exitosamente.']);
+            $this->notiControl->CrearNoti(
+                "Tu pago compensatorio fue aprobado ✅",
+                $pago['usuario_id']
+            );
 
+            $this->response(true, ['message' => 'Aprobado.']);
         } catch (Exception $e) {
-            error_log("[PAGOS_APROBAR_ERROR] Admin: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
-            http_response_code(500);
             $this->response(false, ['error' => $e->getMessage()]);
         }
     }
 
-    public function rechazarPagoCompensatorio(){
-    require_once __DIR__ . '/../Modelos/PagoModelo.php'; 
+    public function rechazarPagoCompensatorio() {
+        require_once __DIR__ . '/../Modelos/PagoModelo.php';
 
         try {
             $pago_id = $_POST['pago_id'] ?? null;
-
-            if (!$pago_id || !is_numeric($pago_id)) {
-                throw new Exception("ID de pago inválido.");
-            }
+            if (!$pago_id) throw new Exception("ID inválido.");
 
             $modelo = new PagoModelo();
-            $ok = $modelo->rechazarPagoCompensatorio($pago_id);
+            $pago = $modelo->obtenerPagoCompensatorio($pago_id);
 
-            if (!$ok) {
-                throw new Exception("Error al rechazar el pago compensatorio. Intente más tarde.");
-            }
+            $modelo->rechazarPagoCompensatorio($pago_id);
 
-            $this->response(true, ['message' => 'Pago rechazado exitosamente.']);
+            $this->notiControl->CrearNoti(
+                "Tu pago compensatorio fue rechazado ❌",
+                $pago['usuario_id']
+            );
 
+            $this->response(true, ['message' => 'Rechazado.']);
         } catch (Exception $e) {
-            error_log("[COMPENSATORIO_RECHAZAR_ERROR] Admin: " . ($_SESSION['usuario_id'] ?? 'unknown') . " - " . $e->getMessage());
-            http_response_code(500);
             $this->response(false, ['error' => $e->getMessage()]);
         }
     }
 
-    public function listarPagosCompensatorios() { 
-        $this->listado->listadoComun(
-            "pagos_compensatorios",
-            ["id", "usuario_id", "monto", "fecha", "archivo_url", "estado"],
-            [],
-            ["fecha", "DESC"]
-        );
-    }
-
     // ===================================
-    // JUSTIFICATIVOS
+    // JUSTIFICATIVOS ✅
     // ===================================
     public function aceptarJustificativo() {
         require_once __DIR__ . '/../Modelos/JustificativoModelo.php';
 
         try {
             $id = $_POST['id'] ?? null;
-            if (!$id || !is_numeric($id)) {
-                throw new Exception("ID de justificativo inválido.");
-            }
+            if (!$id) throw new Exception("ID inválido.");
 
             $modelo = new JustificativoModelo();
-            $ok = $modelo->aceptarJustificativo($id);
+            $justi = $modelo->obtenerJustificativo($id);
 
-            if (!$ok) {
-                throw new Exception("No se pudo actualizar en la base de datos.");
-            }
+            $modelo->aceptarJustificativo($id);
+
+            $this->notiControl->CrearNoti(
+                "Tu justificativo fue aceptado ✅",
+                $justi['usuario_id']
+            );
 
             $this->response(true);
-
         } catch (Exception $e) {
             $this->response(false, ['error' => $e->getMessage()]);
         }
@@ -195,171 +152,71 @@ private $listado;
 
         try {
             $id = $_POST['id'] ?? null;
-            if (!$id || !is_numeric($id)) {
-                throw new Exception("ID de justificativo inválido.");
-            }
+            if (!$id) throw new Exception("ID inválido.");
 
             $modelo = new JustificativoModelo();
-            $ok = $modelo->rechazarJustificativo($id);
+            $justi = $modelo->obtenerJustificativo($id);
 
-            if (!$ok) {
-                throw new Exception("No se pudo actualizar en la base de datos.");
-            }
+            $modelo->rechazarJustificativo($id);
 
-            $this->response(true);
-
-        } catch (Exception $e) {
-            $this->response(false, ['error' => $e->getMessage()]);
-        }
-    }
-
-    public function listarJustificativosAdmin() {
-    $this->listado->listadoComun(
-        "justificativos",
-        ["usuario_id", "fecha", "motivo", "archivo_url", "estado"],
-        [],                    
-        ["fecha", "DESC"]
-    );
-}
-    // ===================================
-    // NOTIFICACIONES
-    // ===================================
-    public function CrearNotificacion($usuario_id, $mensaje) {  
-        require_once __DIR__ . '/../Modelos/NotiModelo.php';
-        try { 
-
-            $modelo = new NotiModelo();
-            if (!$modelo->InsertarNoti($usuario_id, $mensaje)) {
-                throw new Exception("Error al insertar la notificación.");
-            }
+            $this->notiControl->CrearNoti(
+                "Tu justificativo fue rechazado ❌",
+                $justi['usuario_id']
+            );
 
             $this->response(true);
-
         } catch (Exception $e) {
             $this->response(false, ['error' => $e->getMessage()]);
         }
     }
 
     // ===================================
-    // USUARIOS
+    // USUARIOS ✅
     // ===================================
-    public function RechazarUsuario() {
+    public function AceptarUsuario() {
         require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
+        require_once __DIR__ . '/../Controladores/UnidadControl.php';
+
         try {
-            $correo = $_POST['mensaje'] ?? null;
-            if (!$correo) {
-                throw new Exception("Correo no recibido.");
-            }
+            $usuario_id = $_POST['usuario_id'] ?? null;
+            if (!$usuario_id) throw new Exception("ID no recibido.");
 
             $modelo = new UsuarioModelo();
-            $ok = $modelo->rechazarUsuario($correo);
+            $unidadcontrol = new UnidadControl();
 
-            if (!$ok) {
-                throw new Exception("No se pudo actualizar en la BD.");
-            }
+            $unidad_id = $unidadcontrol->CalcularUnidad();
+            $modelo->AsignarUnidad($usuario_id, $unidad_id);
+            $modelo->aceptarUsuario($usuario_id);
+
+            $this->notiControl->CrearNoti(
+                "¡Bienvenido! ✅ Tu cuenta fue aprobada.",
+                $usuario_id
+            );
 
             $this->response(true);
-
         } catch (Exception $e) {
             $this->response(false, ['error' => $e->getMessage()]);
         }
     }
 
-public function AceptarUsuario() {
-    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
-    require_once __DIR__ . '/../Controladores/UnidadControl.php';
+    public function RechazarUsuario() {
+        require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
 
-    try {
-        $usuario_id = $_POST['usuario_id'] ?? null;
-        if (!$usuario_id) {
-            throw new Exception("ID de usuario no recibido.");
+        try {
+            $usuario_id = $_POST['usuario_id'] ?? null;
+            if (!$usuario_id) throw new Exception("ID inválido.");
+
+            $modelo = new UsuarioModelo();
+            $modelo->rechazarUsuarioId($usuario_id);
+
+            $this->notiControl->CrearNoti(
+                "Tu registro fue rechazado ❌",
+                $usuario_id
+            );
+
+            $this->response(true);
+        } catch (Exception $e) {
+            $this->response(false, ['error' => $e->getMessage()]);
         }
-
-        $modelo = new UsuarioModelo();
-        $unidadcontrol = new UnidadControl();
- 
-        // Calcular la unidad con menos ocupación
-        $unidad_id = $unidadcontrol->CalcularUnidad();
- 
-        // Asignar al usuario a la unidad
-        $modelo->AsignarUnidad($usuario_id, $unidad_id);
- 
-        // Cambiar el estado del usuario a "activo"
-        $ok = $modelo->aceptarUsuario($usuario_id);
-
-        if (!$ok) {
-            throw new Exception("No se pudo actualizar el usuario en la base de datos.");
-        }
-
-        // Obtener info de la unidad asignada (para devolver en el JSON)
-        $unidad = $unidadcontrol->ObtenerUnidadPorId($unidad_id);
-
-        $this->response(true, [
-            "mensaje" => "Usuario aceptado y asignado correctamente.",
-            "usuario_id" => $usuario_id,
-            "unidad_asignada" => [
-                "id" => $unidad["id"],
-                "codigo" => $unidad["codigo"]
-            ],
-            "nuevo_estado" => "activo"
-        ]);
-
-    } catch (Exception $e) {
-        $this->response(false, ['error' => $e->getMessage()]);
     }
-}
-
-
- 
-
-    public function cargarUsuariosPendientes() {
-    $this->listado->listadoComun(
-        "usuarios",
-        ["id", "nombre", "apellido"],
-        ["estado" => "pendiente"]
-    );
-}
-    public function ObtenerUsuarioPorId() {
-        $id = $_POST['id'] ?? null;
-        $this->listado->listadoComun(
-            "usuarios",
-            ["nombre", "apellido", "telefono", "email", "ci"],
-            ["id" => $id],
-            null,
-            1
-        );
-}
-    // ===================================
-    // UNIDADES
-    // ===================================
-
-    public function CrearUnidad(){
-
-    }
-
-    public function CambiarEstadoUnidad(){
-
-    }
-
-    // ===================================
-    // HORAS
-    // ===================================
-
-public function verHorasAdmin() {
-    $this->listado->listadoComun(
-        "horas_trabajadas",
-        ["fecha", "horas"],
-        [],                       
-        ["fecha", "DESC"]
-    );
-}
-public function verDeudasHorasAdmin() {
-    $this->listado->listadoComun(
-        "Horas_deuda",
-        ["usuario_id", "horas_acumuladas", "primera_semana_pendiente"],
-        [],
-        [],
-        null
-    );
-}
 }

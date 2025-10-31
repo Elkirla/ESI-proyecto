@@ -17,10 +17,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Elementos de horas
     const fechaHoras = document.getElementById('fecha-horas');
-    const inputHoras = document.getElementById('hr');
-    const tablaHoras = document.querySelector('.t table');
-    const enviarHorasBtn = document.getElementById('subirhoras');
+    const inputHoras = document.getElementById('hr'); 
+    const enviarHorasBtn = document.getElementById('subirhoras');  
+    const formJustificativo = document.getElementById('formJustificativo');
+    const fechaInicioInput = document.getElementById('fecha');
+    const fechaFinInput = document.getElementById('fecha_final');
+    const btnHoras = document.getElementById('btnHoras');
+    const btnJustificativo = document.getElementById('btnJustificativo');
+
+    var HorasTrabajadas;
+    var HorasSemanales;
+
+    // Divs de horas y justificativos
+
+    const divHoras = document.getElementById('IngresoHorasDiv');
+    const divJustificativo = document.getElementById('formJustificativo');
     
+    const filtroHoras = document.getElementById('filtro-horas');
+    const tablaHoras = document.querySelector('.tabla-horas');
+    const tablaJustificativos = document.querySelector('.tabla-justificativos');
+    const btnSubmitJust = document.getElementById('btn-submit-justificativo');
     // Elementos de notificaciones
     const notificacionesContainer = document.querySelector('.notificaciónes-container');
     const listaNotificaciones = document.getElementById('lista-notificaciones');
@@ -32,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const estadopagos = document.getElementById("EstadoPagos-pagos");
     const formComp = document.getElementById('form-compensatorio');
     const enviarCompBtn = document.getElementById('btn-compensatorio');
+ 
+     
 
     // ========== CONFIGURACIÓN INICIAL ==========
     cargarDatos();
@@ -77,6 +95,28 @@ document.addEventListener('DOMContentLoaded', function() {
             marcador.style.top = offsetTop - 5 + "px";
         });
     });
+btnHoras.addEventListener('click', () => {
+    divHoras.style.display = 'block';
+    divJustificativo.style.display = 'none';
+});
+
+btnJustificativo.addEventListener('click', () => {
+    divHoras.style.display = 'none';
+    divJustificativo.style.display = 'block';
+});
+
+    filtroHoras.addEventListener('change', () => {
+    const valor = filtroHoras.value;
+
+    if (valor === 'todos') {
+        tablaHoras.style.display = 'table';
+        tablaJustificativos.style.display = 'none';
+    } else if (valor === 'pendientes') {
+        tablaHoras.style.display = 'none';
+        tablaJustificativos.style.display = 'table';
+    }
+    });
+
     document.querySelector(".filtropagos button").addEventListener("click", () => {
     const filtro = document.getElementById("filtro-pagos").value; // 'todos', 'pendientes', etc.
     const valor = document.querySelector(".filtropagos input").value.toLowerCase();
@@ -115,15 +155,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Envío de pagos compensatorios
     formComp.addEventListener('submit', procesarPagoCompensatorio);
+
+    // Envio de justificativos
+    formJustificativo.addEventListener('submit', function(event) {
+    event.preventDefault();
+    enviarJustificativo();
+    });
     
     // ========== FUNCIONES PRINCIPALES ==========
     function cargarDatos() {
         calcularDeudas();
         datosUsuario();
         cargarHora();
+        cargarJustificativos();
         cargarHoraLista();
         cargarDatosInicio();
         cargarpagos();
+        actualizarGrafico();
     }
     
 async function calcularDeudas() {
@@ -131,15 +179,83 @@ async function calcularDeudas() {
         await fetch("/actualizarPagoDeudas", { method: "POST" });
  
         await fetch("/actualizar-deuda-horas", { method: "POST" });
-
-        console.log("Deudas actualizadas correctamente.");
     } catch (error) {
         console.error("Error calculando deudas:", error);
     }
 }
 
-// Ejecutar la función
-calcularDeudas();
+async function actualizarGrafico(animar = true) {
+    const respuesta1 = await fetch("/VerHorasTrabajadas");
+    const data1 = await respuesta1.json();
+    HorasTrabajadas = data1.horas;
+
+    const respuesta2 = await fetch("/horas-semanales");
+    const data2 = await respuesta2.json();
+    HorasSemanales = data2[0].valor;
+
+    let porcentajeFinal = (HorasTrabajadas / HorasSemanales) * 100;
+    let progressCircle = document.querySelector(".progress-circle");
+    let texto = document.getElementById("percentage-text");
+
+    let porcentajeInicial = parseInt(texto.textContent) || 0;
+
+    let inicio = null;
+
+    function animarCirculo(timestamp) {
+        if (!inicio) inicio = timestamp;
+        let progreso = timestamp - inicio;
+
+        let porcentajeAnim = porcentajeInicial + (porcentajeFinal - porcentajeInicial) *
+            Math.min(progreso / 800, 1); // 800ms de animación
+
+        let offset = 377 - (377 * porcentajeAnim / 100);
+        progressCircle.style.strokeDashoffset = offset;
+
+        texto.textContent = `${Math.round(porcentajeAnim)}%`;
+
+        if (porcentajeAnim < porcentajeFinal) {
+            requestAnimationFrame(animarCirculo);
+        }
+    }
+
+    if (animar) requestAnimationFrame(animarCirculo);
+    else {
+        // Sin animar (para primera carga)
+        let offset = 377 - (377 * porcentajeFinal / 100);
+        progressCircle.style.strokeDashoffset = offset;
+        texto.textContent = `${Math.round(porcentajeFinal)}%`;
+    }
+}
+
+
+async function cargarJustificativos() {
+    try {
+        const response = await fetch('/listar-justificativos');
+        const datos = await response.json();
+
+        const tabla = document.querySelector('.tabla-justificativos');
+
+        // Si ya hay filas anteriores, las borramos menos la cabecera
+        tabla.querySelectorAll('tr:not(:first-child)').forEach(tr => tr.remove());
+
+        const justificativos = Array.isArray(datos) ? datos : [datos];
+
+        justificativos.forEach(just => {
+            const fila = document.createElement('tr');
+
+            fila.innerHTML = `
+                <td>${just.fecha}</td>
+                <td>${just.estado}</td>
+            `;
+
+            tabla.appendChild(fila);
+        });
+
+    } catch (error) {
+        console.error("Error al cargar justificativos:", error);
+    }
+}
+
 
 async function cargarpagos() {
     try {
@@ -230,6 +346,7 @@ try {
         .then(response => response.json()) 
         .then(data => {
         HorasInicio.innerText = data.horas + " horas registradas";
+        
         })
         }catch (error) {
             console.error("Error al cargar datos del usuario:", error);
@@ -294,7 +411,47 @@ try {
             agregarNotificacion("Error al cargar los datos del usuario", "error");
         } 
     }
-    
+ async function enviarJustificativo() {
+
+    const fechaInicio = fechaInicioInput.value;
+    const fechaFin = fechaFinInput.value;
+
+    // Validación lógica de fechas
+    if (fechaFin && new Date(fechaFin) < new Date(fechaInicio)) {
+        agregarNotificacion("La fecha final no puede ser menor que la fecha de inicio", "error");
+        return;
+    }
+
+    const formData = new FormData(formJustificativo);
+
+    // Bloquear botón para evitar doble envío
+    btnSubmitJust.disabled = true;
+    btnSubmitJust.textContent = "Enviando...";
+
+    try {
+        const response = await fetch('/IngresarJustificativo', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            agregarNotificacion("Justificativo enviado correctamente", "success");
+            formJustificativo.reset();
+        } else {
+            agregarNotificacion(` ${data.error}`, "error");
+        }
+
+    } catch (error) {
+        console.error(error);
+        agregarNotificacion("⚠️ Error en la conexión con el servidor", "error");
+
+    } finally { 
+        btnSubmitJust.disabled = false;
+        btnSubmitJust.textContent = "Enviar Justificativo";
+    }
+}
     function cargarHora() {
         const hoy = new Date();
         
@@ -373,6 +530,7 @@ if (resultado.success) {
                 agregarNotificacion("Horas registradas con éxito", "success");
                 inputHoras.value = "";
                 cargarHoraLista(); // refrescar datos
+                actualizarGrafico();
             } else {
                 agregarNotificacion(resultado.error, "error");
             }

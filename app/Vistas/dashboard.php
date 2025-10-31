@@ -72,16 +72,14 @@
             <p>Editar datos</p>
         </button>
     </div>
-
-    <!-- Vista de datos (modo solo lectura) -->
+ 
     <div id="vista-datos" class="datos">
         <p id="Nombre-datos"></p>
         <p id="Apellido-datos"></p>
         <p id="Telefono-datos"></p>
         <p id="ci-datos"></p>
     </div>
-
-    <!-- Formulario oculto de edición -->
+ 
     <form id="form-editar-datos" class="datos" style="display:none;">
         <input type="text" id="input-nombre" placeholder="Nombre">
         <input type="text" id="input-apellido" placeholder="Apellido">
@@ -163,42 +161,75 @@
     </div> 
 </div>
     <div class="horas section">
-       <div> <h2>Horas Registradas</h2></div>
         <div>
-|           <label for="fil">Filtro</label>
-            <select id="fil" class="color">
-                <option value="todos">Todos</option>
-                <option value="pendientes">Pendientes</option>
-                <option value="aprobados">Aprobados</option>
-                <option value="atrasados">Rechazados</option>
-            </select>
+        <h2 class="HorasTitulo">MIS HORAS</h2>
         </div>
-        <div class="conjunto">
-        <div class="t">
-            <table>
+ 
+        <div class="Envio-container">
+
+        <button id="btnHoras">Ingresar horas</button>
+        <button id="btnJustificativo">Enviar justificativo</button>
+
+            <div class="Envio-horas" id="IngresoHorasDiv"> 
+                <label for="hr" id="fecha-horas"></label>
+                <input type="text" id="hr" placeholder="Horas trabajadas">
+                <button id="subirhoras">Registrar</button>
+            </div>
+
+            <form id="formJustificativo" enctype="multipart/form-data" class="form-justificativo">
+            
+                <label for="motivo">Razón del justificativo</label>
+                <textarea id="motivo" name="motivo" placeholder="Describa el motivo del justificativo." required></textarea>
+            
+                <label for="fecha">Fecha inicio</label>
+                <input type="date" id="fecha" name="fecha" required>
+            
+                <label for="fecha_final">Fecha fin</label>
+                <input type="date" id="fecha_final" name="fecha_final">
+            
+                <label for="archivo">Seleccionar archivo (PDF/Imagen)</label>
+                <input type="file" id="archivo" name="archivo" accept="image/*,application/pdf" required>
+            
+                <button type="submit" id="btn-submit-justificativo">Enviar Justificativo</button>
+            </form>
+
+        </div>
+
+        <div class="grafico-horas">
+            <h3 id="Horas-semana-grafico">Horas trabajadas</h3>
+        
+            <div class="circle-chart">
+                <svg width="150" height="150">
+                    <circle cx="75" cy="75" r="60" class="bg-circle"></circle>
+                    <circle cx="75" cy="75" r="60" class="progress-circle"></circle>
+                </svg>
+                <div class="circle-inner">
+                    <span id="percentage-text">0%</span>
+                    <small>Horas trabajadas esta semana</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="tablas-HorasJustificativos">
+            <h3>Registro de</h3> 
+            <select id="filtro-horas">
+                <option value="todos">Horas</option>
+                <option value="pendientes">Justificativos</option>
+            </select>
+
+            <table class="tabla-horas">
                 <tr>
                     <th>Fecha</th>
                     <th>Hora</th>
                 </tr>
             </table>
-        </div>
-        <div class="con">
-
-            <div class="jus1">
-                <h3>Registrar horas</h3>
-                <label for="hr" id="fecha-horas"></label>
-                <input type="text" id="hr" placeholder="Horas trabajadas">
-                <button id="subirhoras">Subir</button>
-            </div>
-
-            <div class="jus">
-                <h3>Justificativo</h3>
-                <textarea name="just" id="just" cols="30" rows="10" placeholder="Escriba el justificativo aqui..."></textarea>
-                <input type="file" placeholder="Fotodelcertificado.png">
-                <button id="enviar">Enviar</button>
-                </div>
-        </div>
-    </div>
+            <table class="tabla-justificativos">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                </tr>
+            </table>
+        </div> 
 </div>
 
     <div class="deudas section">

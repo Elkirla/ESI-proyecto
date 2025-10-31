@@ -541,3 +541,43 @@ input[type="file"]:hover {
     text-align: center;
 }
 
+.circle-chart {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+svg {
+    transform: rotate(-90deg); /* Para que empiece arriba */
+}
+
+.bg-circle {
+    fill: none;
+    stroke: #ffffff00;
+    stroke-width: 10;
+    opacity: 0.3;
+}
+
+.progress-circle {
+    fill: none;
+    stroke: #dc931d;
+    stroke-width: 10;
+    stroke-linecap: square;
+    stroke-dasharray: 377; /* 2πr ≈ 2*3.14*60 */
+    stroke-dashoffset: 377;
+    transition: stroke-dashoffset 0.8s ease;
+}
+
+.circle-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    font-family: "Montserrat";
+    align-items: center;
+    font-size: 1rem;
+    flex-direction: column;
+    color: #fff;
+    text-align: center;
+}
+

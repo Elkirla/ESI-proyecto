@@ -69,8 +69,8 @@ $routes = [
         // ======================
         // NOTIFICACIONES
         // ======================
-        "/listar-notificaciones" => "NotiControl@ObtenerNotificaciones",
-        "/notis-no-leídas"       => "NotiControl@NotisNoLeidas",
+        "/listarNotificaciones" => "NotiControl@ObtenerNotificaciones",
+        "/notis-noleidas"       => "NotiControl@NotisNoLeidas",
 
         // ======================
         // SESIÓN
@@ -116,7 +116,7 @@ $routes = [
         // ======================
         // JUSTIFICATIVOS
         // ======================
-        "/IngresarJustificativo"  => "HorasControl@IngresarJustificativo",
+        "/IngresarJustificativo"  => "JustificativoControl@IngresarJustificativo",
         "/aceptar-justificativo"  => "AdminControl@aceptarJustificativo",
         "/rechazar-justificativo" => "AdminControl@rechazarJustificativo",
 

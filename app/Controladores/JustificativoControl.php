@@ -24,11 +24,15 @@ public function __construct() {
             echo json_encode(['success' => false, 'error' => 'Faltan datos']);
             return;
         }
- 
+
         $uploader = new Uploads('/var/www/html/public/uploads/'); 
         $archivo_url = $uploader->subirArchivo('archivo'); // <- "archivo" es el name del input
  
-        
+        if (!isset($_FILES['archivo']) || $_FILES['archivo']['error'] !== UPLOAD_ERR_OK) {
+        echo json_encode(['success' => false, 'error' => 'Archivo no válido']);
+        return;
+        }
+    
         $justificativo = new justificativo($usuario_id, $fecha, $fecha_final, $motivo, $archivo_url);
 
         $ok = $modelo->registrarJustificativo($justificativo);
