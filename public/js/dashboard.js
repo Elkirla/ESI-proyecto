@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var HorasTrabajadas;
     var HorasSemanales;
-
+    const MostrarHorasSemana= document.getElementById('Horas-semana-grafico');
     // Divs de horas y justificativos
 
     const divHoras = document.getElementById('IngresoHorasDiv');
@@ -80,6 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 section.style.display = 'none';
             });
             // Mostrar la sección seleccionada
+            if (navigationMap[btnId] === 'deudas') {
+            document.querySelector('.' + navigationMap[btnId]).style.display = 'grid';
+            return;
+            }
             document.querySelector('.' + navigationMap[btnId]).style.display = 'block';
         });
     });
@@ -95,14 +99,20 @@ document.addEventListener('DOMContentLoaded', function() {
             marcador.style.top = offsetTop - 5 + "px";
         });
     });
+divJustificativo.style.display = "none";
+
 btnHoras.addEventListener('click', () => {
-    divHoras.style.display = 'block';
+    divHoras.style.display = 'flex';
     divJustificativo.style.display = 'none';
+    btnHoras.classList.add("active");
+    btnJustificativo.classList.remove("active");
 });
 
 btnJustificativo.addEventListener('click', () => {
     divHoras.style.display = 'none';
     divJustificativo.style.display = 'block';
+    btnJustificativo.classList.add("active");
+    btnHoras.classList.remove("active");
 });
 
     filtroHoras.addEventListener('change', () => {
@@ -165,6 +175,7 @@ btnJustificativo.addEventListener('click', () => {
     // ========== FUNCIONES PRINCIPALES ==========
     function cargarDatos() {
         cargarNotisPendientes();
+        listarNotificaciones();
         calcularDeudas();
         datosUsuario();
         cargarHora();
@@ -175,10 +186,63 @@ btnJustificativo.addEventListener('click', () => {
         actualizarGrafico();
         mostrarDeudas();
     }
+async function listarNotificaciones() {
+    const contenedor = document.getElementById('sona-mensajes');
 
-async function cargarNotisPendientes() {
-    
+    try {
+        const res = await fetch('/listarNotificaciones');
+        const notific = await res.json();
+
+        // Limpiar contenido previo
+        contenedor.innerHTML = '';
+
+        // Si no hay mensajes, mostrar el “Nada por aquí...”
+        if (!notific.length) {
+            contenedor.innerHTML = `
+                <div class="sin-mensajes">
+                    <img src="public/imagenes/luna.png" alt="luna_icon">
+                    <h3>Nada por aquí...</h3> 
+                </div>`;
+            return;
+        }
+
+        // Si hay mensajes, ocultar mensaje vacío y crear divs
+        notific.forEach(noti => {
+            const notiDiv = document.createElement('div');
+            notiDiv.classList.add('mensajesde-usuario');
+
+            notiDiv.innerHTML = `
+                <p>${noti.mensaje + " | " + noti.fecha}</p> 
+            `;
+
+            contenedor.appendChild(notiDiv);
+        });
+
+    } catch (error) {
+        console.error("Error al cargar notificaciones:", error);
+    }
 }
+async function cargarNotisPendientes() {
+    const res = await fetch('/notis-noleidas');
+    let text = await res.text();  
+ 
+    text = text.split('}{')[0] + '}';
+
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (err) {
+        console.error("Error al parsear JSON:", err, text);
+        return;
+    }
+
+    if (data.no_leidas > 1) {
+        agregarNotificacion(`${data.no_leidas} Nuevos mensajes`);
+    } else if (data.no_leidas == 1) {
+        agregarNotificacion("1 Mensaje nuevo");
+    } 
+}
+
 async function mostrarDeudas() {
     try {
         await Promise.all([
@@ -201,8 +265,7 @@ async function cargarDeudasSemanas() {
         data.forEach(item => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${formatearSemana(item.fecha_inicio, item.fecha_fin)}</td>
-                <td>${item.horas_justificadas}</td>
+                <td>${formatearSemana(item.fecha_inicio, item.fecha_fin)}</td> 
                 <td>${item.horas_faltantes}</td>
             `;
             tabla.appendChild(tr);
@@ -273,6 +336,7 @@ async function actualizarGrafico(animar = true) {
     const data2 = await respuesta2.json();
     HorasSemanales = data2[0].valor; 
 
+    MostrarHorasSemana.textContent= HorasTrabajadas + "h de " + HorasSemanales + "h";
     let porcentajeFinal = (HorasTrabajadas / HorasSemanales) * 100;
     let progressCircle = document.querySelector(".progress-circle");
     let texto = document.getElementById("percentage-text");
@@ -524,11 +588,11 @@ try {
 
     } catch (error) {
         console.error(error);
-        agregarNotificacion("⚠️ Error en la conexión con el servidor", "error");
+        agregarNotificacion("Error en la conexión con el servidor", "error");
 
     } finally { 
         btnSubmitJust.disabled = false;
-        btnSubmitJust.textContent = "Enviar Justificativo";
+        btnSubmitJust.textContent = "Enviar";
     }
 }
     function cargarHora() {
@@ -715,7 +779,7 @@ function activarEdicion(modo) {
         document.getElementById("input-ci").value = document.getElementById("ci-datos").innerText;
     }
 
-    vistaDatos.style.display = modo ? "none" : "block";
+    vistaDatos.style.display = modo ? "none" : "flex";
     formEditar.style.display = modo ? "block" : "none";
 }
 

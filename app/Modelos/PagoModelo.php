@@ -46,12 +46,28 @@ public function setFechaLimitePago($nuevaFecha) {
     return $stmt->execute([':fecha' => $nuevaFecha]);
 }
 
-public function aprobarPago($pagoId) {
-    $sql = "UPDATE pagos_mensuales SET estado = 'aprobado' WHERE id = :pagoId";
+public function aprobarPago($pagoId) { 
+    $sql = "SELECT usuario_id FROM pagos_mensuales WHERE id = :id";
     $stmt = $this->db->prepare($sql);
-    $stmt->execute([':pagoId' => $pagoId]);
-    return $stmt->rowCount() > 0;
+    $stmt->execute([':id' => $pagoId]);
+    $pago = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$pago) return false; 
+    
+    $sql2 = "UPDATE pagos_mensuales SET estado = 'aprobado' WHERE id = :id";
+    $stmt2 = $this->db->prepare($sql2);
+
+    if ($stmt2->execute([':id' => $pagoId])) {
+        // ✅ Ahora devolvemos datos reales
+        return [
+            'usuario_id' => $pago['usuario_id'],
+            'status' => 'aprobado'
+        ];
+    }
+
+    return false;
 }
+
 
 public function rechazarPago($pagoId) {
     $sql = "UPDATE pagos_mensuales SET estado = 'rechazado' WHERE id = :pagoId";

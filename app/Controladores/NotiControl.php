@@ -12,44 +12,38 @@ class NotiControl {
     }
 
 public function NotisNoLeidas() {
-    // Iniciar el buffer de salida
-    ob_start();
+    try {
+        // Capturar la salida del método listadoComun (que imprime JSON)
+        ob_start();
+        $this->listado->listadoComun(
+            "Notificaciones",
+            ["id", "mensaje", "leido", "fecha"],
+            ["usuario_id" => $this->idusuario, "leido" => 0]
+        );
+        $output = ob_get_clean();
 
-    // Ejecutar la consulta
-    $this->listado->listadoComun(
-        "Notificaciones",
-        ["id", "mensaje", "leido", "fecha"],
-        ["usuario_id" => $this->idusuario, "leido" => 0]
-    );
-
-    // Obtener el output generado por listadoComun
-    $output = ob_get_clean();
-
-    // Convertir output a array asociativo
-    $notificaciones = json_decode($output, true);
-
-    // Si no es un JSON válido, asumimos 0
-    if (!is_array($notificaciones)) {
-        $notificaciones = [];
-    }
-
-    // Contar no leídas
-    $cantidad = count($notificaciones);
-
-    // Devolver respuesta JSON
-    header('Content-Type: application/json');
-    echo json_encode(["no_leidas" => $cantidad]);
-}
-
-
-    public function MarcarTodasLeidas() {
-        $modelo = new NotiModelo();
-
-        if (!$this->idusuario) {
-            echo json_encode(["success" => false, "error" => "Usuario no autenticado"]);
-            return;
+        // Convertir a array
+        $notificaciones = json_decode($output, true);
+        if (!is_array($notificaciones)) {
+            $notificaciones = [];
         }
 
+        $cantidad = count($notificaciones);
+ 
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(["no_leidas" => $cantidad]);
+ 
+        $this->MarcarTodasLeidas();
+
+    } catch (Exception $e) {
+        header('Content-Type: application/json');
+        echo json_encode(["error" => "No encontrado"]);
+        error_log($e->getMessage());
+    }
+}
+
+    public function MarcarTodasLeidas() {
+        $modelo = new NotiModelo(); 
         if ($modelo->NotiLeidasUsuario($this->idusuario)) {
             echo json_encode(["success" => true]);
         } else {
@@ -58,13 +52,10 @@ public function NotisNoLeidas() {
     }
 
 public function CrearNoti($mensaje, $usuario) {
-    // Validaciones básicas
-    if (empty($usuario) || empty($mensaje)) {
-        return false;
-    }
 
     // Intentar crear la notificación
-    $resultado = $this->InsertarNoti($usuario, $mensaje);
+    $modelo = new NotiModelo();
+    $resultado = $modelo->InsertarNoti($usuario, $mensaje);
 
     // Si se insertó correctamente, devolver un JSON con éxito
     if ($resultado) {

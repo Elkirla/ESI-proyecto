@@ -7,12 +7,14 @@ private $notiControl;
         require_once __DIR__ . '/../Controladores/ListadoControl.php';
         require_once __DIR__ . '/../Controladores/NotiControl.php';
         $this->listado = new ListadoControl();
-        $this->NotiControl = new notiControl();
+        $this->notiControl = new NotiControl();
+/*
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
             http_response_code(404);
             include __DIR__ . '/../Vistas/404.php';
             exit;
         } 
+*/
     }
 
     // ===================================
@@ -34,19 +36,18 @@ private $notiControl;
     // PAGOS
     // ===================================
 
- public function aprobarPago() {
+ 
+    public function aprobarPago() {
         require_once __DIR__ . '/../Modelos/PagoModelo.php';
 
         try {
             $pago_id = $_POST['pago_id'] ?? null;
+
             if (!$pago_id) throw new Exception("ID de pago inválido.");
 
             $modelo = new PagoModelo();
-            $pago = $modelo->obtenerPago($pago_id);
-
-            if (!$modelo->aprobarPago($pago_id))
-                throw new Exception("No se pudo aprobar.");
-
+            $pago = $modelo->aprobarPago($pago_id);
+ 
             $this->notiControl->CrearNoti(
                 "Tu pago fue aprobado ✅",
                 $pago['usuario_id']
@@ -57,7 +58,7 @@ private $notiControl;
             $this->response(false, ['error' => $e->getMessage()]);
         }
     }
-
+ 
     public function rechazarPago() {
         require_once __DIR__ . '/../Modelos/PagoModelo.php';
 

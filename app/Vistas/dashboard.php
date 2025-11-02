@@ -75,9 +75,13 @@
         </div>
      
         <div id="vista-datos" class="datos">
+            <h3>Nombre</h3>
             <p id="Nombre-datos"></p>
+            <h3>Apellido</h3>
             <p id="Apellido-datos"></p>
+            <h3>Teléfono</h3>
             <p id="Telefono-datos"></p>
+            <h3>CI</h3>
             <p id="ci-datos"></p>
         </div>
         
@@ -94,7 +98,6 @@
                 </div>
             </form>
         </div>
-
 
     </div>
 
@@ -136,72 +139,92 @@
     </table>
 </div>
 
-
-       <div class="IngresarComprobanteDiv">
-    <div class="botones-comp">
-        <button class="active">Subir Comprobante</button>
-        <button>Pago Compensatorio</button>
-    </div>
-
-    <div class="IngresarPago">  
-        <div class="info-pago">
-            <p id="MontoMensual">Monto:</p>
-            <p id="mes">Mes:</p> 
+    <div class="IngresarComprobanteDiv">
+        <div class="botones-comp">
+            <button class="active">Subir Comprobante</button>
+            <button>Pago Compensatorio</button>
         </div>
-        <form action="" class="form-pago" id="form-pago" enctype="multipart/form-data"> 
-            <input type="file" name="archivo" id="archivo" accept=".jpg,.jpeg,.png,.pdf">
-            <button type="submit" id="btn-pagar" class="but">Subir comprobante</button>
-        </form>
-    </div>
-
-    <div class="IngresarCompensatorio">
-        <div class="info-pago">
-            <p id="MontoCompensatorio">Monto semanal</p>
-            <p id="HorasRestantes">Horas restantes</p>
-            <p id="MontoTotal">Monto total</p> 
+    
+        <div class="IngresarPago">  
+            <div class="info-pago">
+                <p id="MontoMensual">Monto:</p>
+                <p id="mes">Mes:</p> 
+            </div>
+            <form action="" class="form-pago" id="form-pago" enctype="multipart/form-data"> 
+                <input type="file" name="archivo" id="archivo" accept=".jpg,.jpeg,.png,.pdf">
+                <button type="submit" id="btn-pagar" class="but">Subir comprobante</button>
+            </form>
         </div>
-        <form action="" class="form-compensatorio" id="form-compensatorio" enctype="multipart/form-data"> 
-            <input type="file" name="archivo" id="archivo-compensatorio" accept=".jpg,.jpeg,.png,.pdf">
-            <button type="submit" id="btn-compensatorio" class="but">Subir comprobante</button>
-        </form>
+    
+        <div class="IngresarCompensatorio">
+            <div class="info-pago">
+                <p id="MontoCompensatorio">Monto semanal</p>
+                <p id="HorasRestantes">Horas restantes</p>
+                <p id="MontoTotal">Monto total</p> 
+            </div>
+            <form action="" class="form-compensatorio" id="form-compensatorio" enctype="multipart/form-data"> 
+                <input type="file" name="archivo" id="archivo-compensatorio" accept=".jpg,.jpeg,.png,.pdf">
+                <button type="submit" id="btn-compensatorio" class="but">Subir comprobante</button>
+            </form>
+        </div>
     </div>
-</div>
 
     </div> 
+
 </div>
     <div class="horas section">
         <div>
         <h2 class="HorasTitulo">MIS HORAS</h2>
         </div>
  
-        <div class="Envio-container">
+        <div class="HorasContenido-contanier">
 
-        <button id="btnHoras">Ingresar horas</button>
-        <button id="btnJustificativo">Enviar justificativo</button>
-
+        <div class="Envio-container"> 
+<div class="botones-envio">
+    <button id="btnHoras" class="active">Ingresar horas</button>
+    <button id="btnJustificativo">Enviar justificativo</button> 
+</div>
             <div class="Envio-horas" id="IngresoHorasDiv"> 
+                <form>
                 <label for="hr" id="fecha-horas"></label>
-                <input type="text" id="hr" placeholder="Horas trabajadas">
+                <input type="text" id="hr" placeholder="Horas">
                 <button id="subirhoras">Registrar</button>
+                </form>
             </div>
 
             <form id="formJustificativo" enctype="multipart/form-data" class="form-justificativo">
             
-                <label for="motivo">Razón del justificativo</label>
-                <textarea id="motivo" name="motivo" placeholder="Describa el motivo del justificativo." required></textarea>
+                <div class="justi-grid">
+             
+                    <div class="col-izq">
+                        <label for="motivo">Razón</label>
+                        <textarea id="motivo" name="motivo" required></textarea>
+                    </div>
+             
+                    <div class="col-der">
             
-                <label for="fecha">Fecha inicio</label>
-                <input type="date" id="fecha" name="fecha" required>
+                        <div class="fila-fechas">
+                            <div class="campo">
+                                <label for="fecha">Inicio</label>
+                                <input type="date" id="fecha" name="fecha" required>
+                            </div>
             
-                <label for="fecha_final">Fecha fin</label>
-                <input type="date" id="fecha_final" name="fecha_final">
+                            <div class="campo">
+                                <label for="fecha_final">Fin</label>
+                                <input type="date" id="fecha_final" name="fecha_final">
+                            </div>
+                        </div>
             
-                <label for="archivo">Seleccionar archivo (PDF/Imagen)</label>
-                <input type="file" id="archivo" name="archivo" accept="image/*,application/pdf" required>
+                        <div class="fila-acciones"> 
+                            <input type="file" id="archivo" name="archivo" accept="image/*,application/pdf">
             
-                <button type="submit" id="btn-submit-justificativo">Enviar Justificativo</button>
+                            <button type="submit" id="btn-submit-justificativo">Enviar</button>
+                        </div>
+            
+                    </div>
+                </div>
+            
             </form>
-
         </div>
 
         <div class="grafico-horas">
@@ -213,18 +236,19 @@
                     <circle cx="75" cy="75" r="60" class="progress-circle"></circle>
                 </svg>
                 <div class="circle-inner">
-                    <span id="percentage-text">0%</span>
-                    <small>Horas trabajadas esta semana</small>
+                    <span id="percentage-text">0%</span> 
                 </div>
             </div>
         </div>
 
         <div class="tablas-HorasJustificativos">
-            <h3>Registro de</h3> 
-            <select id="filtro-horas">
-                <option value="todos">Horas</option>
-                <option value="pendientes">Justificativos</option>
-            </select>
+            <header>
+                <h3>Registro de</h3> 
+                <select id="filtro-horas">
+                    <option value="todos">Horas</option>
+                    <option value="pendientes">Justificativos</option>
+                </select>
+            </header>
 
             <table class="tabla-horas">
                 <tr>
@@ -232,52 +256,70 @@
                     <th>Hora</th>
                 </tr>
             </table>
+
             <table class="tabla-justificativos">
                 <tr>
                     <th>Fecha</th>
                     <th>Estado</th>
                 </tr>
             </table>
+        </div>  
         </div> 
 </div>
 
 <div class="deudas section">
-    <div>
+    
+    <div class="bloque-horas">
         <h2>HORAS</h2>
-            <table class="tabla-deudas-horas">
-                <tr>
-                    <th>Semana</th>
-                    <th>Horas ingresadas</th>
-                    <th>Horas faltantes</th>
-                </tr>
-            </table>
+        <table class="tabla-deudas-horas">
+            <tr>
+                <th>Semana</th> 
+                <th>Horas faltantes</th>
+            </tr>
+        </table>
     </div>
 
-    <div>
+    <div class="bloque-pagos">
         <h2>PAGOS</h2>
-            <table class="tabla-deudas-pagos">
-                <tr>
-                    <th>Mes</th>
-                    <th>Pago esperado</th> 
-                </tr>
-            </table>
+        <table class="tabla-deudas-pagos">
+            <tr>
+                <th>Mes</th>
+                <th>Monto esperado</th>
+            </tr>
+        </table>
     </div>
-    <div>
-        <h2>DEUDA TOTAL</h2>
-        <p id="MontoDeudaTotal"></p>
-        <p id="CantidadMesesDeuda"></p>
+
+    <div class="bloque-total">
+        <h2>Deuda total</h2>
+        <label>Monto</label>
+        <p id="MontoDeudaTotal">$0</p>
+
+        <label>Meses</label>
+        <p id="CantidadMesesDeuda">-</p>
     </div>
+
 </div>
 
+
     <div class="mensajes section">
-        <h2>Mensajes</h2>
-        <div id="notificaciones-mensajes">  
+        <div class="texto-icono-mensajes">
+            <img src="public/imagenes/correo.png" alt="mensajes_icon">
+            <h2>MIS MENSAJES</h2>
         </div>
+        <div id="sona-mensajes">
+            <div class="sin-mensajes">
+                <img src="public/imagenes/luna.png" alt="luna_icon">
+                <h3>Nada por aqui...</h3> 
+            </div>
+        </div>
+
     </div>
 
     <div class="soporte section">
-        <img src="public/imagenes/celular.png" alt="celular_icon">
-        <h2>Soporte al usuario</h2>
+        <div class="texto-icono-soporte"> 
+            <img src="public/imagenes/celular.png" alt="celular_icon">
+            <h2>Soporte al usuario</h2>
+        </div>
         <h3>Si ha experimentado algún error o tiene alguna duda, consulte al personal por nuestros medios de comunicación </h3>
         <p>+099.123.456</p> 
         <p>Correo@gmail.com</p>

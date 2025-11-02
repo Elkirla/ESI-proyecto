@@ -101,16 +101,17 @@ public function verEstadoPagos() {
         // Obtener todos los pagos aprobados
         $pagos_aprobados = $this->obtenerPagosAprobados($usuario_id);
 
-        // Obtener el mes actual  
-        $mes_actual = date('m');
+        // ✅ Obtener mes actual en formato compatible con la verificación
+        $mes_actual = date('Y-m');
 
-        // Verificar si tiene un pago aprobado para el mes actual
+        // ✅ Solo importa si el mes actual esté pagado
         $al_dia = $this->tienePagoAprobadoParaMes($pagos_aprobados, $mes_actual);
- 
+
         echo json_encode([
             'success' => true, 
-            'estado' => $al_dia ? 'Al día' : 'atrasados', 
+            'estado' => $al_dia ? 'Al día' : 'atrasado',
         ]);
+
     } catch (Exception $e) {
         error_log("[ERROR_ESTADO_PAGO] " . $e->getMessage());
         echo json_encode([
@@ -119,6 +120,7 @@ public function verEstadoPagos() {
         ]);
     }
 }
+
 
 
     /* ============================================================
@@ -229,7 +231,7 @@ private function calcularDeudasMensuales($fecha_desde, $fecha_actual, $mensualid
 
     // Asegurarse de empezar desde el primer día del mes
     $fecha_desde->modify('first day of this month');
-    $fecha_actual->modify('first day of this month');
+    $fecha_actual->modify('last day of this month');
 
     $mes_actual = clone $fecha_desde;
 
@@ -334,31 +336,45 @@ private function obtenerPagosAprobados($usuario_id) {
 
     return is_array($data) ? $data : [];
 }
-
 private function tienePagoAprobadoParaMes($pagos_aprobados, $mes_buscado) {
     if (empty($pagos_aprobados)) {
         return false;
     }
 
     foreach ($pagos_aprobados as $pago) {
-        // Verificar por fecha del pago (formato Y-m)
-        if (isset($pago['fecha'])) {
+
+        // ✅ Comparar por la fecha  
+        if (!empty($pago['fecha'])) {
             $fecha_pago = new DateTime($pago['fecha']);
-            $mes_pago = $fecha_pago->format('Y-m');
-            
-            if ($mes_pago === $mes_buscado) {
+            if ($fecha_pago->format('Y-m') === $mes_buscado) {
                 return true;
             }
         }
-        
-        // También verificar por el campo 'mes' explícito si existe
-        if (isset($pago['mes']) && $pago['mes'] === $mes_buscado) {
-            return true;
+        if (!empty($pago['mes'])) {
+            $mes_texto = trim($pago['mes']);
+
+            $meses_es = [
+                'Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
+            ];
+
+            foreach ($meses_es as $k => $nombre) {
+                if (stripos($mes_texto, $nombre) !== false) {
+                    $anio = preg_replace('/[^0-9]/', '', $mes_texto);
+                    $mes_num = str_pad($k + 1, 2, '0', STR_PAD_LEFT);
+                    $mes_convertido = "$anio-$mes_num";
+
+                    if ($mes_convertido === $mes_buscado) {
+                        return true;
+                    }
+                }
+            }
         }
     }
-    
+
     return false;
 }
+
 
 private function responderJson($status, $message) {
     echo json_encode(['status' => $status, 'message' => $message]);
