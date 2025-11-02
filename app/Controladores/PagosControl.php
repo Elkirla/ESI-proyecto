@@ -91,6 +91,23 @@ public function IngresarPago() {
             ["fecha_inicio", "ASC"]
         );
     }
+
+    /* ============================================================
+    VERIFICAR SI TIENE ALGÚN PAGO APROBADO
+    ============================================================ */
+    public function usuarioTienePagoAprobado() {
+        try {
+            $usuario_id = $_SESSION['usuario_id'] ?? null; 
+    
+            $pagos_aprobados = $this->obtenerPagosAprobados($usuario_id);
+    
+            return !empty($pagos_aprobados);
+        } catch (Exception $e) {
+            error_log("[ERROR_PAGO_APROBADO] " . $e->getMessage());
+            return false;
+        }
+    }
+
 /* ============================================================
 OBTENER ESTADO DE LOS PAGOS DEL USUARIO
 ============================================================ */

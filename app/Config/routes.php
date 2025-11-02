@@ -10,6 +10,7 @@ $routes = [
         "/exitoregistro"    => "HomeControl@exitoregistro",
         "/login"            => "AuthControl@loginView",
         "/registro"         => "AuthControl@registroView",
+        "/pagoInicial"      => "AuthControl@PagoInicialView",
 
         // ======================
         // DASHBOARDS

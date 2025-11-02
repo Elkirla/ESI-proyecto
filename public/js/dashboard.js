@@ -413,7 +413,7 @@ async function cargarpagos() {
         const mensualidadResp = await fetch("/obtener-mensualidad");
         const mensualidadData = await mensualidadResp.json();
         const montoMensual = mensualidadData[0].valor;
-        document.getElementById("MontoMensual").innerText = `Monto: $${montoMensual}`;
+        document.getElementById("MontoMensual").innerText = `$${montoMensual}`;
 
         // 3. Obtener mes actual
         const pagosResp = await fetch("/pagosusuario");
@@ -683,7 +683,7 @@ if (resultado.success) {
         }
     }
     
-    async function procesarPago(e) {
+async function procesarPago(e) {
         e.preventDefault();
         
         // Deshabilitar botón para evitar múltiples envíos
@@ -725,8 +725,7 @@ if (resultado.success) {
             }
             
             console.error('Error detallado (solo desarrollo):', err);
-        } finally {
-            // Rehabilitar botón siempre
+        } finally { 
             enviarPagoBtn.disabled = false;
             enviarPagoBtn.textContent = 'Enviar Pago';
         }

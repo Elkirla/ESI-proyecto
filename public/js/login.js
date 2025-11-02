@@ -78,14 +78,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
 
-            if (result.success) {
-                // Reiniciar intentos exitosos
-                setLoginData(0);
-
-                window.location.href = (result.rol === "administrador")
-                    ? "/dashboard-admin"
-                    : "/dashboard-usuario";
-            } else {
+           if (result.success) {
+           setLoginData(0); 
+       
+           // Si NO tiene pago, lo mandamos a realizar el pago inicial
+           if (result.tienePago === false) {
+               window.location.href = "/pagoInicial";
+               return;
+           }
+       
+           // Si SI tiene pago, va directo al dashboard requerido
+           window.location.href = (result.rol === "administrador")
+               ? "/dashboard-admin"
+               : "/dashboard-usuario";
+       }else {
                 const newAttempts = attempts + 1;
                 setLoginData(newAttempts);
 
