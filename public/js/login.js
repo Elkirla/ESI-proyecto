@@ -1,52 +1,114 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('form-login');
-
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault(); 
-    const formData = new FormData(form);
-    
-    // Añadir indicador de carga
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('form-login');
+    const errorLabel = form.querySelector('.Error');
     const submitBtn = form.querySelector('input[type="submit"]');
-    const originalText = submitBtn.value;
-    submitBtn.value = "Cargando...";
-    submitBtn.disabled = true;
 
-    try {
-      const respuesta = await fetch('/login', {
-        method: "POST",
-        body: formData
-      });
+    const MAX_WARNING = 10;
+    const MAX_BLOCK = 15;
+    const BLOCK_TIME = 15 * 60 * 1000; // 15 minutos
 
-      // Verificar si la respuesta es JSON
-      const contentType = respuesta.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new TypeError("La respuesta del servidor no es JSON");
-      }
+    errorLabel.style.display = 'none';
 
-      const resultado = await respuesta.json();
-
-      if (resultado.success) {
-
-        // ✅ redirigir según el rol
-        if (resultado.rol === "administrador") {
-        window.location.href = "/dashboard-admin";
-        //Bienvenido
-
-        } else {
-        window.location.href = "/dashboard-usuario";
-        //Bienvenido
-        }
-
-      } else {
-        //Problema
-      }
-    } catch (err) {
-      console.error("Error en la petición:", err);
-        //Problema
-    } finally {
-      // Restaurar botón
-      submitBtn.value = originalText;
-      submitBtn.disabled = false;
+    // Obtener info de localStorage
+    function getLoginData() {
+        return {
+            attempts: parseInt(localStorage.getItem('loginAttempts')) || 0,
+            blockUntil: parseInt(localStorage.getItem('blockUntil')) || 0
+        };
     }
-  });
+
+    function setLoginData(attempts, blockUntil = 0) {
+        localStorage.setItem('loginAttempts', attempts);
+        localStorage.setItem('blockUntil', blockUntil);
+    }
+
+    function checkBlockStatus() {
+        const { blockUntil } = getLoginData();
+        const now = Date.now();
+
+        if (now < blockUntil) {
+            const remaining = Math.ceil((blockUntil - now) / 60000);
+            showError(`Has superado los intentos permitidos. Intenta en ${remaining} min.`);
+            disableForm(true);
+            return true;
+        } else {
+            disableForm(false);
+            return false;
+        }
+    }
+
+    function disableForm(state) {
+        submitBtn.disabled = state;
+    }
+    function animateError() {
+    errorLabel.classList.remove("shake");
+    void errorLabel.offsetWidth;
+    errorLabel.classList.add("shake");
+   }
+
+    function showError(msg) {
+        errorLabel.textContent = msg;
+        errorLabel.style.display = 'block';
+        animateError();
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (checkBlockStatus()) return;
+
+        const { attempts } = getLoginData();
+
+        // Cargar feedback visual
+        const originalText = submitBtn.value;
+        submitBtn.value = "Cargando...";
+        submitBtn.disabled = true;
+
+        try {
+            const formData = new FormData(form);
+
+            const response = await fetch('/login', {
+                method: "POST",
+                body: formData
+            });
+
+            if (!response.headers.get("content-type")?.includes("application/json")) {
+                throw new Error("Respuesta del servidor inválida");
+            }
+
+            const result = await response.json();
+
+            if (result.success) {
+                // Reiniciar intentos exitosos
+                setLoginData(0);
+
+                window.location.href = (result.rol === "administrador")
+                    ? "/dashboard-admin"
+                    : "/dashboard-usuario";
+            } else {
+                const newAttempts = attempts + 1;
+                setLoginData(newAttempts);
+
+                if (newAttempts >= MAX_BLOCK) {
+                    const blockUntil = Date.now() + BLOCK_TIME;
+                    setLoginData(newAttempts, blockUntil);
+                    showError("Demasiados intentos fallidos. Cuenta bloqueada por 15 min.");
+                    disableForm(true);
+                } else if (newAttempts >= MAX_WARNING) {
+                    showError(`Advertencia: ${newAttempts}/${MAX_BLOCK} intentos. Si llegas a ${MAX_BLOCK}, se bloqueará el acceso.`);
+                } else {
+                    showError("Credenciales incorrectas. Inténtalo de nuevo.");
+                }
+            }
+        } catch (err) {
+            console.error("Error en la petición:", err);
+            showError("Error en el servidor");
+        } finally {
+            submitBtn.value = originalText;
+            if (!checkBlockStatus()) submitBtn.disabled = false;
+        }
+    });
+
+    // Al cargar la página verificar si está bloqueado
+    checkBlockStatus();
 });

@@ -1216,8 +1216,32 @@ td.negativo {
     margin-left: 120px; 
     background-color: white;
     width: auto;  
-    height: 90%;
+    height: 90%; 
+    max-height: 90%;      
+    overflow-y: auto;    
     padding: 30px 40px;     
+}
+#sona-mensajes::-webkit-scrollbar {
+    width: 8px;
+}
+
+#sona-mensajes::-webkit-scrollbar-track {
+    background: #0F1533;      
+    border-radius: 10px;
+}
+
+#sona-mensajes::-webkit-scrollbar-thumb {
+    background: #485BB7;     
+    border-radius: 10px;
+}
+
+#sona-mensajes::-webkit-scrollbar-thumb:hover {
+    background: #5F71D0;      
+}
+ 
+#sona-mensajes {
+    scrollbar-width: thin;
+    scrollbar-color: #485BB7 #0F1533;
 }
 .mensajesde-usuario{ 
     display: flex;

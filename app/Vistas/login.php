@@ -20,8 +20,9 @@
 
   <h1>Ingrese con su usuario</h1>
   <form class="login-column" id="form-login" autocomplete="on"> 
-    <input type="email" name="email" placeholder="Email" id="Email" class="input-field" required>
+    <input name="email" placeholder="Email" id="Email" class="input-field" required>
     <input type="password" name="password" placeholder="Contraseña" id="password" class="input-field" required>
+    <label class="Error"></label>
     <input type="submit" value="Iniciar Sesión" class="boton-login">
   </form>
 </div>
