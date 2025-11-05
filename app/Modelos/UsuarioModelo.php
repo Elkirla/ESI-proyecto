@@ -93,4 +93,22 @@ public function actualizarDatos(Usuario $usuario) {
         ':id' => $usuario->getId()
     ]);
 }
+
+public function ExisteEmail($email) {
+    $sql = "SELECT id FROM usuarios WHERE email = :email LIMIT 1";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    return $stmt->fetch() !== false;
+}
+
+public function ExisteCI($ci) {
+    $sql = "SELECT id FROM usuarios WHERE ci = :ci LIMIT 1";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':ci', $ci);
+    $stmt->execute();
+    return $stmt->fetch() !== false;
+}
+
+
 }

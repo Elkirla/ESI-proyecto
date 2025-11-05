@@ -41,7 +41,7 @@
 
   <input type="text" placeholder="Apellido(s)" id="apellido" name="apellido" class="input-field" required>
 
-  <input type="text" id="ci" name="ci" placeholder="Cédula de Identidad" class="input-field" maxlength="15" pattern="[0-9]+" required>
+  <input type="number" id="ci" name="ci" placeholder="Cédula de Identidad" class="input-field" maxlength="15" pattern="[0-9]+" required>
  
   <div class="telefono-container">
 <select id="pais" name="pais" class="select-pais" required>

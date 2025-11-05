@@ -91,22 +91,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? "/dashboard-admin"
                 : "/dashboard-usuario";
             
-        } else {
+} else {
+    const newAttempts = attempts + 1;
+    setLoginData(newAttempts);
 
-            const newAttempts = attempts + 1;
-            setLoginData(newAttempts);
+    // Si el servidor indica que el usuario no está autorizado, mostrar ese mensaje exacto
+    if (result.error === "Usuario no autorizado. Contacte al backoffice.") {
+        showError(result.error);
+        return;  
+    }
 
-            if (newAttempts >= MAX_BLOCK) {
-                const blockUntil = Date.now() + BLOCK_TIME;
-                setLoginData(newAttempts, blockUntil);
-                showError("Demasiados intentos fallidos. Cuenta bloqueada por 15 min.");
-                disableForm(true);
-            } else if (newAttempts >= MAX_WARNING) {
-                showError(`Advertencia: ${newAttempts}/${MAX_BLOCK} intentos.`);
-            } else {
-                showError("Credenciales incorrectas. Inténtalo de nuevo.");
-            }
-        }
+    if (newAttempts >= MAX_BLOCK) {
+        const blockUntil = Date.now() + BLOCK_TIME;
+        setLoginData(newAttempts, blockUntil);
+        showError("Demasiados intentos fallidos. Cuenta bloqueada por 15 min.");
+        disableForm(true);
+    } else if (newAttempts >= MAX_WARNING) {
+        showError(`Advertencia: ${newAttempts}/${MAX_BLOCK} intentos.`);
+    } else {
+        showError(result.error || "Credenciales incorrectas. Inténtalo de nuevo.");
+    }
+}
+
 
     } catch (err) {
         console.error("Error en la petición:", err);

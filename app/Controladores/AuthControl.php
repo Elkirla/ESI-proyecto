@@ -8,69 +8,88 @@ class AuthControl {
         include __DIR__ . "/../Vistas/registro.php";
     }
     
-public function registrar(){
+public function registrar() {
     require_once __DIR__ . '/../Entidades/usuario.php'; 
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
 
     header('Content-Type: application/json');
 
     $validator = new validator();
+    $modelo = new UsuarioModelo();
 
+    // Datos de entrada
     $password = $_POST['password'] ?? '';
     $confirm  = $_POST['confirm_password'] ?? '';
-    $email    = $_POST['email'] ?? ''; 
+    $email    = trim($_POST['email'] ?? '');
+    $ci       = trim($_POST['ci'] ?? '');
 
     $errores = [];
 
-    // Validación de contraseña
+    //Validación de contraseña
     $passErrors = $validator->Contraseña($password);
-    if(!empty($passErrors)) {
+    if (!empty($passErrors)) {
         $errores['password'] = $passErrors;
     }
 
-    // Validación de email
-    if(!$validator->Email($email)) {
+    //Validación email
+    if (!$validator->Email($email)) {
         $errores['email'][] = "Email inválido";
     }
 
-    // Validar confirmación
-    if($password !== $confirm) {
+    //Confirmar password
+    if ($password !== $confirm) {
         $errores['confirm'][] = "Las contraseñas no coinciden";
     }
 
-    if(!empty($errores)) { 
+    //Verificar existencia de email y CI
+    if ($modelo->ExisteEmail($email)) {
+        $errores['email'][] = "El correo ya está registrado";
+    }
+
+    // Verificar CI válida (solo si fue ingresada)
+    if (!empty($ci) && !$validator->CedulaUruguaya($ci)) {
+        $errores['ci'][] = "Cédula de identidad inválida";
+    }
+    
+    if (!empty($ci) && $modelo->ExisteCI($ci)) {
+        $errores['ci'][] = "La CI ya está registrada";
+    }
+
+    //Si hay errores → se devuelven
+    if (!empty($errores)) { 
         echo json_encode(['success' => false, 'errors' => $errores]);
         exit;
     }
 
-    //Si todo va bien creamos la entidad usuario
- try {
-    $fecha_registro = date('Y-m-d H:i:s');
+    //Crear usuario si todo está ok
+    try {
+        $usuario = new Usuario();
+        $usuario->setRol(1);
+        $usuario->setNombre($_POST['nombre'] ?? '');
+        $usuario->setApellido($_POST['apellido'] ?? '');
+        $usuario->setTelefono($_POST['telefono'] ?? '');
+        $usuario->setCi($ci);
+        $usuario->setEmail($email);
+        $usuario->setPassword(password_hash($password, PASSWORD_BCRYPT));
+        $usuario->setEstado("pendiente");
+        $usuario->setFechaRegistro(date('Y-m-d H:i:s'));
 
-    $usuario = new Usuario();
-    $usuario->setRol(1); 
-    $usuario->setNombre($_POST['nombre'] ?? '');
-    $usuario->setApellido($_POST['apellido'] ?? '');
-    $usuario->setTelefono($_POST['telefono'] ?? '');
-    $usuario->setCi($_POST['ci'] ?? '');
-    $usuario->setEmail($email);
-    $usuario->setPassword(password_hash($password, PASSWORD_BCRYPT));
-    $usuario->setEstado("pendiente");
-    $usuario->setFechaRegistro($fecha_registro);
+        $modelo->CrearUsuario($usuario);
 
-    $modelo = new UsuarioModelo();
-    $modelo->CrearUsuario($usuario); 
+        echo json_encode(['success' => true]);
+        exit;
 
-    echo json_encode(['success' => true]);
-    exit; 
-} catch (Exception $e) {
-    error_log("Error en registrar: " . $e->getMessage());
-    $errores['confirm'][] = "Error interno del servidor. Por favor, intente nuevamente más tarde.";
-    echo json_encode(['success' => false, 'errors' => $errores]);
+    } catch (Exception $e) {
+        error_log("Error en registrar: " . $e->getMessage());
+        echo json_encode([
+            'success' => false,
+            'errors' => ["general" => "Error interno. Intente más tarde."]
+        ]);
+        exit;
+    }
 }
 
-}
-
+ 
 public function login() {
     header('Content-Type: application/json');
 
