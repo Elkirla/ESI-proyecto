@@ -9,11 +9,18 @@ class AuthControl {
     }
     public function Backoffice(){
         if ($_SESSION['rol'] !=="administrador") {
-         include __DIR__ . "/../Vistas/404.php"; 
+         $this-> Mostrar404();
          return;
         }
          include __DIR__ . "/../Vistas/backoffice.php"; 
     }
+
+    public function Mostrar404(){
+    include __DIR__ . "/../Vistas/404.php";
+    http_response_code(404); 
+    return;
+    }
+    
 public function registrar() {
     require_once __DIR__ . '/../Entidades/usuario.php'; 
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';

@@ -8,10 +8,11 @@ private $notiControl;
         require_once __DIR__ . '/../Controladores/NotiControl.php';
         $this->listado = new ListadoControl();
         $this->notiControl = new NotiControl();
- 
+
         if ($_SESSION['rol'] !== 'administrador') {
-            http_response_code(404);
-            include __DIR__ . '/../Vistas/404.php';
+            require_once __DIR__ . '/../Controladores/AuthControl.php';
+            $auth=new AuthControl;
+            $auth->Mostrar404();
             exit;
         }  
     }
@@ -39,7 +40,7 @@ private $notiControl;
             $pago = $modelo->aprobarPago($pago_id);
  
             $this->notiControl->CrearNoti(
-                "Tu pago fue aprobado ✅",
+                "Tu pago fue aprobado",
                 $pago['usuario_id']
             );
 
@@ -62,7 +63,7 @@ private $notiControl;
             $modelo->rechazarPago($pago_id);
 
             $this->notiControl->CrearNoti(
-                "Tu pago fue rechazado ❌",
+                "Tu pago fue rechazado",
                 $pago['usuario_id']
             );
 
