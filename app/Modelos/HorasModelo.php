@@ -34,49 +34,50 @@ public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $hor
     try {
         $this->db->beginTransaction();
 
-        // 1️⃣ Insertar o actualizar cada semana de deuda
-        $sql_insert = "INSERT INTO Semana_deudas
-            (usuario_id, fecha_inicio, fecha_fin, horas_trabajadas, horas_faltantes,
-            horas_justificadas, horas_compensadas, motivo_justificacion, pago_compensatorio_id, procesado_en)
-            VALUES
-            (:usuario_id, :fecha_inicio, :fecha_fin, :horas_trabajadas, :horas_faltantes,
-            :horas_justificadas, :horas_compensadas, :motivo_justificacion, :pago_compensatorio_id, NOW())
-            ON DUPLICATE KEY UPDATE
-                fecha_fin = VALUES(fecha_fin),
-                horas_trabajadas = VALUES(horas_trabajadas),
-                horas_faltantes = VALUES(horas_faltantes),
-                horas_justificadas = VALUES(horas_justificadas),
-                horas_compensadas = VALUES(horas_compensadas),
-                motivo_justificacion = VALUES(motivo_justificacion),
-                pago_compensatorio_id = VALUES(pago_compensatorio_id),
-                procesado_en = VALUES(procesado_en)";
-
-        $stmt = $this->db->prepare($sql_insert);
-
-        foreach ($deudas_semanales as $d) {
-            $stmt->execute([
-                ':usuario_id' => $usuario_id,
-                ':fecha_inicio' => $d['fecha_inicio'],
-                ':fecha_fin' => $d['fecha_fin'],
-                ':horas_trabajadas' => $d['horas_trabajadas'],
-                ':horas_faltantes' => $d['horas_faltantes'],
-                ':horas_justificadas' => $d['horas_justificadas'],
-                ':horas_compensadas' => $d['horas_compensadas'],
-                ':motivo_justificacion' => $d['motivo_justificacion'],
-                ':pago_compensatorio_id' => $d['pago_compensatorio_id']
-            ]);
+        $ultima_semana = end($deudas_semanales);
+        if ($ultima_semana && $ultima_semana['fecha_fin'] >= date('Y-m-d', strtotime('monday this week'))) {
+            array_pop($deudas_semanales);
         }
 
-        // 2️⃣ Calcular horas faltantes reales de la semana actual
-        $ultima_semana = end($deudas_semanales);
-        $horas_acumuladas_semana_actual = $ultima_semana['horas_faltantes'] ?? 0;
+        if (!empty($deudas_semanales)) {
+            $sql_insert = "INSERT INTO Semana_deudas
+                (usuario_id, fecha_inicio, fecha_fin, horas_trabajadas, horas_faltantes,
+                horas_justificadas, horas_compensadas, motivo_justificacion, pago_compensatorio_id, procesado_en)
+                VALUES
+                (:usuario_id, :fecha_inicio, :fecha_fin, :horas_trabajadas, :horas_faltantes,
+                :horas_justificadas, :horas_compensadas, :motivo_justificacion, :pago_compensatorio_id, NOW())
+                ON DUPLICATE KEY UPDATE
+                    fecha_fin = VALUES(fecha_fin),
+                    horas_trabajadas = VALUES(horas_trabajadas),
+                    horas_faltantes = VALUES(horas_faltantes),
+                    horas_justificadas = VALUES(horas_justificadas),
+                    horas_compensadas = VALUES(horas_compensadas),
+                    motivo_justificacion = VALUES(motivo_justificacion),
+                    pago_compensatorio_id = VALUES(pago_compensatorio_id),
+                    procesado_en = VALUES(procesado_en)";
 
-        // 3️⃣ Actualizar tabla Horas_deuda correctamente
+            $stmt = $this->db->prepare($sql_insert);
+
+            foreach ($deudas_semanales as $d) {
+                $stmt->execute([
+                    ':usuario_id' => $usuario_id,
+                    ':fecha_inicio' => $d['fecha_inicio'],
+                    ':fecha_fin' => $d['fecha_fin'],
+                    ':horas_trabajadas' => $d['horas_trabajadas'],
+                    ':horas_faltantes' => $d['horas_faltantes'],
+                    ':horas_justificadas' => $d['horas_justificadas'],
+                    ':horas_compensadas' => $d['horas_compensadas'],
+                    ':motivo_justificacion' => $d['motivo_justificacion'],
+                    ':pago_compensatorio_id' => $d['pago_compensatorio_id']
+                ]);
+            }
+        }
+ 
         $sql_upsert = "INSERT INTO Horas_deuda
             (usuario_id, horas_acumuladas, horas_deuda_total, fecha_ultimo_calculo, primera_semana_pendiente)
-            VALUES (:usuario_id, :horas_acumuladas, :horas_deuda_total, CURDATE(), :primera_semana_pendiente)
+            VALUES (:usuario_id, 0, :horas_deuda_total, CURDATE(), :primera_semana_pendiente)
             ON DUPLICATE KEY UPDATE
-                horas_acumuladas = VALUES(horas_acumuladas),
+                horas_acumuladas = 0,
                 horas_deuda_total = VALUES(horas_deuda_total),
                 fecha_ultimo_calculo = VALUES(fecha_ultimo_calculo),
                 primera_semana_pendiente = VALUES(primera_semana_pendiente)";
@@ -84,8 +85,7 @@ public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $hor
         $stmt = $this->db->prepare($sql_upsert);
         $stmt->execute([
             ':usuario_id' => $usuario_id,
-            ':horas_acumuladas' => $horas_acumuladas_semana_actual,  
-            ':horas_deuda_total' => $horas_totales_deuda,             
+            ':horas_deuda_total' => $horas_totales_deuda,
             ':primera_semana_pendiente' => $primera_semana_pendiente
         ]);
 
@@ -94,10 +94,11 @@ public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $hor
 
     } catch (Exception $e) {
         $this->db->rollBack();
-        error_log("[MODELO_GUARDAR_DEUDAS_HORAS_ERROR] " . $e->getMessage());
+        error_log("[GUARDAR_DEUDAS_ERROR] ".$e->getMessage());
         return false;
     }
 }
+
 
 
 }

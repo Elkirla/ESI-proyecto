@@ -431,53 +431,27 @@ private function calcularDeudasSemanales($fecha_desde, $fecha_actual, $horas_sem
     $horas_totales_deuda = 0;
     $primera_semana_pendiente = null;
 
-    // Asegurarse de empezar en el lunes de la semana del primer registro
+    // Asegurar que la iteración empiece desde un lunes
     $fecha_desde->modify('monday this week');
 
-    while ($fecha_desde <= $fecha_actual) {
+    // Nuevo: solo procesar semanas completas (hasta el domingo anterior)
+    $ultimo_domingo = new DateTime();
+    $ultimo_domingo->modify('last sunday');
+
+    while ($fecha_desde <= $ultimo_domingo) {
         $fecha_fin_semana = clone $fecha_desde;
         $fecha_fin_semana->modify('sunday this week');
 
-        // Si la semana termina después de la fecha actual, la acotamos a fecha_actual
-        if ($fecha_fin_semana > $fecha_actual) {
-            $fecha_fin_semana = clone $fecha_actual;
-        }
-
+        // Calcular horas de la semana
         $horas_semana = $this->calcularHorasEnSemana($horas_trabajadas, $fecha_desde, $fecha_fin_semana);
-        $justificativo_semana = $this->obtenerJustificativoParaSemana($justificativos, $fecha_desde, $fecha_fin_semana);
-        $pago_compensatorio_semana = $this->obtenerPagoCompensatorioParaSemana($pagos_compensatorios, $fecha_desde, $fecha_fin_semana);
 
-        $horas_faltantes = 0;
-        $horas_justificadas = 0;
-        $horas_compensadas = 0;
-        $motivo_justificacion = null;
-        $pago_compensatorio_id = null;
+        $horas_faltantes = max(0, $horas_semanales - $horas_semana);
 
-        if ($horas_semana < $horas_semanales) {
-            $diferencia_horas = $horas_semanales - $horas_semana;
-
-            if ($justificativo_semana) {
-                $horas_justificadas = min($diferencia_horas, floatval($justificativo_semana['horas_equivalentes'] ?? $diferencia_horas));
-                $motivo_justificacion = $justificativo_semana['motivo'] ?? null;
+        if ($horas_faltantes > 0) {
+            $horas_totales_deuda += $horas_faltantes;
+            if ($primera_semana_pendiente === null) {
+                $primera_semana_pendiente = $fecha_desde->format('Y-m-d');
             }
-
-            if ($pago_compensatorio_semana && ($diferencia_horas - $horas_justificadas) > 0) {
-                $horas_compensadas = min(($diferencia_horas - $horas_justificadas), floatval($pago_compensatorio_semana['horas'] ?? 0));
-                $pago_compensatorio_id = $pago_compensatorio_semana['id'] ?? null;
-            }
-
-            $horas_faltantes = $diferencia_horas - $horas_justificadas - $horas_compensadas;
-
-if ($horas_faltantes > 0) {
-    $horas_totales_deuda += $horas_faltantes;
-    if ($primera_semana_pendiente === null) {
-        $primera_semana_pendiente = $fecha_desde->format('Y-m-d');
-    }
-} else {
-    // Si no hay deuda en la semana, no suma al total
-    $horas_faltantes = 0;
-}
-
         }
 
         $deudas_semanales[] = [
@@ -485,19 +459,18 @@ if ($horas_faltantes > 0) {
             'fecha_fin' => $fecha_fin_semana->format('Y-m-d'),
             'horas_trabajadas' => $horas_semana,
             'horas_faltantes' => $horas_faltantes,
-            'horas_justificadas' => $horas_justificadas,
-            'horas_compensadas' => $horas_compensadas,
-            'motivo_justificacion' => $motivo_justificacion,
-            'pago_compensatorio_id' => $pago_compensatorio_id
+            'horas_justificadas' => 0,
+            'horas_compensadas' => 0,
+            'motivo_justificacion' => null,
+            'pago_compensatorio_id' => null
         ];
 
-        // Avanzar al siguiente lunes
         $fecha_desde->modify('+1 week');
-        // Si la siguiente semana empieza después de fecha_actual, el while terminará
     }
 
     return [$deudas_semanales, $horas_totales_deuda, $primera_semana_pendiente];
 }
+
 
 private function ValorSemanal() {
     ob_start();

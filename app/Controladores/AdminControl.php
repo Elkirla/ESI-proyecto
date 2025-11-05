@@ -8,13 +8,12 @@ private $notiControl;
         require_once __DIR__ . '/../Controladores/NotiControl.php';
         $this->listado = new ListadoControl();
         $this->notiControl = new NotiControl();
-/*
+ 
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
             http_response_code(404);
             include __DIR__ . '/../Vistas/404.php';
             exit;
-        } 
-*/
+        }  
     }
 
     // ===================================
