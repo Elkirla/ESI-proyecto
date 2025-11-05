@@ -9,7 +9,7 @@ private $notiControl;
         $this->listado = new ListadoControl();
         $this->notiControl = new NotiControl();
  
-        if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
+        if ($_SESSION['rol'] !== 'administrador') {
             http_response_code(404);
             include __DIR__ . '/../Vistas/404.php';
             exit;
@@ -22,19 +22,10 @@ private $notiControl;
     private function response($success, $data = []) {
         echo json_encode(array_merge(['success' => $success], $data));
         exit;
-    }
-
-    // ===================================
-    // DASHBOARD
-    // ===================================
-    public function dashboardAdmin() {
-        include __DIR__ . "/../Vistas/backoffice.php";
-    }  
-
+    } 
     // ===================================
     // PAGOS
     // ===================================
-
  
     public function aprobarPago() {
         require_once __DIR__ . '/../Modelos/PagoModelo.php';

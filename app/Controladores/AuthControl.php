@@ -7,7 +7,13 @@ class AuthControl {
     public function registroView() {
         include __DIR__ . "/../Vistas/registro.php";
     }
-    
+    public function Backoffice(){
+        if ($_SESSION['rol'] !=="administrador") {
+         include __DIR__ . "/../Vistas/404.php"; 
+         return;
+        }
+         include __DIR__ . "/../Vistas/backoffice.php"; 
+    }
 public function registrar() {
     require_once __DIR__ . '/../Entidades/usuario.php'; 
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
@@ -115,22 +121,24 @@ public function login() {
 
         if ($usuario) {
 
-            // Guardar sesión primero para poder consultar pagos
-            session_regenerate_id(true);
-            $_SESSION['usuario_id'] = $usuario['id'];
+        // Guardar sesión primero para poder consultar pagos
+        session_regenerate_id(true);
+        $_SESSION['usuario_id'] = $usuario['id'];
+        $_SESSION['rol'] = $usuario['rol']; 
+    
+        require_once __DIR__ . '/../Controladores/PagosControl.php';
+        $pagos = new PagosControl;
+    
+        $tienePago = $pagos->usuarioTienePagoAprobado();
+    
+        echo json_encode([
+            'success' => true,
+            'rol' => $usuario['rol'],
+            'tienePago' => $tienePago
+        ]);
+        return;
+    }
 
-            require_once __DIR__ . '/../Controladores/PagosControl.php';
-            $pagos = new PagosControl;
-
-            $tienePago = $pagos->usuarioTienePagoAprobado();
-
-            echo json_encode([
-                'success' => true,
-                'rol' => $usuario['rol'],
-                'tienePago' => $tienePago
-            ]);
-            return;
-        }
 
         // Credenciales inválidas
         echo json_encode([

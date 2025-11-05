@@ -15,7 +15,7 @@ $routes = [
         // ======================
         // DASHBOARDS
         // ======================
-        "/dashboard-admin"   => "AdminControl@dashboardAdmin",
+        "/dashboard-admin"   => "AuthControl@backoffice",
         "/dashboard-usuario" => "HomeControl@dashboardUsuario",
 
         // ======================

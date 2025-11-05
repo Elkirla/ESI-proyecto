@@ -84,20 +84,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const result = await response.json();
 
-        if (result.success) {
+if (result.success) {
     setLoginData(0);
 
-    // Si el usuario NO tiene un pago aprobado → llevarlo a PagoInicial
     if (!result.tienePago && result.rol !== "administrador") {
         window.location.href = "/pagoInicial";
-        return;
+        return; // ✅ IMPORTANTE
     }
 
-    // Si tiene pago o es admin → redirigir normalmente
     window.location.href = (result.rol === "administrador")
         ? "/dashboard-admin"
         : "/dashboard-usuario";
+    
+    return; // ✅ ESTE return evita que siga al finally
 }
+
  else {
     const newAttempts = attempts + 1;
     setLoginData(newAttempts);
