@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-login');
     const errorLabel = form.querySelector('.Error');
-    const submitBtn = form.querySelector('input[type="submit"]');
+    const submitBtn = form.querySelector('input[type="submit"]'); 
+    const email = document.getElementById("Email");
+    const password =document.getElementById("password");
 
     const MAX_WARNING = 10;
     const MAX_BLOCK = 15;
@@ -53,67 +55,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        if (checkBlockStatus()) return;
+    if (checkBlockStatus()) return;
 
-        const { attempts } = getLoginData();
+    if (email.value.trim() === "" || password.value.trim() === "") {
+        showError("Debes completar todos los campos.");
+        return;
+    }
 
-        // Cargar feedback visual
-        const originalText = submitBtn.value;
-        submitBtn.value = "Cargando...";
-        submitBtn.disabled = true;
+    const { attempts } = getLoginData();
 
-        try {
-            const formData = new FormData(form);
+    const originalText = submitBtn.value;
+    submitBtn.value = "Cargando...";
+    submitBtn.disabled = true;
 
-            const response = await fetch('/login', {
-                method: "POST",
-                body: formData
-            });
+    try {
+        const formData = new FormData(form);
 
-            if (!response.headers.get("content-type")?.includes("application/json")) {
-                throw new Error("Respuesta del servidor inválida");
-            }
+        const response = await fetch('/login', {
+            method: "POST",
+            body: formData
+        });
 
-            const result = await response.json();
-
-           if (result.success) {
-           setLoginData(0); 
-       
-           // Si NO tiene pago, lo mandamos a realizar el pago inicial
-           if (result.tienePago === false) {
-               window.location.href = "/pagoInicial";
-               return;
-           }
-       
-           // Si SI tiene pago, va directo al dashboard requerido
-           window.location.href = (result.rol === "administrador")
-               ? "/dashboard-admin"
-               : "/dashboard-usuario";
-       }else {
-                const newAttempts = attempts + 1;
-                setLoginData(newAttempts);
-
-                if (newAttempts >= MAX_BLOCK) {
-                    const blockUntil = Date.now() + BLOCK_TIME;
-                    setLoginData(newAttempts, blockUntil);
-                    showError("Demasiados intentos fallidos. Cuenta bloqueada por 15 min.");
-                    disableForm(true);
-                } else if (newAttempts >= MAX_WARNING) {
-                    showError(`Advertencia: ${newAttempts}/${MAX_BLOCK} intentos. Si llegas a ${MAX_BLOCK}, se bloqueará el acceso.`);
-                } else {
-                    showError("Credenciales incorrectas. Inténtalo de nuevo.");
-                }
-            }
-        } catch (err) {
-            console.error("Error en la petición:", err);
-            showError("Error en el servidor");
-        } finally {
-            submitBtn.value = originalText;
-            if (!checkBlockStatus()) submitBtn.disabled = false;
+        if (!response.headers.get("content-type")?.includes("application/json")) {
+            throw new Error("Respuesta del servidor inválida");
         }
-    });
+
+        const result = await response.json();
+
+        if (result.success) {
+            setLoginData(0);
+
+            window.location.href = (result.rol === "administrador")
+                ? "/dashboard-admin"
+                : "/dashboard-usuario";
+            
+        } else {
+
+            const newAttempts = attempts + 1;
+            setLoginData(newAttempts);
+
+            if (newAttempts >= MAX_BLOCK) {
+                const blockUntil = Date.now() + BLOCK_TIME;
+                setLoginData(newAttempts, blockUntil);
+                showError("Demasiados intentos fallidos. Cuenta bloqueada por 15 min.");
+                disableForm(true);
+            } else if (newAttempts >= MAX_WARNING) {
+                showError(`Advertencia: ${newAttempts}/${MAX_BLOCK} intentos.`);
+            } else {
+                showError("Credenciales incorrectas. Inténtalo de nuevo.");
+            }
+        }
+
+    } catch (err) {
+        console.error("Error en la petición:", err);
+        showError("Error en el servidor");
+    } finally {
+        submitBtn.value = originalText;
+        if (!checkBlockStatus()) submitBtn.disabled = false;
+    }
+});
+
 
     // Al cargar la página verificar si está bloqueado
     checkBlockStatus();
