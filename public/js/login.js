@@ -85,13 +85,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
 
         if (result.success) {
-            setLoginData(0);
+    setLoginData(0);
 
-            window.location.href = (result.rol === "administrador")
-                ? "/dashboard-admin"
-                : "/dashboard-usuario";
-            
-} else {
+    // Si el usuario NO tiene un pago aprobado → llevarlo a PagoInicial
+    if (!result.tienePago && result.rol !== "administrador") {
+        window.location.href = "/pagoInicial";
+        return;
+    }
+
+    // Si tiene pago o es admin → redirigir normalmente
+    window.location.href = (result.rol === "administrador")
+        ? "/dashboard-admin"
+        : "/dashboard-usuario";
+}
+ else {
     const newAttempts = attempts + 1;
     setLoginData(newAttempts);
 
