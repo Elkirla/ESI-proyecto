@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooperativa-FENEC</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700&family=Montserrat&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="public/css/style.css">
-    <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="imagenes/logo.png" type="icon">
 </head>
 <body>
 
 <div class="header">
-    <img src="public/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
+    <img src="imagenes/logo2.png" alt="logo FENEC" class="logoheader">
     <button><a href="#normas">Normas</a></button>
     <button><a href="#comunidadtxt">Sobre nosotros</a></button>
     <button><a href="#footer">Contactanos</a></button>
     <button class="loginbtton"><a href="/login">Log in</a></button> 
-    <img src="public/imagenes/menu.png" alt="menu hamburguesa" class="menu" id="menuabrir">
+    <img src="imagenes/menu.png" alt="menu hamburguesa" class="menu" id="menuabrir">
     <p class="separador"></p>
 </div>
 
 <div class="menu-container" id="menucontainer">
-    <img src="public/imagenes/menu.png" alt="menu hamburguesa" class="menu-icon" id="menucerrar">
+    <img src="imagenes/menu.png" alt="menu hamburguesa" class="menu-icon" id="menucerrar">
 <p class="separador-menu"></p>
     <div class="menubotones">
     <button><a href="#logrado">Novedades</a></button>
@@ -57,7 +57,7 @@
     </div>
     <div class="textocrearcuenta">
         <h2 id="cuentah2">¿Como creo una cuenta?</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, architecto ea. Nobis nostrum molestiae, nesciunt fuga amet porr.</p> 
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, architecto ea. Nobis nuestro molestiae, nesciunt fuga amet porr.</p> 
         <button><a href=#registroinstrucciones>Más información </a></button>
     </div>
 </div>
@@ -69,16 +69,16 @@
     <div class="slider-container">
         
         <div class="slider-item active">
-            <img src="public/imagenes/slider1.png" alt="Slider Image 1">
+            <img src="imagenes/slider1.png" alt="Slider Image 1">
         </div>
         <div class="slider-item">
-            <img src="public/imagenes/slider2.png" alt="Slider Image 2">
+            <img src="imagenes/slider2.png" alt="Slider Image 2">
         </div>
         <div class="slider-item">
-            <img src="public/imagenes/slider3.png" alt="Slider Image 3">
+            <img src="imagenes/slider3.png" alt="Slider Image 3">
         </div>
         <div class="slider-item">
-            <img src="public/imagenes/slider4.png" alt="Slider Image 4">
+            <img src="imagenes/slider4.png" alt="Slider Image 4">
         </div> 
     </div>
         <button class="slider-btn next">›</button>
@@ -96,8 +96,8 @@
 <div class="logrado-container" id="logrado">
     <div class="conseguidocont" id="logradotxt">
         <h2>Hemos logrado</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut incidunt maiores. </p><br>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut incidunt maiores. </p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut incidunt mayores. </p><br>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut incidunt mayores. </p>
     </div>
     <div class="metas" id="metastxt">
         <h2>Apuntamos a</h2>
@@ -136,10 +136,10 @@
     <div class="footer-column">
         <h3>Redes sociales</h3>
         <div class="social-icons">
-            <a href="https://x.com/" target="_blank"><img src="public/imagenes/twitter.png" alt="Twitter"></a>
-            <a href="https://facebook.com/" target="_blank"><img src="public/imagenes/facebook.png" alt="Facebook"></a>
-            <a href="https://instagram.com/" target="_blank"><img src="public/imagenes/instagram.png" alt="Instagram"></a>
-            <a href="https://linkedin.com/" target="_blank"><img src="public/imagenes/linkedin.png" alt="LinkedIn"></a>
+            <a href="https://x.com/" target="_blank"><img src="imagenes/twitter.png" alt="Twitter"></a>
+            <a href="https://facebook.com/" target="_blank"><img src="imagenes/facebook.png" alt="Facebook"></a>
+            <a href="https://instagram.com/" target="_blank"><img src="imagenes/instagram.png" alt="Instagram"></a>
+            <a href="https://linkedin.com/" target="_blank"><img src="imagenes/linkedin.png" alt="LinkedIn"></a>
         </div>
     </div>
     <div class="footer-bottom">
@@ -147,6 +147,6 @@
     </div>
 </div>
 
-    <script src="public/js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

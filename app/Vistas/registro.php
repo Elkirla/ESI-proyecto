@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/css/registro.css">
-    <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <link rel="stylesheet" href="css/registro.css">
+    <link rel="icon" href="imagenes/logo.png" type="icon">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <title>Registro</title>
 </head>
 <body> 
-  
+      
 <div class="errores-container">
     <div class="Errores">  
         <h2>Error al registrar</h2>
@@ -21,18 +21,18 @@
 
 <div class="regresar-container">
     <a href="/">
-    <img src="public/imagenes/flecha.png" alt="flecha_icon">
+    <img src="imagenes/flecha.png" alt="flecha_icon">
     </a>
 </div>
 
 <div class="yaregistrado-container">
     <h2>¿Ya registrado?</h2>
-    <img src="public/imagenes/key.png" alt="flecha_icon">
+    <img src="imagenes/key.png" alt="usuario_icon">
     <p>Ingresa a tu cuenta de manera rápida, segura y sencilla.</p>
     <a href="/login"><button>Ingresar</button></a> 
 </div>
-<div class="registrar-container">
 
+<div class="registrar-container">
 
 <h1>Solicita una cuenta</h1>
 <form method="post" class="registro-column" action="/registro" id="form-registro" autocomplete="on">  
@@ -69,9 +69,9 @@
 
   <input type="email" placeholder="Email" id="email" name="email" class="input-field" required>
 
-  <input type="password" placeholder="Contraseña" id="password" name="password" class="input-field"  >
+  <input type="password" placeholder="Contraseña" id="password" name="password" class="input-field">
 
-  <input type="password" placeholder="Confirmar contraseña" id="confirm_password" name="confirm_password" class="input-field"  >
+  <input type="password" placeholder="Confirmar contraseña" id="confirm_password" name="confirm_password" class="input-field">
   
   <input type="submit" value="Registrarse" class="input-field registro-button"> 
 
@@ -79,6 +79,6 @@
 
 </div> 
 </div>
-<script src="public/js/registro.js"></script>
+<script src="js/registro.js"></script>
 </body>
 </html>
