@@ -29,68 +29,71 @@ public function tieneHorasRegistradas($usuario_id, $fecha) {
     ]);
     return $stmt->fetchColumn() !== false;
     }
-
-public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $horas_totales_deuda, $primera_semana_pendiente) {
+ public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $horas_totales_deuda, $primera_semana_pendiente) {
     try {
-        // Asegúrate de que $this->db existe y está conectado
+        // Verificar conexión a la base de datos
         if (!$this->db) {
             throw new Exception("Conexión a la base de datos no inicializada.");
         }
         
         $this->db->beginTransaction();
 
-        $ultima_semana = end($deudas_semanales);
-        if ($ultima_semana && $ultima_semana['fecha_fin'] >= date('Y-m-d', strtotime('monday this week'))) {
-            array_pop($deudas_semanales);
+        // DEBUG: Verificar datos de entrada
+        error_log("[DEBUG_MODELO] Usuario: $usuario_id, Total de semanas a guardar: " . count($deudas_semanales));
+        error_log("[DEBUG_MODELO] Horas totales deuda: $horas_totales_deuda, Primera semana pendiente: $primera_semana_pendiente");
+        
+        foreach ($deudas_semanales as $index => $deuda) {
+            error_log("[DEBUG_MODELO] Deuda $index - Inicio: {$deuda['fecha_inicio']}, Fin: {$deuda['fecha_fin']}, Horas faltantes: {$deuda['horas_faltantes']}");
         }
 
+        // ELIMINAR deudas existentes para este usuario (enfoque más robusto)
+        $sql_delete = "DELETE FROM Semana_deudas WHERE usuario_id = :usuario_id";
+        $stmt_delete = $this->db->prepare($sql_delete);
+        $stmt_delete->execute([':usuario_id' => $usuario_id]);
+        
+        error_log("[DEBUG_MODELO] Deudas anteriores eliminadas para usuario: $usuario_id");
+
+        // INSERTAR nuevas deudas (sin eliminar semana actual)
         if (!empty($deudas_semanales)) {
-            // ... (sql_insert es el mismo)
             $sql_insert = "INSERT INTO Semana_deudas 
                 (usuario_id, fecha_inicio, fecha_fin, horas_trabajadas, horas_faltantes,
                 horas_justificadas, horas_compensadas, motivo_justificacion, pago_compensatorio_id, procesado_en)
                 VALUES
                 (:usuario_id, :fecha_inicio, :fecha_fin, :horas_trabajadas, :horas_faltantes,
-                :horas_justificadas, :horas_compensadas, :motivo_justificacion, :pago_compensatorio_id, NOW())
-                ON DUPLICATE KEY UPDATE
-                    fecha_fin = VALUES(fecha_fin),
-                    horas_trabajadas = VALUES(horas_trabajadas),
-                    horas_faltantes = VALUES(horas_faltantes),
-                    horas_justificadas = VALUES(horas_justificadas),
-                    horas_compensadas = VALUES(horas_compensadas),
-                    motivo_justificacion = VALUES(motivo_justificacion),
-                    pago_compensatorio_id = VALUES(pago_compensatorio_id),
-                    procesado_en = VALUES(procesado_en)";
+                :horas_justificadas, :horas_compensadas, :motivo_justificacion, :pago_compensatorio_id, NOW())";
 
-            $stmt = $this->db->prepare($sql_insert);
+            $stmt_insert = $this->db->prepare($sql_insert);
 
             foreach ($deudas_semanales as $d) {
-                // Validación para ver los datos que se están intentando insertar
-                error_log("[DEBUG_DEUDA] Intentando insertar/actualizar: " . print_r($d, true));
+                error_log("[DEBUG_MODELO] Intentando INSERT para semana: " . $d['fecha_inicio']);
 
-                // Ejecuta la sentencia
-                $success = $stmt->execute([
+                $success = $stmt_insert->execute([
                     ':usuario_id' => $usuario_id,
                     ':fecha_inicio' => $d['fecha_inicio'],
                     ':fecha_fin' => $d['fecha_fin'],
-                    ':horas_trabajadas' => $d['horas_trabajadas'] ?? 0, // Añadir valor por defecto si pueden ser NULL
+                    ':horas_trabajadas' => $d['horas_trabajadas'] ?? 0,
                     ':horas_faltantes' => $d['horas_faltantes'] ?? 0,
-                    // ... (resto de parámetros)
-                    ':horas_justificadas' => $d['horas_justificadas'] ?? null,
-                    ':horas_compensadas' => $d['horas_compensadas'] ?? null,
+                    ':horas_justificadas' => $d['horas_justificadas'] ?? 0,
+                    ':horas_compensadas' => $d['horas_compensadas'] ?? 0,
                     ':motivo_justificacion' => $d['motivo_justificacion'] ?? null,
                     ':pago_compensatorio_id' => $d['pago_compensatorio_id'] ?? null
                 ]);
 
-                // Si PDO no lanza excepciones, esta verificación es CRUCIAL.
                 if (!$success) {
-                    error_log("[GUARDAR_DEUDAS_FALLO_EXECUTE] Detalles: " . print_r($stmt->errorInfo(), true));
-                    throw new Exception("Fallo en la inserción/actualización de Semana_deudas.");
+                    $errorInfo = $stmt_insert->errorInfo();
+                    error_log("[ERROR_INSERT_SEMANA] Detalles: " . print_r($errorInfo, true));
+                    throw new Exception("Fallo en la inserción de Semana_deudas para fecha {$d['fecha_inicio']}: {$errorInfo[2]}");
                 }
+                
+                error_log("[DEBUG_MODELO] Semana {$d['fecha_inicio']} guardada exitosamente. Filas afectadas: " . $stmt_insert->rowCount());
             }
+            
+            error_log("[DEBUG_MODELO] Total de semanas insertadas: " . count($deudas_semanales));
+        } else {
+            error_log("[DEBUG_MODELO] No hay deudas semanales para insertar");
         }
-        
-        // ... (sql_upsert para Horas_deuda es el mismo)
+
+        // UPSERT en Horas_deuda
         $sql_upsert = "INSERT INTO Horas_deuda 
             (usuario_id, horas_acumuladas, horas_deuda_total, fecha_ultimo_calculo, primera_semana_pendiente)
             VALUES (:usuario_id, 0, :horas_deuda_total, CURDATE(), :primera_semana_pendiente)
@@ -100,22 +103,28 @@ public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $hor
                 fecha_ultimo_calculo = VALUES(fecha_ultimo_calculo),
                 primera_semana_pendiente = VALUES(primera_semana_pendiente)";
 
-        $stmt = $this->db->prepare($sql_upsert);
-        $stmt->execute([
+        $stmt_upsert = $this->db->prepare($sql_upsert);
+        $stmt_upsert->execute([
             ':usuario_id' => $usuario_id,
             ':horas_deuda_total' => $horas_totales_deuda,
             ':primera_semana_pendiente' => $primera_semana_pendiente
         ]);
-
+        
+        error_log("[DEBUG_MODELO] Horas_deuda actualizada para usuario: $usuario_id");
+        
+        // Confirmar transacción
         $this->db->commit();
+        error_log("[DEBUG_MODELO] Transacción COMMIT exitosa para usuario: $usuario_id"); 
+        
         return true;
 
     } catch (Exception $e) {
-        // El rollback se ejecuta si se lanza cualquier excepción.
+        // Rollback en caso de error
         if ($this->db->inTransaction()) {
-             $this->db->rollBack();
+            $this->db->rollBack();
+            error_log("[DEBUG_MODELO] Transacción ROLLBACK por error");
         }
-        error_log("[GUARDAR_DEUDAS_ERROR] ".$e->getMessage());
+        error_log("[GUARDAR_DEUDAS_HORAS_ERROR] ".$e->getMessage());
         return false;
     }
 }

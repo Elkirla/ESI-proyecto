@@ -273,10 +273,10 @@ public function SaldoCompensatorioUsuario(){
 }
 public function CalcularHorasDeuda($id_usuario) {
     try {
-        $horasModelo = new HorasModelo(); 
+        $horasModelo = new HorasModelo();
         $horas_semanales = $this->obtenerHorasSemanales();
 
-        //Calcular la semana actual
+        // Calcular la semana actual
         $semana_actual = $this->obtenerSemanaActual();
         $inicio_semana = $semana_actual['inicio'];
         $fin_semana = $semana_actual['fin'];
@@ -307,13 +307,23 @@ public function CalcularHorasDeuda($id_usuario) {
             $pagos_compensatorios,
             $id_usuario
         );
- 
-        $horasModelo->guardarDeudasHorasCompletas(
+        
+        // DEBUG: Verificar que tenemos datos antes de enviar al modelo
+        error_log("[PRE_MODEL_DEBUG] Usuario: $id_usuario, Semanas a procesar: " . count($deudas_semanales));
+        if (empty($deudas_semanales)) {
+            throw new Exception("No se calcularon deudas semanales para el usuario $id_usuario");
+        }
+        
+        $guardado_exitoso = $horasModelo->guardarDeudasHorasCompletas(
             $id_usuario,
             $deudas_semanales,
             $horas_totales_deuda,
             $primera_semana_pendiente
         );
+        
+        if (!$guardado_exitoso) {
+            throw new Exception("El modelo falló al guardar las deudas. Revisar logs del Modelo para errores SQL.");
+        }
         
         return [
             'success' => true,
@@ -321,14 +331,13 @@ public function CalcularHorasDeuda($id_usuario) {
             'horas_trabajadas' => $horas_trabajadas_semana_actual,
             'horas_faltantes' => $horas_faltantes_actual,
             'deuda_acumulada' => $horas_totales_deuda,
+            'semanas_procesadas' => count($deudas_semanales),
             'mensaje' => 'Deuda semanal actualizada correctamente'
         ];
 
     } catch (Exception $e) {
-        echo json_encode([
-            'debug' => 'error',
-            'error' => $e->getMessage()
-        ]);
+        error_log("[CALCULAR_DEUDA_ERROR] Error al calcular/guardar: " . $e->getMessage());
+        
         return [
             'success' => false,
             'error' => $e->getMessage()
@@ -460,19 +469,24 @@ private function calcularDeudasSemanales($fecha_desde, $fecha_actual, $horas_sem
 
     // Asegurar que la iteración empiece desde un lunes
     $fecha_desde->modify('monday this week');
+    
+    // Incluir la semana actual (hasta el final de esta semana)
+    $fin_semana_actual = new DateTime();
+    $fin_semana_actual->modify('sunday this week');
+    
+    error_log("[DEBUG_CALCULO] Calculando deudas desde: " . $fecha_desde->format('Y-m-d') . " hasta: " . $fin_semana_actual->format('Y-m-d'));
 
-    // Nuevo: solo procesar semanas completas (hasta el domingo anterior)
-    $ultimo_domingo = new DateTime();
-    $ultimo_domingo->modify('last sunday');
-
-    while ($fecha_desde <= $ultimo_domingo) {
+    while ($fecha_desde <= $fin_semana_actual) { 
         $fecha_fin_semana = clone $fecha_desde;
         $fecha_fin_semana->modify('sunday this week');
 
         // Calcular horas de la semana
         $horas_semana = $this->calcularHorasEnSemana($horas_trabajadas, $fecha_desde, $fecha_fin_semana);
-
         $horas_faltantes = max(0, $horas_semanales - $horas_semana);
+
+        // Buscar justificativos para esta semana
+        $justificativo = $this->obtenerJustificativoParaSemana($justificativos, $fecha_desde, $fecha_fin_semana);
+        $pago_compensatorio = $this->obtenerPagoCompensatorioParaSemana($pagos_compensatorios, $fecha_desde, $fecha_fin_semana);
 
         if ($horas_faltantes > 0) {
             $horas_totales_deuda += $horas_faltantes;
@@ -486,14 +500,18 @@ private function calcularDeudasSemanales($fecha_desde, $fecha_actual, $horas_sem
             'fecha_fin' => $fecha_fin_semana->format('Y-m-d'),
             'horas_trabajadas' => $horas_semana,
             'horas_faltantes' => $horas_faltantes,
-            'horas_justificadas' => 0,
-            'horas_compensadas' => 0,
-            'motivo_justificacion' => null,
-            'pago_compensatorio_id' => null
+            'horas_justificadas' => $justificativo ? $justificativo['horas_equivalentes'] : 0,
+            'horas_compensadas' => $pago_compensatorio ? $pago_compensatorio['horas'] : 0,
+            'motivo_justificacion' => $justificativo ? $justificativo['motivo'] : null,
+            'pago_compensatorio_id' => $pago_compensatorio ? $pago_compensatorio['id'] : null
         ];
+
+        error_log("[DEBUG_CALCULO] Semana {$fecha_desde->format('Y-m-d')}: $horas_semana horas trabajadas, $horas_faltantes horas faltantes");
 
         $fecha_desde->modify('+1 week');
     }
+
+    error_log("[DEBUG_CALCULO] Total deudas calculadas: " . count($deudas_semanales) . ", Horas totales deuda: $horas_totales_deuda");
 
     return [$deudas_semanales, $horas_totales_deuda, $primera_semana_pendiente];
 }
@@ -543,8 +561,9 @@ private function obtenerPagoCompensatorioParaSemana($pagos, $fecha_inicio, $fech
 private function haySuperposicionFechas($inicio1, $fin1, $inicio2, $fin2) {
     return ($inicio1 <= $fin2) && ($inicio2 <= $fin1);
 }
-    public function actualizarDeudaHorasUsuario(){
-        $this->CalcularHorasDeuda($this->usuario_id);
+public function actualizarDeudaHorasUsuario(){
+    $resultado = $this->CalcularHorasDeuda($this->usuario_id);
+    echo json_encode($resultado);
 }
 public function verDeudasHorasUsuario(){
     $this->listado->listadoComun(

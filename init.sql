@@ -141,7 +141,6 @@ CREATE TABLE Pagos_Deudas (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
-
 CREATE TABLE Semana_deudas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -183,7 +182,5 @@ CREATE TABLE Notificaciones(
 );
 
 /*
-
 docker exec -it esi-proyecto-db-1 mysql -u usuariodb -ppassword cooperativa -e "UPDATE usuarios SET estado='activo' WHERE email='correo@gmail.com';"
-
 */

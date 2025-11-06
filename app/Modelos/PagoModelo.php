@@ -57,8 +57,7 @@ public function aprobarPago($pagoId) {
     $sql2 = "UPDATE pagos_mensuales SET estado = 'aprobado' WHERE id = :id";
     $stmt2 = $this->db->prepare($sql2);
 
-    if ($stmt2->execute([':id' => $pagoId])) {
-        // ✅ Ahora devolvemos datos reales
+    if ($stmt2->execute([':id' => $pagoId])) { 
         return [
             'usuario_id' => $pago['usuario_id'],
             'status' => 'aprobado'
@@ -134,6 +133,7 @@ public function guardarDeudasMensualesCompletas($usuario_id, $deudas_mensuales, 
         return false;
     }
 }
+
 public function existePagoPendienteOAprobado($usuario_id, $mes) {
     $sql = "SELECT COUNT(*) FROM pagos_mensuales 
             WHERE usuario_id = :usuario_id 
