@@ -36,14 +36,19 @@ class ReporteModelo {
         $sql .= " WHERE " . implode(' AND ', $where);
     }
 
-    if ($orden) {
-        list($colOrden, $dir) = $orden;
-        $dir = strtoupper($dir) === 'DESC' ? 'DESC' : 'ASC';
+if ($orden && is_array($orden)) {
+    $colOrden = $orden[0] ?? null;
+    $dir = strtoupper($orden[1] ?? 'ASC'); // Por defecto ASC
+
+    if ($colOrden !== null) {
         if (!preg_match('/^[a-zA-Z0-9_]+$/', $colOrden)) {
             throw new Exception("Columna de orden inválida");
         }
+        $dir = $dir === 'DESC' ? 'DESC' : 'ASC';
         $sql .= " ORDER BY `$colOrden` $dir";
     }
+}
+
 
     if ($limit !== null) {
         $sql .= " LIMIT :_limit";

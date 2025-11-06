@@ -200,7 +200,7 @@ async function listarNotificaciones() {
         if (!notific.length) {
             contenedor.innerHTML = `
                 <div class="sin-mensajes">
-                    <img src="public/imagenes/luna.png" alt="luna_icon">
+                    <img src="/imagenes/luna.png" alt="luna_icon">
                     <h3>Nada por aquí...</h3> 
                 </div>`;
             return;

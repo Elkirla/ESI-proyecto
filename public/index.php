@@ -13,8 +13,6 @@ $paths = [
     __DIR__ . '/../Utils/',
 ];
 
-
-
     foreach ($paths as $path) {
         $file = $path . $class . '.php';
         if (file_exists($file)) {

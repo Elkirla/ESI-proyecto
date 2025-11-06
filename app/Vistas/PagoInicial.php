@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/css/PagoInicial.css">
-    <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <link rel="stylesheet" href="css/PagoInicial.css">
+    <link rel="icon" href="imagenes/logo.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <title>Ingreso a la cooperativa</title>
@@ -33,7 +33,6 @@
         <small class="nota">Formatos permitidos: .jpg, .jpeg, .png, .pdf</small>
     </div>
 
-    <script src="public/js/pagoInicial.js"></script>
+    <script src="js/pagoInicial.js"></script>
 </body>
-
 </html>

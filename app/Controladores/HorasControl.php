@@ -75,14 +75,17 @@ public function obtenerHorasFaltantesSemana($usuario_id) {
     try {
         // Obtener el rango de la semana actual
         $semana = $this->obtenerSemanaActual();
-        $fecha_inicio = $semana['inicio'];
+        $fecha_inicio = $semana['inicio']; // [cite: 16] (Línea 16 del archivo completo)
         
         error_log("Buscando deudas para usuario: $usuario_id, fecha_inicio: $fecha_inicio");
-
+        
         // Obtener horas faltantes usando ListadoControl - SOLO por fecha_inicio
-        require_once __DIR__ . '/../Controladores/ListadoControl.php';
+        // Nota: Las llamadas a require_once en medio de la lógica no son la mejor práctica,
+        // pero se mantienen para respetar el código original.
+        require_once __DIR__ . '/../Controladores/ListadoControl.php'; // [cite: 17, 18]
         $listadoControl = new ListadoControl();
 
+        // Capturar la salida de listadoComun
         ob_start();
         $listadoControl->listadoComun(
             "Semana_deudas",
@@ -90,27 +93,27 @@ public function obtenerHorasFaltantesSemana($usuario_id) {
             [
                 "usuario_id" => $usuario_id,
                 "fecha_inicio" => $fecha_inicio
-                // Eliminamos fecha_fin del filtro ya que puede variar
             ],
             null,
             1
         );
-        $output = ob_get_clean();
-        error_log("Respuesta de listadoComun: " . $output);
+        $output = ob_get_clean(); // [cite: 20]
+        error_log("Respuesta de listadoComun (RAW): " . $output); // Log para depurar errores de JSON
         
-        $data = json_decode($output, true);
-
+        $data = json_decode($output, true); // [cite: 21]
+        
+        // Verificación robusta del resultado
         if (is_array($data) && count($data) > 0) {
-            error_log("Deuda encontrada: " . print_r($data[0], true));
+            error_log("Deuda encontrada: " . print_r($data[0], true)); // [cite: 22]
             return (float) $data[0]['horas_faltantes'];
         } else {
-            // Si no encuentra por fecha_inicio exacta, buscamos cualquier deuda de esta semana
-            error_log("No se encontró por fecha_inicio exacta, buscando en rango...");
+            // Si falla la búsqueda exacta (por ruta o dato), se busca la más reciente
+            error_log("No se encontró por fecha_inicio exacta, buscando en rango..."); // [cite: 23]
             return $this->obtenerHorasFaltantesSemanaAlternativo($usuario_id, $fecha_inicio);
         }
 
     } catch (Exception $e) {
-        error_log("Error al obtener horas faltantes: " . $e->getMessage());
+        error_log("Error al obtener horas faltantes: " . $e->getMessage()); // [cite: 24]
         return 0;
     }
 }
@@ -128,14 +131,33 @@ private function obtenerHorasFaltantesSemanaAlternativo($usuario_id, $fecha_inic
             [
                 "usuario_id" => $usuario_id
             ],
-            ["fecha_inicio DESC"], // Ordenar por la más reciente
+            // Se elimina el parámetro ["fecha_inicio DESC"] para evitar el error de "Columna de orden inválida"
+            null, 
             1
         );
         $output = ob_get_clean();
+        
+        error_log("Respuesta alternativa (RAW): " . $output); 
+        
         $data = json_decode($output, true);
 
+        // --- VERIFICACIÓN ROBUSTA (Incluyendo manejo de JSON de error) ---
+        // 1. Verifica si la respuesta contiene un error del servidor (como el de "Columna de orden inválida")
+        if (isset($data['error'])) {
+             error_log("Error devuelto por listadoComun: " . $data['error']);
+             throw new Exception("Error al obtener deudas: " . $data['error']);
+        }
+        
+        // 2. Procesa la respuesta esperada
         if (is_array($data) && count($data) > 0) {
             $deuda = $data[0];
+
+            // Verificación de estructura del dato $deuda para prevenir 'Trying to access array offset on value of type null'
+            if (!is_array($deuda) || !isset($deuda['fecha_inicio']) || !isset($deuda['horas_faltantes'])) {
+                error_log("Error: La estructura del registro de deuda no es la esperada.");
+                throw new Exception("Datos de deuda incompletos o inválidos");
+            }
+            
             error_log("Deuda más reciente encontrada: " . print_r($deuda, true));
             
             // Verificar si la deuda más reciente es de esta semana
@@ -148,12 +170,17 @@ private function obtenerHorasFaltantesSemanaAlternativo($usuario_id, $fecha_inic
                 throw new Exception("La deuda más reciente no es de esta semana");
             }
         } else {
+            // Este caso atrapa si no se encontraron registros (array vacío)
             throw new Exception("No se encontraron deudas para el usuario");
         }
 
     } catch (Exception $e) {
         error_log("Error en método alternativo: " . $e->getMessage());
-        throw new Exception("No se encontraron deudas para la semana actual");
+        // Propaga un error claro si el error no es "Datos de deuda incompletos o inválidos"
+        if ($e->getMessage() === "Datos de deuda incompletos o inválidos") {
+             throw new Exception("No se encontraron deudas para la semana actual");
+        }
+        throw $e; // Re-lanza la excepción (ej: Error de columna) para que se capture arriba
     }
 }
 

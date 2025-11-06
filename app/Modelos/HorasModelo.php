@@ -32,6 +32,11 @@ public function tieneHorasRegistradas($usuario_id, $fecha) {
 
 public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $horas_totales_deuda, $primera_semana_pendiente) {
     try {
+        // Asegúrate de que $this->db existe y está conectado
+        if (!$this->db) {
+            throw new Exception("Conexión a la base de datos no inicializada.");
+        }
+        
         $this->db->beginTransaction();
 
         $ultima_semana = end($deudas_semanales);
@@ -40,7 +45,8 @@ public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $hor
         }
 
         if (!empty($deudas_semanales)) {
-            $sql_insert = "INSERT INTO Semana_deudas
+            // ... (sql_insert es el mismo)
+            $sql_insert = "INSERT INTO Semana_deudas 
                 (usuario_id, fecha_inicio, fecha_fin, horas_trabajadas, horas_faltantes,
                 horas_justificadas, horas_compensadas, motivo_justificacion, pago_compensatorio_id, procesado_en)
                 VALUES
@@ -59,21 +65,33 @@ public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $hor
             $stmt = $this->db->prepare($sql_insert);
 
             foreach ($deudas_semanales as $d) {
-                $stmt->execute([
+                // Validación para ver los datos que se están intentando insertar
+                error_log("[DEBUG_DEUDA] Intentando insertar/actualizar: " . print_r($d, true));
+
+                // Ejecuta la sentencia
+                $success = $stmt->execute([
                     ':usuario_id' => $usuario_id,
                     ':fecha_inicio' => $d['fecha_inicio'],
                     ':fecha_fin' => $d['fecha_fin'],
-                    ':horas_trabajadas' => $d['horas_trabajadas'],
-                    ':horas_faltantes' => $d['horas_faltantes'],
-                    ':horas_justificadas' => $d['horas_justificadas'],
-                    ':horas_compensadas' => $d['horas_compensadas'],
-                    ':motivo_justificacion' => $d['motivo_justificacion'],
-                    ':pago_compensatorio_id' => $d['pago_compensatorio_id']
+                    ':horas_trabajadas' => $d['horas_trabajadas'] ?? 0, // Añadir valor por defecto si pueden ser NULL
+                    ':horas_faltantes' => $d['horas_faltantes'] ?? 0,
+                    // ... (resto de parámetros)
+                    ':horas_justificadas' => $d['horas_justificadas'] ?? null,
+                    ':horas_compensadas' => $d['horas_compensadas'] ?? null,
+                    ':motivo_justificacion' => $d['motivo_justificacion'] ?? null,
+                    ':pago_compensatorio_id' => $d['pago_compensatorio_id'] ?? null
                 ]);
+
+                // Si PDO no lanza excepciones, esta verificación es CRUCIAL.
+                if (!$success) {
+                    error_log("[GUARDAR_DEUDAS_FALLO_EXECUTE] Detalles: " . print_r($stmt->errorInfo(), true));
+                    throw new Exception("Fallo en la inserción/actualización de Semana_deudas.");
+                }
             }
         }
- 
-        $sql_upsert = "INSERT INTO Horas_deuda
+        
+        // ... (sql_upsert para Horas_deuda es el mismo)
+        $sql_upsert = "INSERT INTO Horas_deuda 
             (usuario_id, horas_acumuladas, horas_deuda_total, fecha_ultimo_calculo, primera_semana_pendiente)
             VALUES (:usuario_id, 0, :horas_deuda_total, CURDATE(), :primera_semana_pendiente)
             ON DUPLICATE KEY UPDATE
@@ -93,7 +111,10 @@ public function guardarDeudasHorasCompletas($usuario_id, $deudas_semanales, $hor
         return true;
 
     } catch (Exception $e) {
-        $this->db->rollBack();
+        // El rollback se ejecuta si se lanza cualquier excepción.
+        if ($this->db->inTransaction()) {
+             $this->db->rollBack();
+        }
         error_log("[GUARDAR_DEUDAS_ERROR] ".$e->getMessage());
         return false;
     }

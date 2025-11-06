@@ -50,6 +50,8 @@ $routes = [
         "/saldo-compensatorio"    => "HorasControl@SaldoCompensatorioUsuario",
         "/verTodasDeudasSemanas"  => "HorasControl@verTodasDeudasSemanasUsuario",
 
+       "/test" => "HorasControl@actualizarDeudaHorasUsuario",
+
         // ======================
         // JUSTIFICATIVOS
         // ======================
