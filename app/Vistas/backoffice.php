@@ -3,328 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/css/backoffice.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person" />
-    <title>Document</title>
+    <link rel="stylesheet" href="public/css/backoffice.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <title>BackOffice</title>
 </head>
 <body>
-<div class="heder"></div>
-<div class="sider">
-    <div class="Cerrar-sesion">
-        <button id="btn-cerrar-sesion">Cerrar sesión</button>
 
-    </div>
-    <h2>Coperativa</h2>
-    <h3>backoffice</h3>
-    <button id="btn-mi-perfil">Mi perfil</button>
-    <button id="btn-usuarios">Usuarios</button>
-    <button id="btn-pagos">Pagos</button>
-    <button id="btn-ingresar">Ingresar</button>
-    <button id="btn-horas">Horas</button>
-</div>
-<div class="info">
-    <div class="mi-perfil section">
-        <div class="texto-icono">
-            <span class="material-symbols-outlined">person</span>
-            <span>Mi perfil</span>
+    <!-- NOTIFICACIONES -->
+    <div class="notificaciones-container">
+        <div class="notificaciones" id="notificaciones">
+            <h3>Notificaciones</h3>
+            <p id="cerrar-notis">X</p>
+            <ul id="lista-notificaciones"></ul>
         </div>
-        <div class="datos">
-            <input type="text" placeholder="Nombre">
-            <input type="text" placeholder="Apellido">
-            <input type="text" placeholder="Telefono">
-            <input type="email" placeholder="Correo electronico">
-        </div>
-        <button id="btn-guardar" class="but">Cambiar contraseña</button>
     </div>
 
-    <div class="usuarios section">
-        <h2>Usuario</h2>
-        <div class="user">
-            <label for="buscar">Buscar por</label>
-            <select id="buscar">
-            <option value="cedula">Cedula</option>
-            <option value="nombre">Nombre</option>
-            <option value="Correo electronico">Correo</option>
-            <option value="telefono">Telefono</option>
-            </select>
-            <input type="text" class="in">
-            <button class="bu">Aplicar</button>
-        </div>
-        <div class="Filtro">
-            <h3>Filtro</h3>
-            <button class="bp">Pagos</button>
-            <button class="bh">Horas</button>
-        </div>
-        <table>
-            <tr>
-                <th>Cedula</th>
-                <th>Nombre</th>
-                <th>Correo electronico</th>
-                <th>Telefono</th>
-                <th>Unidad</th>
-            </tr>
-            <tr>
-                <td>1231231</td>
-                <td>Jorge</td>
-                <td>Jorge@gmail.com</td>
-                <td>099 123 456</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td>1122334</td>
-                <td>Pedro</td>
-                <td>Pedro@gmail.com</td>
-                <td>099 111 222</td>
-                <td>2</td>
-            </tr>
-                <tr>
-                <td>1231231</td>
-                <td>Jorge</td>
-                <td>Jorge@gmail.com</td>
-                <td>099 123 456</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td>1122334</td>
-                <td>Pedro</td>
-                <td>Pedro@gmail.com</td>
-                <td>099 111 222</td>
-                <td>2</td>
-            </tr>
-                        <tr>
-                <td>1231231</td>
-                <td>Jorge</td>
-                <td>Jorge@gmail.com</td>
-                <td>099 123 456</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td>1122334</td>
-                <td>Pedro</td>
-                <td>Pedro@gmail.com</td>
-                <td>099 111 222</td>
-                <td>2</td>
-            </tr>
-        </table>
+    <!-- HEADER -->
+    <div class="heder"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sider">
+        <div class="opcion-div"></div>
+
+        <a href="/logout">Cerrar sesión</a>
+        <h1>Cooperativa</h1>
+
+        <button id="btn-mi-perfil">Mi perfil</button>
+        <button id="btn-Usuarios">Usuarios</button>
+        <button id="btn-Pagos">Pagos</button>
+        <button id="btn-ingresar">Ingresar</button>
+        <button id="btn-Horas">Horas</button>
+        <button id="btn-Unidades">Unidades</button>
+        <button id="btn-Config">Config.</button>
     </div>
 
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="info">
 
-    <div class="pagos section">
-        <h2>Pagos</h2>
-        <label for="buscar">Buscar por</label>
-        <select id="buscar">
-            <option value="Cedula">Cedula</option>
-            <option value="Nombre">Nombre</option>
-        </select>
-        <input type="text" class="in">
-        <button class="aplicar">Aplicar</button>
-        <table>
-            <tr>
-                <th>Cedula</th>
-                <th>Nombre</th>
-                <th>Fecha</th>
-                <th>Monto</th>
-                <th>Comprobante</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>1231231</td>
-                <td>Jorge</td>
-                <td>12/4</td>
-                <td>$20.000</td>
-                <td>Comprobante.pdf</td>
-                <td> <input type="checkbox"></td>
-            </tr>
-            <tr>
-                <td>1122334</td>
-                <td>Pedro</td>
-                <td>12/4</td>
-                <td>$20.000</td>
-                <td>Comprovante.pdf</td>
-                <td><input type="checkbox"></td>
-            </tr>
-            <tr>
-                <td>1231231</td>
-                <td>Jorge</td>
-                <td>16/3</td>
-                <td>$20.000</td>
-                <td>Comprobante.pdf</td>
-                <td><input type="checkbox"></td>
-            </tr>
-            <tr>
-                <td>1122334</td>
-                <td>Pedro</td>
-                <td>10/3</td>
-                <td>$20.000</td>
-                <td>Comprovante.pdf</td>
-                <td> <input type="checkbox"></td>
-            </tr>
-            <tr>
-                <td>1231231</td>
-                <td>Jorge</td>
-                <td>11/2</td>
-                <td>$20.000</td>
-                <td>Comprobante.pdf</td>
-                <td> <input type="checkbox"></td>
-            </tr>
-            <tr>
-                <td>1122334</td>
-                <td>Pedro</td>
-                <td>9/2</td>
-                <td>$20.000</td>
-                <td>Comprovante.pdf</td>
-                <td> <input type="checkbox"></td>
-            </tr>
-            </table>
-                <button id="ba" class="bverde">Aceptar</button>
-                <button id="br" class="brojo">Rechazar</button>
+        <!-- ========== MI PERFIL ========== -->
+<div class="mi-perfil section">
+    <div class="texto-icono">
+        <img src="public/imagenes/usuario.png" alt="usuario_icon"> 
+        <h2>MI PERFIL</h2>
     </div>
 
-    <div class="ingresar section">
-        <h2>Ingresar usuarios</h2>
-        <label for="buscar1">Buscar por</label>
-        <select id="buscar1">
-            <option value="Cedula">Cedula</option>
-            <option value="Nombre">Nombre</option>
-            <option value="Apellido">Apellido</option>
-            <option value="Telefono">Telefono</option>
-            <option value="Correo">Correo</option>
-        </select>
-        <input type="text" class="in">
-        <button class="aplicar">Aplicar</button>
-        <table>
-            <tr>
-                <th>Cedula</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Telefono</th>
-                <th>Correo</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>1231231</td>
-                <td>Jorge</td>
-                <td>Vias</td>
-                <td>099 011 908</td>
-                <td>Jorge@gmail.com</td>
-                <td> <input type="checkbox"></td>
-            </tr>
-            <tr>
-                <td>1122334</td>
-                <td>Pedro</td>
-                <td>Jose</td>
-                <td>099 111 222</td>
-                <td>Pedro@gmail.com</td>
-                <td><input type="checkbox"></td>
-            </tr>
-            <tr>
-                <td>1231231</td>
-                <td>Maria</td>
-                <td>Martines</td>
-                <td>099 555 666</td>
-                <td>Maria@gmail.com</td>
-                <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-                <td>1231231</td>
-                <td>Jorge</td>
-                <td>Vias</td>
-                <td>099 011 908</td>
-                <td>Jorge@gmail.com</td>
-                <td> <input type="checkbox"></td>
-            </tr>
-            <tr>
-                <td>1122334</td>
-                <td>Pedro</td>
-                <td>Jose</td>
-                <td>099 111 222</td>
-                <td>Pedro@gmail.com</td>
-                <td><input type="checkbox"></td>
-            </tr>
-            <tr>
-                <td>1231231</td>
-                <td>Maria</td>
-                <td>Martines</td>
-                <td>099 555 666</td>
-                <td>Maria@gmail.com</td>
-                <td><input type="checkbox"></td>
-            </tr>
+    <div class="datosUsuario-container">
+        <div id="editar-datos">
+            <button id="btn-editar-datos">
+                <img src="public/imagenes/lapiz.png" alt="lapiz_icon">
+                <p>Editar datos</p>
+            </button>
+        </div>
+     
+        <div id="vista-datos" class="datos">
+            <h3>Nombre</h3>
+            <p id="Nombre-datos"></p>
+            <h3>Apellido</h3>
+            <p id="Apellido-datos"></p>
+            <h3>Teléfono</h3>
+            <p id="Telefono-datos"></p>
+            <h3>CI</h3>
+            <p id="ci-datos"></p>
+        </div>
+        
+        <div class="formulario-editar-datos-container">
+            <form id="form-editar-datos" class="datos" style="display:none;">
+                <input type="text" id="input-nombre" placeholder="Nombre">
+                <input type="text" id="input-apellido" placeholder="Apellido">
+                <input type="text" id="input-telefono" placeholder="Teléfono">
+                <input type="text" id="input-ci" placeholder="CI">
+            
+                <div class="form-buttons">
+                    <button type="submit" id="btn-guardar">Guardar cambios</button>
+                    <button type="button" id="btn-cancelar">Cancelar</button>
+                </div>
+            </form>
+        </div>
 
-            </table>
-                <button id="ba" class="bverde">Aceptar</button>
-                <button id="br" class="brojo">Rechazar</button>
-
-    </div>
-    <div class="horas section" >
-        <h2>Manejo de horas</h2>
-        <div class="user">
-            <label for="b">Buscar por</label>
-            <select id="b">
-                <option value="Cedula">Cedula</option>
-                <option value="Nombre">Nombre</option>
-            </select>
-            <input type="text" class="in">
-            <button class="aplicar">Aplicar</button>
-        </div>
-    <div class="dos">
-        <div class="t">
-            <table>
-                <tr>
-                    <th>Cedula</th>
-                    <th>Nombre</th>
-                    <th>Horas inasistidas</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>1231231</td>
-                    <td>Jorge</td>
-                    <td>5</td>
-                    <td><input type="checkbox"></td> 
-                </tr>
-                <tr>
-                    <td>1122334</td>
-                    <td>Pedro</td>
-                    <td>12</td>
-                    <td><input type="checkbox"></td>  
-                </tr>
-                <tr>
-                    <td>1231231</td>
-                    <td>Jorge</td>
-                    <td>5</td>
-                    <td><input type="checkbox"></td>         
-                </tr>
-                <tr>
-                    <td>1122334</td>
-                    <td>Pedro</td>
-                    <td>12</td>
-                    <td> <input type="checkbox"></td>    
-                </tr>
-                <tr>
-                    <td>1231231</td>
-                    <td>Jorge</td>
-                    <td>5</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-                <tr>
-                    <td>1122334</td>
-                    <td>Pedro</td>
-                    <td>12</td>
-                    <td><input type="checkbox"></td>
-                </tr>
-            </table>
-            <button class="bverde">Aceptar</button>
-            <button class="brojo">Rechazar</button>
-        </div>
-        <div class="jus">
-            <h3>Justificativo</h3>
-            <textarea name="just" id="just" cols="30" rows="10" placeholder="Escriba el justificativo aqui..."></textarea>
-            <input type="file" placeholder="Fotodelcertificado.png">
-            <button id="enviar">Enviar</button>
-        </div>
     </div>
 
 </div>
 
-<script src="../../public/js/backoffice.js"></script>
+        <!-- ========== USUARIOS ========== -->
+        <div class="usuarios section" style="display:none;">
+            <h2>Usuarios</h2>
+            <!-- Tabla de usuarios, búsqueda, filtros -->
+        </div>
+
+        <!-- ========== PAGOS ========== -->
+        <div class="pagos section" style="display:none;">
+            <h2>Pagos</h2>
+            <!-- Gestión de pagos -->
+        </div>
+
+        <!-- ========== INGRESAR (ALTA DE USUARIO) ========== -->
+        <div class="ingresar section" style="display:none;">
+            <h2>Ingresar usuario</h2>
+            <!-- Formulario para ingresar nuevos usuarios -->
+        </div>
+
+        <!-- ========== HORAS ========== -->
+        <div class="horas section" style="display:none;">
+            <h2>Horas</h2>
+            <!-- Registro de horas -->
+        </div>
+
+        <!-- ========== UNIDADES ========== -->
+        <div class="unidades section" style="display:none;">
+            <h2>Unidades</h2>
+            <!-- Gestión de unidades u hogares -->
+        </div>
+
+        <!-- ========== CONFIGURACIÓN ========== -->
+        <div class="config section" style="display:none;">
+            <h2>Configuración</h2>
+            <!-- Preferencias, temas, permisos, etc -->
+        </div>
+
+    </div><!-- FIN INFO -->
+
+    <script src="public/js/backoffice.js"></script>
+
 </body>
 </html>
