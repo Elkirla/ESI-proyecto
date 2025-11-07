@@ -742,6 +742,8 @@ document.getElementById("btn-cancelar").addEventListener("click", () => activarE
 formEditar.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    limpiarErrores(); // ✅ limpiar errores previos
+
     const datos = new FormData();
     datos.append("nombre", document.getElementById("input-nombre").value);
     datos.append("apellido", document.getElementById("input-apellido").value);
@@ -753,12 +755,15 @@ formEditar.addEventListener("submit", async (e) => {
             method: "POST",
             body: datos
         });
+
         const result = await response.json();
 
         if (result.success) {
             actualizarVista();
             activarEdicion(false);
             agregarNotificacion(result.success, "success");
+        } else if (result.errores) {
+            mostrarErrores(result.errores); // ✅ erroes específicos por campo
         } else {
             agregarNotificacion(result.error, "error");
         }
@@ -767,6 +772,23 @@ formEditar.addEventListener("submit", async (e) => {
         agregarNotificacion("Error de conexión con el servidor", "error");
     }
 });
+
+
+function mostrarErrores(errores) {
+    Object.keys(errores).forEach(key => {
+        const errorElem = document.getElementById(`error-${key}`);
+        if (errorElem) {
+            errorElem.textContent = errores[key];
+        }
+    });
+}
+
+function limpiarErrores() {
+    document.querySelectorAll(".error-msg").forEach(el => {
+        el.textContent = "";
+    });
+}
+
 
 
 function activarEdicion(modo) {
@@ -831,7 +853,4 @@ btnCompensatorio.addEventListener('click', () => {
   divCompensatorio.style.display = 'flex';
   btnCompensatorio.classList.add('active');
   btnComprobante.classList.remove('active');
-});
-
-
-});
+});});

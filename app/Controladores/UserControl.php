@@ -23,18 +23,38 @@ public function cargarDatosUsuario() {
 );}
 
 public function ActualizarDatosUsuario(){
-$usuario = new usuario();
-$usuario->setId($_SESSION["usuario_id"] ?? null);
-$usuario->setNombre($_POST["nombre"] ?? null);
-$usuario->setApellido($_POST["apellido"] ?? null);
-$usuario->setTelefono($_POST["telefono"] ?? null);
-$usuario->setCi($_POST["ci"] ?? null);
-$modeloUsuario = new UsuarioModelo();
-$resultado = $modeloUsuario->actualizarDatos($usuario);
-if ($resultado) {
-    echo json_encode(["success" => "Datos actualizados correctamente"]);  
-} else {
-    echo json_encode(["error" => "Error al actualizar los datos"]);
+    header('Content-Type: application/json');  
+    require_once __DIR__ . '/../Config/validator.php'; 
+
+    $usuario = new Usuario();
+    $usuario->setId($_SESSION["usuario_id"]);
+    $usuario->setNombre($_POST["nombre"] ?? "");
+    $usuario->setApellido($_POST["apellido"] ?? "");
+    $usuario->setTelefono($_POST["telefono"] ?? "");
+    $usuario->setCi($_POST["ci"] ?? "");
+
+    $validator = new Validator();
+    $validator->validarUsuarioCambios($usuario);
+
+    $errores = $validator->getErrores();
+
+    if (!empty($errores)) {
+        echo json_encode([
+            "success" => false,
+            "errores" => $errores
+        ]);
+        return;
+    }
+
+    $modeloUsuario = new UsuarioModelo();
+    $resultado = $modeloUsuario->actualizarDatos($usuario);
+
+    if ($resultado) {
+        echo json_encode(["success" => "Datos actualizados correctamente"]);
+    } else {
+        echo json_encode(["error" => "Error al actualizar los datos"]);
+    }
 }
-}
+
+
 }

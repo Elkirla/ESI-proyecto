@@ -606,6 +606,27 @@ input[type="file"]:hover {
     align-items: flex-start;    
     justify-content: flex-start;
 }
+.error-msg {
+    font-size: 1rem;       
+    color: #b84a48;          
+    margin-top: 4px;
+    font-weight: 500;  
+    display: block;           
+    font-family: "Roboto";
+    min-height: 18px;         
+    transition: opacity 0.2s ease-in-out;
+    opacity: 0;              
+}
+ 
+.error-msg:not(:empty) {
+    opacity: 1;
+}
+ 
+input.error {
+    border: 1px solid #cd4a48 !important;
+} 
+
+
 #vista-datos{
     position: absolute;
     top: 25%;

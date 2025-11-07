@@ -85,24 +85,40 @@
             <p id="ci-datos"></p>
         </div>
         
-        <div class="formulario-editar-datos-container">
-            <form id="form-editar-datos" class="datos" style="display:none;">
-                <input type="text" id="input-nombre" placeholder="Nombre">
-                <input type="text" id="input-apellido" placeholder="Apellido">
-                <input type="text" id="input-telefono" placeholder="Teléfono">
-                <input type="text" id="input-ci" placeholder="CI">
-            
-                <div class="form-buttons">
-                    <button type="submit" id="btn-guardar">Guardar cambios</button>
-                    <button type="button" id="btn-cancelar">Cancelar</button>
-                </div>
-            </form>
+      <div class="formulario-editar-datos-container">
+    <form id="form-editar-datos" class="datos" style="display:none;">
+
+        <div class="input-group">
+            <input type="text" id="input-nombre" placeholder="Nombre">
+            <small class="error-msg" id="error-nombre"></small>
         </div>
+
+        <div class="input-group">
+            <input type="text" id="input-apellido" placeholder="Apellido">
+            <small class="error-msg" id="error-apellido"></small>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="input-telefono" placeholder="Teléfono">
+            <small class="error-msg" id="error-telefono"></small>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="input-ci" placeholder="CI">
+            <small class="error-msg" id="error-ci"></small>
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" id="btn-guardar">Guardar cambios</button>
+            <button type="button" id="btn-cancelar">Cancelar</button>
+        </div>
+    </form>
+</div>
+
 
     </div>
 
 </div>
-
  
 <div class="pagos section"> 
     <div class="PagosHeaderDiv">
