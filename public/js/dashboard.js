@@ -742,7 +742,7 @@ document.getElementById("btn-cancelar").addEventListener("click", () => activarE
 formEditar.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    limpiarErrores(); // ✅ limpiar errores previos
+    limpiarErrores();  
 
     const datos = new FormData();
     datos.append("nombre", document.getElementById("input-nombre").value);

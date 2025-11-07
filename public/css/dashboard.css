@@ -332,29 +332,26 @@ width: 100%;
     box-sizing: border-box; 
     scroll-behavior: smooth;
 }
-
-/* Mantener tabla dentro del scroll */
+ 
 .tablaPagos table {
     width: 100%;
     border-collapse: collapse; 
     background-color: transparent;
 }
 .tablaPagos::-webkit-scrollbar {
-    width: 10px; /* grosor de la barra */
+    width: 10px;  
 }
  .tablaPagos::-webkit-scrollbar-track {
-    background: #384898; /* azul oscuro similar a tu fondo */
+    background: #384898; 
     border-radius: 10px;
-}
-/* Parte que se mueve (thumb) */
+} 
 .tablaPagos::-webkit-scrollbar-thumb {
-    background-color: #ffb45c; /* amarillo destacado */
+    background-color: #ffb45c; 
     border-radius: 10px;
-    border: 2px solid #384898; /* separación del track */
-}
-/* Hover sobre el thumb */
+    border: 2px solid #384898;  
+} 
 .tablaPagos::-webkit-scrollbar-thumb:hover {
-    background-color: #ffd28a; /* amarillo más claro al pasar el mouse */
+    background-color: #ffd28a;  
 }
 .tablaPagos th {
     text-align: left;
@@ -374,8 +371,7 @@ width: 100%;
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
-
-/* Efecto hover para cada fila */
+ 
 .tablaPagos tr:hover {
     background-color: rgba(255, 255, 255, 0.05);
     transition: 0.2s ease-in-out;
@@ -515,8 +511,7 @@ input[type="file"]::before {
 input[type="file"]:hover {
     border-color: #ffb45c;
 }
-
-/* --- Botón principal --- */
+ 
 .but {
     background-color: #ffb45c;
     color: #263478;

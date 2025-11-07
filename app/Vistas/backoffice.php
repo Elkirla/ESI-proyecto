@@ -12,8 +12,7 @@
     <title>BackOffice</title>
 </head>
 <body>
-
-    <!-- NOTIFICACIONES -->
+ 
     <div class="notificaciones-container">
         <div class="notificaciones" id="notificaciones">
             <h3>Notificaciones</h3>
@@ -21,16 +20,14 @@
             <ul id="lista-notificaciones"></ul>
         </div>
     </div>
-
-    <!-- HEADER -->
+ 
     <div class="heder"></div>
-
-    <!-- SIDEBAR -->
+ 
     <div class="sider">
         <div class="opcion-div"></div>
 
         <a href="/logout">Cerrar sesión</a>
-        <h1>Cooperativa</h1>
+        <h1>Backoffice</h1>
 
         <button id="btn-mi-perfil">Mi perfil</button>
         <button id="btn-Usuarios">Usuarios</button>
@@ -40,11 +37,9 @@
         <button id="btn-Unidades">Unidades</button>
         <button id="btn-Config">Config.</button>
     </div>
-
-    <!-- CONTENEDOR PRINCIPAL -->
-    <div class="info">
-
-        <!-- ========== MI PERFIL ========== -->
+ 
+    <div class="content">
+ 
 <div class="mi-perfil section">
     <div class="texto-icono">
         <img src="public/imagenes/usuario.png" alt="usuario_icon"> 
@@ -71,60 +66,64 @@
         </div>
         
         <div class="formulario-editar-datos-container">
-            <form id="form-editar-datos" class="datos" style="display:none;">
-                <input type="text" id="input-nombre" placeholder="Nombre">
-                <input type="text" id="input-apellido" placeholder="Apellido">
-                <input type="text" id="input-telefono" placeholder="Teléfono">
-                <input type="text" id="input-ci" placeholder="CI">
-            
-                <div class="form-buttons">
-                    <button type="submit" id="btn-guardar">Guardar cambios</button>
-                    <button type="button" id="btn-cancelar">Cancelar</button>
-                </div>
-            </form>
+ <form id="form-editar-datos" class="datos" style="display:none;">
+
+        <div class="input-group">
+            <input type="text" id="input-nombre" placeholder="Nombre">
+            <small class="error-msg" id="error-nombre"></small>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="input-apellido" placeholder="Apellido">
+            <small class="error-msg" id="error-apellido"></small>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="input-telefono" placeholder="Teléfono">
+            <small class="error-msg" id="error-telefono"></small>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="input-ci" placeholder="CI">
+            <small class="error-msg" id="error-ci"></small>
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" id="btn-guardar">Guardar cambios</button>
+            <button type="button" id="btn-cancelar">Cancelar</button>
+        </div>
+    </form>
         </div>
 
     </div>
 
 </div>
-
-        <!-- ========== USUARIOS ========== -->
+ 
         <div class="usuarios section" style="display:none;">
-            <h2>Usuarios</h2>
-            <!-- Tabla de usuarios, búsqueda, filtros -->
+            <h2>Usuarios</h2> 
         </div>
-
-        <!-- ========== PAGOS ========== -->
+ 
         <div class="pagos section" style="display:none;">
-            <h2>Pagos</h2>
-            <!-- Gestión de pagos -->
+            <h2>Pagos</h2> 
         </div>
-
-        <!-- ========== INGRESAR (ALTA DE USUARIO) ========== -->
+ 
         <div class="ingresar section" style="display:none;">
-            <h2>Ingresar usuario</h2>
-            <!-- Formulario para ingresar nuevos usuarios -->
+            <h2>Ingresar usuario</h2> 
         </div>
-
-        <!-- ========== HORAS ========== -->
+ 
         <div class="horas section" style="display:none;">
-            <h2>Horas</h2>
-            <!-- Registro de horas -->
+            <h2>Horas</h2> 
         </div>
-
-        <!-- ========== UNIDADES ========== -->
+ 
         <div class="unidades section" style="display:none;">
-            <h2>Unidades</h2>
-            <!-- Gestión de unidades u hogares -->
+            <h2>Unidades</h2> 
         </div>
-
-        <!-- ========== CONFIGURACIÓN ========== -->
+ 
         <div class="config section" style="display:none;">
-            <h2>Configuración</h2>
-            <!-- Preferencias, temas, permisos, etc -->
+            <h2>Configuración</h2> 
         </div>
 
-    </div><!-- FIN INFO -->
+    </div> 
 
     <script src="public/js/backoffice.js"></script>
 

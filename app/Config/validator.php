@@ -65,6 +65,12 @@ private function validarTelefono($telefono) {
 
  
 private function validarCI($ci) { 
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
+    $modelo = new UsuarioModelo();
+    if (!empty($ci) && $modelo->ExisteCI($ci)) {
+         $this->errores["ci"] = "La CI ya está registrada";
+         return;
+    }
     if (!ctype_digit($ci)) {
         $this->errores["ci"] = "La CI solo puede contener números";
         return;
@@ -74,8 +80,6 @@ private function validarCI($ci) {
         $this->errores["ci"] = "La CI ingresada no es válida";
     }
 }
-
-
  
     public function Contraseña($password) {
         $errors = [];
