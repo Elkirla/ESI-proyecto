@@ -99,9 +99,63 @@
 
 </div>
  
-        <div class="usuarios section" style="display:none;">
-            <h2>Usuarios</h2> 
+<div class="usuarios section" style="display:none;">
+
+    <!-- Pendientes -->
+    <aside class="usuariosPendientes-div" id="usuariosPendientes-div">
+        <h2>Usuarios pendientes</h2>  
+    </aside>
+
+    <button id="CerrarUsuariosPendientes"><</button>
+
+    <!-- Hoja de Registro -->
+    <section id="HojaRegistro">
+
+        <!-- 📌 Contenedor tipo hoja -->
+        <div class="hoja">
+
+            <h3>Solicitud de ingreso</h3>
+
+            <form id="formRegistro">
+
+                <div class="campo">
+                    <label for="Nombre-Registro">Nombre</label>
+                    <input type="text" id="Nombre-Registro" readonly>
+                </div>
+
+                <div class="campo">
+                    <label for="Apellido-Registro">Apellido</label>
+                    <input type="text" id="Apellido-Registro" readonly>
+                </div>
+
+                <div class="campo">
+                    <label for="Telefono-Registro">Teléfono</label>
+                    <input type="text" id="Telefono-Registro" readonly>
+                </div>
+
+                <div class="campo">
+                    <label for="Correo-Registro">Correo</label>
+                    <input type="email" id="Correo-Registro" readonly>
+                </div>
+
+                <div class="campo">
+                    <label for="CI-Registro">Cédula</label>
+                    <input type="text" id="CI-Registro" readonly>
+                </div>
+
+                <div class="acciones">
+                    <button class="btn-aceptar" id="A-Registro">Aceptar</button>
+                    <button class="btn-rechazar" id="R-Registro">Rechazar</button>
+                </div>
+
+            </form>
+
         </div>
+
+    </section>
+</div>
+
+
  
         <div class="pagos section" style="display:none;">
             <h2>Pagos</h2> 

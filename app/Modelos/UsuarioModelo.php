@@ -67,16 +67,18 @@ class UsuarioModelo {
 
         return false;
     }
-    public function rechazarUsuario($email) {
-        $sql = "UPDATE usuarios SET estado = 'rechazado' WHERE email = :email";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([':email' => $email]);
-    }
-public function aceptarUsuario($usuario_id) {
-    $sql = "UPDATE usuarios SET estado = 'activo' WHERE id = :usuario_id";
+public function rechazarUsuario($usuario_id) {
+    $sql = "UPDATE usuarios SET estado = 'rechazado' WHERE id = :usuario_id";
     $stmt = $this->db->prepare($sql);
     return $stmt->execute([':usuario_id' => $usuario_id]);
 }
+
+
+    public function aceptarUsuario($usuario_id) {
+        $sql = "UPDATE usuarios SET estado = 'activo' WHERE id = :usuario_id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([':usuario_id' => $usuario_id]);
+    }
 
 public function actualizarDatos(Usuario $usuario) {
     $sql = "UPDATE usuarios 

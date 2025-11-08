@@ -229,34 +229,41 @@ private $notiControl;
     // ===================================
     // USUARIOS
     // ===================================
-    public function RechazarUsuario() {
-        require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
-        try {
-            $correo = $_POST['mensaje'] ?? null;
-            if (!$correo) {
-                throw new Exception("Correo no recibido.");
-            }
+public function RechazarUsuario() {
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
 
-            $modelo = new UsuarioModelo();
-            $ok = $modelo->rechazarUsuario($correo);
+    try {
+        // Aceptar usuario_id o id (según lo que envíe JS)
+        $usuario_id = $_POST['usuario_id'] ?? $_POST['id'] ?? null;
+         
+        $modelo = new UsuarioModelo();
 
-            if (!$ok) {
-                throw new Exception("No se pudo actualizar en la BD.");
-            }
+        // Actualizar estado en la BD
+        $ok = $modelo->rechazarUsuario($usuario_id);
 
-            $this->response(true);
-
-        } catch (Exception $e) {
-            $this->response(false, ['error' => $e->getMessage()]);
+        if (!$ok) {
+            throw new Exception("No se pudo actualizar el usuario en la base de datos.");
         }
-    }
 
-public function AceptarUsuario() {
+        $this->response(true, [
+            "mensaje" => "Usuario rechazado correctamente.",
+            "usuario_id" => $usuario_id,
+            "nuevo_estado" => "rechazado"
+        ]);
+
+    } catch (Exception $e) {
+        $this->response(false, ['error' => $e->getMessage()]);
+    }
+}
+
+
+public function AceptarUsuario() { 
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
     require_once __DIR__ . '/../Controladores/UnidadControl.php';
 
     try {
-        $usuario_id = $_POST['usuario_id'] ?? null;
+        $usuario_id = $_POST['id'] ?? null;
+
         if (!$usuario_id) {
             throw new Exception("ID de usuario no recibido.");
         }
@@ -294,9 +301,6 @@ public function AceptarUsuario() {
         $this->response(false, ['error' => $e->getMessage()]);
     }
 }
-
-
- 
 
     public function cargarUsuariosPendientes() {
     $this->listado->listadoComun(

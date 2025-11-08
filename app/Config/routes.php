@@ -61,7 +61,8 @@ $routes = [
         // ======================
         "/usuariodatos"        => "UserControl@cargarDatosUsuario",
         "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes",
-        "/usuario-por-id"      => "AdminControl@ObtenerUsuarioPorId", 
+
+        "/usuariosPendientes"      => "AdminControl@cargarUsuariosPendientes",
 
         // ======================
         // UNIDADES HABITACIONALES
@@ -78,6 +79,8 @@ $routes = [
         // SESIÓN
         // ======================
         "/logout"=> "AuthControl@logout",
+
+         
     ],
 
     "POST" => [
@@ -125,9 +128,10 @@ $routes = [
         // ======================
         // USUARIOS (admin)
         // ======================
-        "/aprobar-usuario"  => "AdminControl@AceptarUsuario",
-        "/rechazar-usuario" => "AdminControl@RechazarUsuario",
-        
+        "/aprobar-usuario"         => "AdminControl@AceptarUsuario",
+        "/rechazar-usuario"        => "AdminControl@RechazarUsuario",
+        "/usuario-por-id"      => "AdminControl@ObtenerUsuarioPorId", 
+
         "/actualizar-DatosUsuario" => "UserControl@ActualizarDatosUsuario",
 
         // ======================
