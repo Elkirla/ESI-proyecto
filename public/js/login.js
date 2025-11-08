@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = form.querySelector('input[type="submit"]'); 
     const email = document.getElementById("Email");
     const password =document.getElementById("password");
+    const eye = document.getElementById("eye");
 
     const MAX_WARNING = 10;
     const MAX_BLOCK = 15;
@@ -131,6 +132,16 @@ if (result.success) {
     }
 });
 
+
+eye.addEventListener("click", () => {
+    if (password.type === "password") {
+        password.type = "text";
+        eye.src = "public/imagenes/ojo.png"; // ojo abierto
+    } else {
+        password.type = "password";
+        eye.src = "public/imagenes/ojo-apagado.png"; // ojo apagado
+    }
+});
 
     // Al cargar la página verificar si está bloqueado
     checkBlockStatus();

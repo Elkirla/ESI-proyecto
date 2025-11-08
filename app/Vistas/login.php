@@ -19,12 +19,20 @@
   </div>
 
   <h1>Ingrese con su usuario</h1>
-  <form class="login-column" id="form-login" autocomplete="on"> 
-    <input name="email" placeholder="Email" id="Email" class="input-field" >
-    <input type="password" name="password" placeholder="Contraseña" id="password" class="input-field" >
+<form class="login-column" id="form-login" autocomplete="on"> 
+    <div class="input-group">
+        <input type="email" name="email" placeholder="Email" id="Email" class="input-field" required>
+    </div>
+
+    <div class="input-group">
+        <input type="password" name="password" placeholder="Contraseña" id="password" class="input-field" required>
+</div>
+
     <label class="Error"></label>
     <input type="submit" value="Iniciar Sesión" class="boton-login">
-  </form>
+</form>
+        <img src="public/imagenes/ojo-apagado.png" alt="mostrar contraseña" id="eye" class="eye-icon">
+    
 </div>
  
 <div class="Lado-derecho-container">

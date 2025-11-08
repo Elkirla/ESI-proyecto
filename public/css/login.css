@@ -9,7 +9,7 @@ body {
 
 /* Contenedor principal izquierdo */
 .login-container {
-  width: 50%;
+  width: 53%;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -52,13 +52,14 @@ body {
 .login-column {
   display: flex;
   flex-direction: column;
-  width: 65%;
+  width: 60%;
   max-width: 300px;
 }
 
 .input-field {
   margin-bottom: 15px;
   padding: 10px;
+  width:90%;
   border: 1px solid #5e5e5e;
   border-radius: 5px;
   font-size: 1.1rem;
@@ -83,6 +84,21 @@ body {
   background-color: #2e4ba5;
   border-right: 5px solid #1c316f;
   border-bottom: 5px solid #1c316f;
+}
+.input-group {
+  position: relative;
+}
+
+.eye-icon {
+  position:absolute;
+  width: 40px;
+  position: absolute;
+  right: 0px;
+  margin-right: 280px;
+  top: 57%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
 }
 
 /* Contenedor derecho */
