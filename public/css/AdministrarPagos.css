@@ -1,0 +1,256 @@
+/* --- Estilos Globales y Tema Oscuro --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #1a1a1a; /* Fondo principal oscuro */
+    color: #f0f0f0;          /* Texto principal claro */
+    line-height: 1.6;
+    overscroll-behavior: none;
+}
+
+h1, h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* --- Contenedor Principal (Layout) --- */
+.admin-pagos-container {
+    display: grid;
+    /* Dos columnas: 40% para la lista, 60% para el detalle */
+    grid-template-columns: 2fr 3fr; 
+    gap: 20px;
+    padding: 20px;
+    /* Altura de la ventana menos el padding superior/inferior */
+    height: calc(100vh - 40px); 
+    max-width: 1600px;
+    margin: 20px auto;
+}
+
+/* --- Paneles (Columnas) --- */
+.panel-lista,
+.panel-detalle {
+    background-color: #2c2c2c; /* Fondo de "tarjeta" */
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    /* Usamos flex para organizar el contenido interno verticalmente */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Evita desbordes */
+}
+
+.titulo-seccion {
+    margin-top: 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #444;
+}
+
+/* --- Columna Izquierda (Lista y Acciones) --- */
+
+.filtros {
+    margin: 20px 0;
+}
+
+#filtroTipo {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+    border: 1px solid #555;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+}
+
+/* Contenedor de la tabla (para que DataTables se ajuste) */
+#tablaPagos_wrapper {
+    flex-grow: 1; /* Ocupa el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Clave para el scroll de DataTables */
+}
+
+.dataTables_scrollBody {
+    flex-grow: 1 !important;
+}
+
+
+.acciones {
+    margin-top: auto; /* Empuja los botones al fondo */
+    padding-top: 20px;
+    border-top: 1px solid #444;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#btnAceptar {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+#btnRechazar {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+}
+
+/* Estilo para botones deshabilitados */
+button:disabled {
+    background-color: #555;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Hovers (solo si no están deshabilitados) */
+#btnAceptar:not(:disabled):hover {
+    background-color: #218838;
+}
+
+#btnRechazar:not(:disabled):hover {
+    background-color: #c82333;
+}
+
+
+/* --- Columna Derecha (Detalle y Visor) --- */
+
+.detalle-usuario p {
+    color: #aaa;
+    font-style: italic;
+}
+
+#visorArchivo {
+    flex-grow: 1; /* Ocupa todo el espacio restante */
+    border: 1px dashed #555;
+    background-color: #1a1a1a; /* Fondo más oscuro para el visor */
+    border-radius: 5px;
+    margin-top: 20px;
+    display: flex; /* Para centrar contenido si es una imagen */
+    justify-content: center;
+    align-items: center;
+    overflow: auto; /* Permite scroll si el PDF o imagen es grande */
+}
+
+/* Estilo para el iframe o imagen dentro del visor */
+#visorArchivo iframe,
+#visorArchivo img {
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: contain; /* Ajusta la imagen sin deformarla */
+}
+
+.oculto {
+    display: none;
+}
+
+
+/* --- Estilos DataTables (Tema Oscuro) --- */
+
+/* Textos (Search, Showing entries, etc.) */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    color: #aaa !important;
+}
+
+/* Inputs (Search, Show X entries) */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    background-color: #3a3a3a !important;
+    color: #f0f0f0 !important;
+    border: 1px solid #555 !important;
+    border-radius: 4px;
+    padding: 6px;
+}
+
+/* Tabla */
+table.dataTable {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    color: #f0f0f0;
+}
+
+/* Cabecera de la tabla */
+table.dataTable thead th {
+    background-color: #3a3a3a;
+    color: #ffffff;
+    border-bottom: 2px solid #555 !important;
+    padding: 12px 10px !important;
+}
+
+/* Filas del cuerpo de la tabla */
+table.dataTable tbody tr {
+    background-color: transparent;
+    border-bottom: 1px solid #444;
+}
+
+/* Hover sobre una fila */
+table.dataTable tbody tr:hover {
+    background-color: #4a4a4a;
+    cursor: pointer;
+}
+
+/* Fila seleccionada (Importante: tu JS debe añadir esta clase) */
+table.dataTable tbody tr.selected {
+    background-color: #0056b3; /* Un azul para destacar */
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Paginación */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #aaa !important;
+    border: 1px solid #555 !important;
+    margin: 0 2px;
+    border-radius: 4px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #007bff !important; /* Azul de acento */
+    color: #ffffff !important;
+    border-color: #007bff !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    color: #666 !important;
+    border-color: #444 !important;
+}
+
+/* --- Responsividad (Móvil) --- */
+@media (max-width: 900px) {
+    .admin-pagos-container {
+        /* Apila las columnas */
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: 10px;
+        margin: 0;
+    }
+
+    .panel-lista,
+    .panel-detalle {
+        /* La altura se ajusta al contenido */
+        height: auto; 
+        min-height: 400px; /* Mínimo para el visor/tabla */
+    }
+}

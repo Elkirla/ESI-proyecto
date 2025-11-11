@@ -13,49 +13,71 @@ document.addEventListener("DOMContentLoaded", () => {
     btnRechazar.addEventListener("click", () => procesarPago("rechazar"));
 
 
-    function cargarPagos(endpoint) {
-        fetch(endpoint)
-            .then(res => res.json())
-            .then(data => {
-                if ($.fn.DataTable.isDataTable("#tablaPagos")) {
-                    tabla.clear().destroy();
+ function cargarPagos(endpoint) {
+    fetch(endpoint)
+        .then(res => res.json())
+        .then(async data => {
+            // Pedir datos completos del usuario por cada fila
+            for (const pago of data) {
+                try {
+                    const res = await fetch("/usuario-por-id", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${encodeURIComponent(pago.usuario_id)}`
+                    });
+            
+                    const userArr = await res.json();
+                    const user = userArr[0];
+            
+                    pago.nombreCompleto = user
+                        ? `${user.nombre} ${user.apellido}`
+                        : `Usuario #${pago.usuario_id}`;
+                } catch {
+                    pago.nombreCompleto = `Usuario #${pago.usuario_id}`;
                 }
+            }
 
-                tabla = $("#tablaPagos").DataTable({
-                    data: data,
-                    columns: [
-                        { data: null, render: row => `Usuario #${row.usuario_id}` },
-                        { data: "fecha", render: fecha => new Date(fecha).toLocaleDateString("es-UY") },
-                        {
-                            data: null,
-                            render: row => row.mes ? "Mensual" : "Compensatorio"
-                        }
 
-                    ],
-                    order: [[1, "desc"]],
-                    paging: true,
-                    searching: true,
-                    lengthChange: false,
-                    info: false
-                });
+            if ($.fn.DataTable.isDataTable("#tablaPagos")) {
+                tabla.clear().destroy();
+            }
 
-                $("#tablaPagos tbody").off("click").on("click", "tr", function () {
-                    const data = tabla.row(this).data();
-                    
-                    if (!data) return;  
+            tabla = $("#tablaPagos").DataTable({
+                data: data,
+                columns: [
+                    { data: "nombreCompleto" },
+                    { data: "fecha", render: fecha => new Date(fecha).toLocaleDateString("es-UY") },
+                    { data: null, render: row => row.mes ? "Mensual" : "Compensatorio" }
+                ],
+                order: [[1, "desc"]],
+                paging: true,
+                searching: true,
+                lengthChange: false,
+                info: false
+            });
 
-                    pagoSeleccionado = data;
+            $("#tablaPagos tbody").off("click").on("click", "tr", function () {
+                const data = tabla.row(this).data();
+                if (!data) return;
 
-                    $("#tablaPagos tbody tr").removeClass("fila-seleccionada");
-                    $(this).addClass("fila-seleccionada");
+                pagoSeleccionado = data;
 
-                    mostrarDatosBasicos(data);
-                    mostrarComprobante(data.archivo_url);
-                    activarBotones();
-                });
-            })
-            .catch(err => console.error("Error al cargar pagos:", err));
-    }
+                $("#tablaPagos tbody tr").removeClass("fila-seleccionada");
+                $(this).addClass("fila-seleccionada");
+
+                mostrarDatosBasicos(data);
+                mostrarComprobante(data.archivo_url);
+                activarBotones();
+            });
+        })
+        .catch(() => {
+            Swal.fire({
+                icon: "error",
+                title: "Error al cargar los pagos"
+            });
+        });
+}
+
 
     filtroTipo.addEventListener("change", (e) => {
         cargarPagos(
@@ -75,7 +97,7 @@ function mostrarDatosBasicos(data) {
 
     detalleUsuario.innerHTML = `
         <h3>Detalles del Pago 📄</h3>
-        <p><b>ID Usuario:</b> ${data.usuario_id}</p>
+        <p><b>Usuario:</b> ${data.nombreCompleto}</p>
         <p><b>Monto:</b> ${data.monto} UYU</p>
         <p><b>Fecha:</b> ${new Date(data.fecha).toLocaleDateString("es-UY")}</p>
         ${esMensual 
@@ -86,7 +108,6 @@ function mostrarDatosBasicos(data) {
 
     detalleUsuario.classList.remove("oculto");
 }
-
 
     function mostrarComprobante(ruta) {
         visorArchivo.classList.remove("oculto");
@@ -120,59 +141,58 @@ function mostrarDatosBasicos(data) {
         ? (accion === "aprobar" ? "/aprobar-pago-compensatorio" : "/rechazar-pago-compensatorio")
         : (accion === "aprobar" ? "/aprobar-pago" : "/rechazar-pago");
 
-    const confirmMsg = accion === "aprobar"
-        ? "¿Seguro que deseas APROBAR este pago?"
-        : "¿Seguro que deseas RECHAZAR este pago?";
+    Swal.fire({
+        title: accion === "aprobar" ? "¿Aprobar este pago?" : "¿Rechazar este pago?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí"
+    }).then(result => {
+        if (!result.isConfirmed) return;
 
-    if (!confirm(confirmMsg)) return;
+        fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `pago_id=${encodeURIComponent(pagoSeleccionado.id)}`
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.success) throw new Error(data.error);
 
-    fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `pago_id=${encodeURIComponent(pagoSeleccionado.id)}`
-    })
-    .then(res => res.text())
-    .then(texto => {
-        console.log("📌 Respuesta RAW del servidor:", texto);
+                Swal.fire({
+                    icon: "success",
+                    title: accion === "aprobar" ? "Pago aprobado ✅" : "Pago rechazado ❌",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
 
-        let data;
-        try {
-            data = JSON.parse(texto);
-        } catch (jsonErr) {
-            throw new Error("Respuesta inválida del servidor. No es JSON.");
-        }
+            // ✅ Reset visual y funcional a estado inicial
+            pagoSeleccionado = null;
+            
+            // ✅ Reset visual
+            $("#tablaPagos tbody tr").removeClass("fila-seleccionada");
+            detalleUsuario.innerHTML = `<p class="placeholder-detalle">Selecciona un pago para ver más información...</p>`;
+            detalleUsuario.classList.add("oculto");
+            
+            visorArchivo.innerHTML = "";
+            visorArchivo.classList.add("oculto");
+            
+            // ✅ Deshabilitar botones
+            btnAceptar.disabled = true;
+            btnRechazar.disabled = true;
+            
+            // ✅ Recargar tabla limpia
+            cargarPagos(
+                filtroTipo.value === "mensual"
+                    ? "/pagosadmin"
+                    : "/pagos-compensatorios-admin"
+            );
 
-        if (!data.success) throw new Error(data.error || "Error al procesar el pago");
-
-        Swal.fire({
-            icon: "success",
-            title: accion === "aprobar" ? "Pago aprobado ✅" : "Pago rechazado ❌",
-            timer: 2000,
-            showConfirmButton: false
-        });
-
-        pagoSeleccionado = null;
-        detalleUsuario.classList.add("oculto");
-        visorArchivo.classList.add("oculto");
-        btnAceptar.disabled = true;
-        btnRechazar.disabled = true;
-
-        cargarPagos(
-            filtroTipo.value === "mensual"
-                ? "/pagosadmin"
-                : "/pagos-compensatorios-admin"
-        );
-    })
-    .catch(err => {
-        console.error("⚠ Error:", err);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: err.message
-        });
+            })
+            .catch(err => {
+                Swal.fire({ icon: "error", title: "Oops...", text: err.message });
+            });
     });
 }
-
 
 
     cargarPagos("/pagosadmin"); // ✅ Cargar por defecto al iniciar

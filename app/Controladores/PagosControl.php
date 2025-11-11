@@ -25,13 +25,11 @@ public function IngresarPago() {
 
         $mes = date('m');
         error_log("Mes actual: $mes");
-
-        /*
+ 
         if ($modelo->existePagoPendienteOAprobado($usuario_id, $mes)) {
             echo json_encode(['success' => true, 'message' => 'Ya has ingresado un pago este mes.']);
             return;
-        }
-        */
+        } 
 
         $uploader = new Uploads('/var/www/html/public/uploads/');
         $archivo_url = $uploader->subirArchivo('archivo');
