@@ -69,6 +69,7 @@ $routes = [
         "/usuariodatos"        => "UserControl@cargarDatosUsuario",
         "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes",
  
+        "/actualizar-deuda-horas" => "HorasControl@actualizarDeudaHorasUsuario",
 
         // ======================
         // UNIDADES HABITACIONALES

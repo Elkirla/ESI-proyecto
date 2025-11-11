@@ -10,34 +10,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Manejamos el submit del formulario
-    document.getElementById('form-registro').addEventListener('submit', async function(e){
-        e.preventDefault();
+ document.getElementById('form-registro').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-        // Enviamos el formulario
-        const formData = new FormData(this);
-        const response = await fetch('/registro', {
-            method: 'POST',
-            body: formData
-        });
+    const formData = new FormData(this);
+    
+    // Unir el prefijo del país con el número de teléfono
+    const pais = formData.get('pais');
+    const telefono = formData.get('telefono');
+    const telefonoCompleto = pais + telefono;
 
-        
-        const result = await response.json();
+    formData.set('telefono', telefonoCompleto);
 
-        if(!result.success){
-            let html = '';
-            for(const campo in result.errors){
-                result.errors[campo].forEach(err => {
-                    html += `<p>${err}</p>`;
-                });
-            }
-
-            mensajeError.innerHTML = html;
-            errorDiv.style.display = 'flex';
-
-        } else {
-            window.location.href = "/exitoregistro";
-        }
+    const response = await fetch('/registro', {
+        method: 'POST',
+        body: formData
     });
+
+    const result = await response.json();
+
+    if (!result.success) {
+        let html = '';
+        for (const campo in result.errors) {
+            result.errors[campo].forEach(err => {
+                html += `<p>${err}</p>`;
+            });
+        }
+
+        mensajeError.innerHTML = html;
+        errorDiv.style.display = 'flex';
+    } else {
+        window.location.href = "/exitoregistro";
+    }
+});
+
 });
 
  

@@ -14,7 +14,7 @@ class PagoCompensatorioControl {
         $this->usuario_id = $_SESSION['usuario_id'] ?? null;
     }
 
-public function IngresarPagoCompensatorio() {
+    public function IngresarPagoCompensatorio() {
     require_once __DIR__ . '/../Controladores/HorasControl.php';
     require_once __DIR__ . '/../Config/uploads.php';
     
@@ -38,25 +38,23 @@ public function IngresarPagoCompensatorio() {
         if (!$archivo_url) {
             throw new Exception("Debe adjuntar un comprobante de pago.");
         }
-
-        if (!$monto || !$horas) {
-            throw new Exception("Datos incompletos: monto y horas son obligatorios.");
+         
+        if ($horasControl->tienePagoCompensatorioSemana($this->usuario_id)) {
+            echo json_encode([
+                'success' => false,
+                'mensaje' => 'Ya existe un pago compensatorio esta semana.'
+            ]);
+            return;
         }
 
-        if (!is_numeric($monto) || $monto <= 0) {
-            throw new Exception("Monto inválido.");
-        }
-
-        if (!is_numeric($horas) || $horas <= 0) {
-            throw new Exception("Horas inválidas.");
-        }
-
+        
         // Fecha y semana actual
         $fecha = date('Y-m-d');
         $semana_inicio = date('Y-m-d', strtotime('monday this week'));
         $semana_fin = date('Y-m-d', strtotime('sunday this week'));
 
-        error_log("Verificando pago existente para usuario: $this->usuario_id, semana: $semana_inicio a $semana_fin");
+        error_log("Verificando pa
+        go existente para usuario: $this->usuario_id, semana: $semana_inicio a $semana_fin");
 
         // Verificar si ya existe pago compensatorio esta semana
         $existentes = $this->modelo->obtenerPorUsuarioYSemana($this->usuario_id, $semana_inicio, $semana_fin);
