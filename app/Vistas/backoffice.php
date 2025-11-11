@@ -7,10 +7,16 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+ 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+ 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
     <link rel="icon" href="public/imagenes/logo.png" type="icon">
     <title>BackOffice</title>
 </head>
+
 <body>
  
     <div class="notificaciones-container">
@@ -30,9 +36,9 @@
         <h1>Backoffice</h1>
 
         <button id="btn-mi-perfil">Mi perfil</button>
-        <button id="btn-Usuarios">Usuarios</button>
-        <button id="btn-Pagos">Pagos</button>
         <button id="btn-ingresar">Ingresar</button>
+        <button id="btn-Pagos">Pagos</button>
+        <button id="btn-Usuarios">Usuarios</button>
         <button id="btn-Horas">Horas</button>
         <button id="btn-Unidades">Unidades</button>
         <button id="btn-Config">Config.</button>
@@ -99,7 +105,7 @@
 
 </div>
  
-<div class="usuarios section" style="display:none;">
+<div class="ingresar section" style="display:none;">
 
     <!-- Pendientes -->
     <aside class="usuariosPendientes-div" id="usuariosPendientes-div">
@@ -157,11 +163,44 @@
 
 
  
-        <div class="pagos section" style="display:none;">
-            <h2>Pagos</h2> 
+<div class="pagos section" style="display:none;">
+    <h2>Gestión de Pagos</h2>
+
+    <div class="cards-resumen">
+        <div class="card-pago al-dia">
+            <span class="numero" id="usuariosAlDia">0</span>
+            <span class="desc">Usuarios al día</span>
         </div>
+        <div class="card-pago atrasados">
+            <span class="numero" id="usuariosAtrasados">0</span>
+            <span class="desc">Usuarios atrasados</span>
+        </div>
+    </div>
+
+    <table id="tabla-pagos" class="display">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Estado de pagos</th>
+        </tr>
+    </thead>
+    <tbody> 
+    </tbody>
+</table> 
+
+<div class="AdministrarPagos">
+    <a href="/AdministrarPagos" target="_blank">
+        <button class="btn-admin-pagos">Administrar pagos pendientes</button>
+    </a>
+</div>
+
+
+</div>
  
-        <div class="ingresar section" style="display:none;">
+        <div class="usuarios section" style="display:none;">
             <h2>Ingresar usuario</h2> 
         </div>
  

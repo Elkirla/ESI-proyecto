@@ -11,6 +11,8 @@ $routes = [
         "/login"            => "AuthControl@loginView",
         "/registro"         => "AuthControl@registroView",
         "/pagoInicial"      => "AuthControl@PagoInicialView",
+        
+        "/AdministrarPagos" => "AuthControl@AdminstrarPagosView",
 
         // ======================
         // DASHBOARDS
@@ -29,6 +31,9 @@ $routes = [
         "/verPagosDeuda"             => "PagosControl@verPagosDeuda", 
         "/VerEstadoPagos"            => "PagosControl@verEstadoPagos",
         "/verDeudasMensuales"        => "PagosControl@verMesesDeudaPagos",
+        
+        "/EstadoPagosUsuarios"         => "AdminControl@ObtenerPagosDeUsuarios",
+        
         // ======================
         // PAGOS (admin)
         // ======================
@@ -49,6 +54,8 @@ $routes = [
         "/verHorasDeudaSemanal"   => "HorasControl@verHorasDeudaSemanal",
         "/saldo-compensatorio"    => "HorasControl@SaldoCompensatorioUsuario",
         "/verTodasDeudasSemanas"  => "HorasControl@verTodasDeudasSemanasUsuario",
+  
+                "/test"  => "HorasControl@test",
 
         // ======================
         // JUSTIFICATIVOS
@@ -61,8 +68,7 @@ $routes = [
         // ======================
         "/usuariodatos"        => "UserControl@cargarDatosUsuario",
         "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes",
-
-        "/usuariosPendientes"      => "AdminControl@cargarUsuariosPendientes",
+ 
 
         // ======================
         // UNIDADES HABITACIONALES
@@ -130,7 +136,7 @@ $routes = [
         // ======================
         "/aprobar-usuario"         => "AdminControl@AceptarUsuario",
         "/rechazar-usuario"        => "AdminControl@RechazarUsuario",
-        "/usuario-por-id"      => "AdminControl@ObtenerUsuarioPorId", 
+        "/usuario-por-id"          => "AdminControl@ObtenerUsuarioPorId", 
 
         "/actualizar-DatosUsuario" => "UserControl@ActualizarDatosUsuario",
 

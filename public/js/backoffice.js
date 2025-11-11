@@ -68,8 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const sectionToShow = document.querySelector("." + sectionClass);
             
             if (sectionToShow) {
-                // Caso especial para 'usuarios' que usa flex
-                if (sectionClass === 'usuarios') {
+                // Caso especial para 'ingresar' que usa flex
+                if (sectionClass === 'ingresar') {
                     sectionToShow.style.display = 'flex';
                 } else {
                     sectionToShow.style.display = "block";
@@ -84,6 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
             marcador.style.top = (boton.offsetTop - 5) + "px";
         });
     });
+
+ 
+    function CargarDatos() {
+        cargarUsuariosPendientes();
+        datosUsuario();  
+        cargarTablaPagosUsuarios();
+    }
+
+
 
     // =================================================================
     // 4. LÓGICA DE NOTIFICACIONES
@@ -119,8 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 5. LÓGICA DE "MI PERFIL"
     // =================================================================
 
-    // --- Funciones "Mi Perfil" ---
-    
+
     async function datosUsuario() {
         try {
             const res = await fetch("/usuariodatos");
@@ -208,14 +216,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // =================================================================
-    // 6. LÓGICA DE "USUARIOS" (PENDIENTES)
+    // 6. LÓGICA DE "USUARIOS"  
     // =================================================================
     
     // --- Funciones "Usuarios" ---
 
 async function cargarUsuariosPendientes() {
     try {
-        const response = await fetch('/usuariosPendientes');
+        const response = await fetch('/usuariospendientes');
         if (!response.ok) throw new Error('Error en la respuesta del servidor');
 
         const usuarios = await response.json();
@@ -340,21 +348,55 @@ btnRechazar.addEventListener("click", async (e) => {
     }
 });
 
+async function cargarTablaPagosUsuarios() {
+    
+    try {
+        const response = await fetch('/EstadoPagosUsuarios');
+        const result = await response.json();
+
+        if (!result.success) {
+            console.error(result.error);
+            return;
+        }
+
+        const tabla = $('#tabla-pagos').DataTable({
+            destroy: true,  
+            data: result.data,
+            columns: [
+                { data: 'nombre' },
+                { data: 'apellido' },
+                { data: 'telefono' },
+                { data: 'email' },
+                {
+                    data: 'estado_pago',
+                    render: function (data) {
+                        const clase = data === 'Al día' ? 'estado-verde' : 'estado-rojo';
+                        return `<span class="${clase}">${data}</span>`;
+                    }
+                }, 
+            ]
+        });
+
+const alDia = result.data.filter(u => u.estado_pago === 'Al día').length;
+const atrasados = result.data.length - alDia;
+
+document.getElementById('usuariosAlDia').textContent = alDia;
+document.getElementById('usuariosAtrasados').textContent = atrasados;
+
+    } catch (error) {
+        console.error("Error cargando tabla:", error);
+    }
+}
+
+    
+
     // --- Event Listeners "Usuarios" ---
 
     btnCerrar.addEventListener("click", () => {
         panel.classList.toggle("cerrado");
         // Cambiar indicador del botón
         btnCerrar.textContent = panel.classList.contains("cerrado") ? ">" : "<";
-    });
-    
-     
-
-    // Función que agrupa la carga de datos inicial
-    function CargarDatos() {
-        cargarUsuariosPendientes();
-        datosUsuario(); // Cargar datos de "Mi Perfil"
-    }
+    }); 
 
     // --- Estado Inicial de la UI ---
     sections.forEach(s => s.style.display = "none");

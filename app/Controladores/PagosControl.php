@@ -26,10 +26,12 @@ public function IngresarPago() {
         $mes = date('m');
         error_log("Mes actual: $mes");
 
+        /*
         if ($modelo->existePagoPendienteOAprobado($usuario_id, $mes)) {
             echo json_encode(['success' => true, 'message' => 'Ya has ingresado un pago este mes.']);
             return;
         }
+        */
 
         $uploader = new Uploads('/var/www/html/public/uploads/');
         $archivo_url = $uploader->subirArchivo('archivo');
@@ -111,21 +113,25 @@ public function IngresarPago() {
 /* ============================================================
 OBTENER ESTADO DE LOS PAGOS DEL USUARIO
 ============================================================ */
-public function verEstadoPagos() {
+public function verEstadoPagos($usuarioID = null) {
     try {
-        $usuario_id = $_SESSION['usuario_id'] ?? null;  
 
-        // Obtener todos los pagos aprobados
+        if (!$usuarioID) { 
+            $usuario_id = $_SESSION['usuario_id'] ?? null;  
+        } else{
+            $usuario_id= $usuarioID;
+        }
+
+        if (!$usuario_id) {
+            throw new Exception("No hay usuario definido para consultar el estado de pagos.");
+        }
+
         $pagos_aprobados = $this->obtenerPagosAprobados($usuario_id);
-
-        // ✅ Obtener mes actual en formato compatible con la verificación
         $mes_actual = date('Y-m');
-
-        // ✅ Solo importa si el mes actual esté pagado
         $al_dia = $this->tienePagoAprobadoParaMes($pagos_aprobados, $mes_actual);
 
         echo json_encode([
-            'success' => true, 
+            'success' => true,
             'estado' => $al_dia ? 'Al día' : 'atrasado',
         ]);
 
@@ -136,6 +142,19 @@ public function verEstadoPagos() {
             'error' => $e->getMessage()
         ]);
     }
+}
+
+public function obtenerEstadoPagoUsuario($usuario_id) {
+    // Obtener todos los pagos aprobados del usuario
+    $pagos_aprobados = $this->obtenerPagosAprobados($usuario_id);
+
+    // Mes actual
+    $mes_actual = date('Y-m');
+
+    // true = pagado, false = atrasado
+    return $this->tienePagoAprobadoParaMes($pagos_aprobados, $mes_actual)
+        ? 'Al día'
+        : 'Atrasado';
 }
 
 

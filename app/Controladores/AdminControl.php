@@ -27,58 +27,66 @@ private $notiControl;
     // ===================================
     // PAGOS
     // ===================================
- 
-    public function aprobarPago() {
-        require_once __DIR__ . '/../Modelos/PagoModelo.php';
+  
+public function aprobarPago() {
+    require_once __DIR__ . '/../Modelos/PagoModelo.php';
 
-        try {
-            $pago_id = $_POST['pago_id'] ?? null;
+    try {
+        $pago_id = $_POST['pago_id'] ?? null;
+        if (!$pago_id) throw new Exception("ID de pago inválido.");
 
-            if (!$pago_id) throw new Exception("ID de pago inválido.");
+        $modelo = new PagoModelo();
+        $pago = $modelo->aprobarPago($pago_id); // ✅ Obtiene usuario_id correctamente
 
-            $modelo = new PagoModelo();
-            $pago = $modelo->aprobarPago($pago_id);
- 
-            $this->notiControl->CrearNoti(
-                "Tu pago fue aprobado",
-                $pago['usuario_id']
-            );
+        // Capturar cualquier salida de CrearNoti
+        ob_start();
+        $this->notiControl->CrearNoti(
+            "Tu pago fue aprobado ✅",
+            $pago['usuario_id']
+        );
+        ob_end_clean();
 
-            $this->response(true, ['message' => 'Pago aprobado.']);
-        } catch (Exception $e) {
-            $this->response(false, ['error' => $e->getMessage()]);
-        }
+        $this->response(true, ['message' => 'Pago aprobado']);
+
+    } catch (Exception $e) {
+        $this->response(false, ['error' => $e->getMessage()]);
     }
- 
-    public function rechazarPago() {
-        require_once __DIR__ . '/../Modelos/PagoModelo.php';
+}
 
-        try {
-            $pago_id = $_POST['pago_id'] ?? null;
-            if (!$pago_id) throw new Exception("ID inválido.");
+public function rechazarPago() {
+    require_once __DIR__ . '/../Modelos/PagoModelo.php';
 
-            $modelo = new PagoModelo();
-            $pago = $modelo->obtenerPago($pago_id);
+    try {
+        $pago_id = $_POST['pago_id'] ?? null;
+        if (!$pago_id) throw new Exception("ID de pago inválido.");
 
-            $modelo->rechazarPago($pago_id);
+        $modelo = new PagoModelo();
+        $pago = $modelo->rechazarPago($pago_id);
 
-            $this->notiControl->CrearNoti(
-                "Tu pago fue rechazado",
-                $pago['usuario_id']
-            );
+        if (!$pago) throw new Exception("No se pudo rechazar el pago");
 
-            $this->response(true, ['message' => 'Rechazado.']);
-        } catch (Exception $e) {
-            $this->response(false, ['error' => $e->getMessage()]);
-        }
+        ob_start();
+        $this->notiControl->CrearNoti(
+            "Tu pago fue rechazado ❌",
+            $pago['usuario_id']
+        );
+        ob_end_clean();
+
+        $this->response(true, ['message' => 'Pago rechazado']);
+
+    } catch (Exception $e) {
+        $this->response(false, ['error' => $e->getMessage()]);
     }
+}
+
+
 
 
     public function verPagosAdmin() { 
         $this->listado->listadoComun(
             "pagos_mensuales",
-            ["id", "usuario_id", "mes", "monto", "fecha", "archivo_url", "estado", "entrega"],
-            [],
+            ["id", "usuario_id", "mes", "monto", "fecha", "archivo_url" , "entrega"],
+            ["estado" => "pendiente"],
             ["fecha", "DESC"]
         );
     }
@@ -94,58 +102,82 @@ private $notiControl;
     // PAGOS COMPENSATORIOS
     // ===================================
 
-   public function aprobarPagoCompensatorio() {
-        require_once __DIR__ . '/../Modelos/PagoModelo.php';
+ public function aprobarPagoCompensatorio() {
+    require_once __DIR__ . '/../Modelos/PagoCompensatorioModelo.php';
 
-        try {
-            $pago_id = $_POST['pago_id'] ?? null;
-            if (!$pago_id) throw new Exception("ID inválido.");
+    try {
+        $pago_id = $_POST['pago_id'] ?? null;
+        if (!$pago_id) throw new Exception("ID inválido.");
 
-            $modelo = new PagoModelo();
-            $pago = $modelo->obtenerPagoCompensatorio($pago_id);
+        $modelo = new PagoCompensatorioModelo();
+        
+        // Llama directamente al método de aprobación (igual que en pagos mensuales)
+        $resultado = $modelo->aprobarPagoCompensatorio($pago_id);
 
-            $modelo->aprobarPagoCompensatorio($pago_id);
+        if (!$resultado) throw new Exception("No se pudo aprobar el pago.");
 
-            $this->notiControl->CrearNoti(
-                "Tu pago compensatorio fue aprobado",
-                $pago['usuario_id']
-            );
+        // Usa el usuario_id que viene del resultado, no de una consulta separada
+        ob_start();
+        $this->notiControl->CrearNoti(
+            "Tu pago compensatorio fue aprobado ✅",
+            $resultado['usuario_id'] // ← Cambio importante aquí
+        );
+        ob_end_clean();
 
-            $this->response(true, ['message' => 'Aprobado.']);
-        } catch (Exception $e) {
-            $this->response(false, ['error' => $e->getMessage()]);
-        }
+        $this->response(true, [
+            'message' => 'Pago compensatorio aprobado ✅',
+            'debug' => [
+                'pago_id' => $pago_id,
+                'usuario_id' => $resultado['usuario_id']
+            ]
+        ]);
+
+    } catch (Exception $e) {
+        $this->response(false, ['error' => $e->getMessage()]);
     }
+}
 
-    public function rechazarPagoCompensatorio() {
-        require_once __DIR__ . '/../Modelos/PagoModelo.php';
+public function rechazarPagoCompensatorio() {
+    require_once __DIR__ . '/../Modelos/PagoCompensatorioModelo.php';
 
-        try {
-            $pago_id = $_POST['pago_id'] ?? null;
-            if (!$pago_id) throw new Exception("ID inválido.");
+    try {
+        $pago_id = $_POST['pago_id'] ?? null;
+        if (!$pago_id) throw new Exception("ID inválido.");
 
-            $modelo = new PagoModelo();
-            $pago = $modelo->obtenerPagoCompensatorio($pago_id);
+        $modelo = new PagoCompensatorioModelo();
+        
+        // Llama directamente al método de rechazo
+        $resultado = $modelo->rechazarPagoCompensatorio($pago_id);
 
-            $modelo->rechazarPagoCompensatorio($pago_id);
+        if (!$resultado) throw new Exception("No se pudo rechazar el pago.");
 
-            $this->notiControl->CrearNoti(
-                "Tu pago compensatorio fue rechazado ❌",
-                $pago['usuario_id']
-            );
+        ob_start();
+        $this->notiControl->CrearNoti(
+            "Tu pago compensatorio fue rechazado ❌",
+            $resultado['usuario_id'] // ← Cambio importante aquí
+        );
+        ob_end_clean();
 
-            $this->response(true, ['message' => 'Rechazado.']);
-        } catch (Exception $e) {
-            $this->response(false, ['error' => $e->getMessage()]);
-        }
+        $this->response(true, [
+            'message' => 'Pago compensatorio rechazado ❌',
+            'debug' => [
+                'pago_id' => $pago_id,
+                'usuario_id' => $resultado['usuario_id']
+            ]
+        ]);
+
+    } catch (Exception $e) {
+        $this->response(false, ['error' => $e->getMessage()]);
     }
+}
+
 
 
     public function listarPagosCompensatorios() { 
         $this->listado->listadoComun(
             "pagos_compensatorios",
-            ["id", "usuario_id", "monto", "fecha", "archivo_url", "estado"],
-            [],
+            ["id", "usuario_id", "monto", "fecha", "archivo_url"],
+            ["estado" => "pendiente"],
             ["fecha", "DESC"]
         );
     }
@@ -310,7 +342,7 @@ public function AceptarUsuario() {
     );
 }
     public function ObtenerUsuarioPorId() {
-        $id = $_POST['id'] ?? null;
+        $id = $_POST['id'] ?? null; 
         $this->listado->listadoComun(
             "usuarios",
             ["nombre", "apellido", "telefono", "email", "ci"],
@@ -319,6 +351,34 @@ public function AceptarUsuario() {
             1
         );
 }
+public function ObtenerPagosDeUsuarios() {
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
+    require_once __DIR__ . '/../Controladores/PagosControl.php';
+
+    $modeloUsuarios = new UsuarioModelo();
+    $controlPagos = new PagosControl();
+
+    $usuarios = $modeloUsuarios->ObtenerTodosUsuarios();
+    $resultado = [];
+
+    foreach ($usuarios as $usuario) {
+        $estadoPago = $controlPagos->obtenerEstadoPagoUsuario($usuario['id']);
+
+        $resultado[] = [
+            'nombre' => $usuario['nombre'],
+            'apellido' => $usuario['apellido'],
+            'telefono' => $usuario['telefono'],
+            'email' => $usuario['email'],
+            'estado_pago' => $estadoPago
+        ];
+    }
+
+    echo json_encode([
+        'success' => true,
+        'data' => $resultado
+    ]);
+}
+
     // ===================================
     // UNIDADES
     // ===================================

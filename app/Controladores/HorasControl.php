@@ -92,10 +92,8 @@ public function obtenerHorasFaltantesSemana($usuario_id){
         error_log("Error al obtener horas faltantes: " . $e->getMessage());
         return 0;
     }
-} 
-public function test (){
-    $this->obtenerHorasFaltantesSemana(2);
-} 
+}  
+
 private function obtenerHorasFaltantesSemanaAlternativo($usuario_id, $fecha_inicio_semana) {
     try {
         require_once __DIR__ . '/../Controladores/ListadoControl.php';

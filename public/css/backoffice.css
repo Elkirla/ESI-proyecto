@@ -338,7 +338,7 @@ input.error {
 #btn-guardar:hover, #btn-cancelar:hover { opacity: 0.9; }  
 
 /* CONTENEDOR PRINCIPAL */
-.usuarios {
+.ingresar {
     display: flex;
     height: 100%;
     background-color: #BBBBBB;
@@ -491,5 +491,181 @@ input.error {
     font-size: 3rem;
     padding: 8px 14px;
     cursor: pointer;  
+}  
+/* ====== Sección Pagos ====== */
+.pagos {
+    font-family: 'Roboto', sans-serif;
+    background-color: #10172A;
+    color: #FFFFFF;
+    min-height: 100%;
+    padding: 25px;
 }
 
+/* Título */
+.pagos h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #F4F4F4;
+}
+
+/* ====== Cards Resumen ====== */
+.cards-resumen {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.card-pago {
+    background: linear-gradient(145deg, #111B34, #0B1223);
+    border-radius: 12px;
+    padding: 20px 30px;
+    text-align: center;
+    min-width: 180px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.45);
+    transition: transform 0.2s;
+}
+
+.card-pago:hover {
+    transform: translateY(-4px);
+}
+
+.card-pago .numero {
+    font-size: 42px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+    color: #00E676;
+}
+
+.card-pago.atrasados .numero {
+    color: #FF5252;
+}
+
+.card-pago .desc {
+    font-size: 15px;
+    color: #D0D0D0;
+}
+
+/* ====== Tabla Pagos ====== */
+#tabla-pagos {
+    width: 100%;
+    margin-top: 20px !important;
+    background-color: #1A2238;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#tabla-pagos thead {
+    background-color: #0F1629;
+}
+
+#tabla-pagos thead th {
+    padding: 12px;
+    color: #FFFFFF;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500;
+    border-bottom: 2px solid #2A3551;
+}
+
+#tabla-pagos tbody td {
+    padding: 12px;
+    color: #ffffff;
+    font-size: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #28334A;
+}
+
+#tabla-pagos tbody tr:hover {
+    background-color: #273155;
+}
+
+/* Correcciones de DataTables si lo usas */
+.dataTables_filter input {
+    background: #0C1428;
+    color: #FFF;
+    border: 1px solid #2B3A55;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.dataTables_length select {
+    background: #0C1428;
+    color: #FFF;
+    border: 1px solid #2B3A55;
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.dataTables_length,
+.dataTables_filter {
+    margin-bottom: 15px;
+}
+
+.dataTables_info,
+.dataTables_paginate {
+    color: #ffffff !important;
+}
+/* Hacer la tabla más grande */
+.dataTables_wrapper {
+    width: 100%;
+}
+
+#tabla-pagos {
+    width: 100% !important;
+    font-size: 15px; /* texto un poquito más grande */
+}
+
+/* Aumentar alto de celdas y espaciado */
+#tabla-pagos td,
+#tabla-pagos th {
+    padding: 16px 14px !important;
+}
+.dataTables_wrapper .dataTables_scroll {
+    padding: 10px;
+}
+#tabla-pagos_wrapper {
+    min-height: 350px; /* Ajusta como quieras */
+}
+.dataTables_filter,
+.dataTables_length {
+    display: flex;
+    justify-content: center;
+}
+/* Botón Administrar Pagos */
+.AdministrarPagos {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+.AdministrarPagos a {
+    text-decoration: none;
+}
+
+.btn-admin-pagos {
+    background: #1E2A47;
+    color: #FFFFFF;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    padding: 12px 22px;
+    border: 1px solid #2B3A55;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 0 10px rgba(0,0,0,0.35);
+}
+
+.btn-admin-pagos:hover {
+    background: #2C3E72;
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(0,0,0,0.5);
+}
+
+.btn-admin-pagos:active {
+    transform: translateY(1px);
+    background: #304276;
+}

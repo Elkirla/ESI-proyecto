@@ -21,11 +21,11 @@
   <h1>Ingrese con su usuario</h1>
 <form class="login-column" id="form-login" autocomplete="on"> 
     <div class="input-group">
-        <input type="email" name="email" placeholder="Email" id="Email" class="input-field" required>
+        <input type="email" name="email" placeholder="Email" id="Email" class="input-field" >
     </div>
 
     <div class="input-group">
-        <input type="password" name="password" placeholder="Contraseña" id="password" class="input-field" required>
+        <input type="password" name="password" placeholder="Contraseña" id="password" class="input-field" >
 </div>
 
     <label class="Error"></label>

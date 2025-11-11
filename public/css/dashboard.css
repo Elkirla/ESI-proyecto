@@ -1233,7 +1233,7 @@ td.negativo {
     background-color: white;
     width: auto;  
     height: 90%; 
-    max-height: 90%;      
+    max-height: 80%;      
     overflow-y: auto;    
     padding: 30px 40px;     
 }

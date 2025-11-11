@@ -111,6 +111,17 @@ public function ExisteCI($ci) {
     $stmt->execute();
     return $stmt->fetch() !== false;
 }
+public function ObtenerTodosUsuarios() {
+    // Selecciona usuarios activos que no sean administradores
+    $sql = "SELECT u.id, u.nombre, u.apellido, u.telefono, u.email
+            FROM usuarios u
+            JOIN roles r ON u.rol_id = r.id
+            WHERE u.estado = 'activo' AND r.nombre != 'administrador'";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 }
