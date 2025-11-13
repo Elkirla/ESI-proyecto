@@ -111,6 +111,16 @@ public function ExisteCI($ci) {
     $stmt->execute();
     return $stmt->fetch() !== false;
 }
+
+public function ExisteCIParaOtroUsuario($ci, $idUsuario) {
+    $sql = "SELECT id FROM usuarios WHERE ci = :ci AND id != :idUsuario LIMIT 1";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':ci', $ci);
+    $stmt->bindParam(':idUsuario', $idUsuario);
+    $stmt->execute();
+    return $stmt->fetch() !== false;
+}
+
 public function ObtenerTodosUsuarios() {
     // Selecciona usuarios activos que no sean administradores
     $sql = "SELECT u.id, u.nombre, u.apellido, u.telefono, u.email

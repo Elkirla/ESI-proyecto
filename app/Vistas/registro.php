@@ -48,6 +48,7 @@
         name="nombre" 
         placeholder="Nombre(s)" 
         class="input-field" 
+        maxlength="50"
         autocomplete="given-name" 
         required
       >
@@ -59,6 +60,7 @@
         name="apellido" 
         placeholder="Apellido(s)" 
         class="input-field" 
+        maxlength="50"
         autocomplete="family-name" 
         required
       >
