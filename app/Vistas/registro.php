@@ -98,6 +98,7 @@
           placeholder="Teléfono" 
           class="input-field telefono-input" 
           pattern="[0-9]{6,15}" 
+          maxlength="6" 
           inputmode="numeric"
           autocomplete="tel-national"
           required

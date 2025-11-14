@@ -105,16 +105,9 @@ public function ObtenerDatosUnidad() {
     } 
 }
 
-public function ObtenerUnidadPorId($id) {
-    ob_start();
-    $this->listado->listadoComun(
-        "unidades_habitacionales",
-        ["codigo", "estado"],
-        ["id" => $id]
-    );
-    $output = ob_get_clean();
-    $data = json_decode($output, true);
-    return $data[0] ?? null;
+public function ObtenerUnidadPorId($id) {  
+    $unidad = $this->unidadModelo->UnidadPorID($id);
+    return $unidad;
 }
 
 }

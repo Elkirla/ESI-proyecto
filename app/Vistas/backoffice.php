@@ -44,7 +44,7 @@
         <button id="btn-Config">Config.</button>
     </div>
  
-    <div class="content">
+<div class="content">
  
 <div class="mi-perfil section">
     <div class="texto-icono">
@@ -106,18 +106,15 @@
 </div>
  
 <div class="ingresar section" style="display:none;">
-
-    <!-- Pendientes -->
+ 
     <aside class="usuariosPendientes-div" id="usuariosPendientes-div">
         <h2>Usuarios pendientes</h2>  
     </aside>
 
     <button id="CerrarUsuariosPendientes"><</button>
-
-    <!-- Hoja de Registro -->
+ 
     <section id="HojaRegistro">
-
-        <!-- 📌 Contenedor tipo hoja -->
+ 
         <div class="hoja">
 
             <h3>Solicitud de ingreso</h3>
@@ -200,9 +197,125 @@
 
 </div>
  
-        <div class="usuarios section" style="display:none;">
-            <h2>Ingresar usuario</h2> 
+<div class="usuarios section" style="display:none;">
+    <h2>Gestión de Usuarios</h2>
+
+    <!-- Navegación entre pestañas -->
+    <div class="tabs">
+        <button class="tab-button active" data-tab="listar">Lista de Usuarios</button>
+        <button class="tab-button" data-tab="crear">Crear Usuario</button>
+        <button class="tab-button" data-tab="modificar">Modificar Usuario</button>
+        <button class="tab-button" data-tab="eliminar">Eliminar Usuario</button>
+    </div>
+
+    <!-- Contenido de pestañas -->
+    <div class="tab-content">
+        <!-- TAB LISTAR USUARIOS -->
+        <div id="tab-listar" class="tab active">
+            <table id="tablaUsuarios" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Unidad</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>CI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- DataTables insertará aquí los datos -->
+                </tbody>
+            </table>
         </div>
+
+        <!-- TAB CREAR USUARIO -->
+        <div id="tab-crear" class="tab">
+            <form id="formCrearUsuario" class="form-usuarios">
+                <h3>Crear Nuevo Usuario</h3>
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" id="apellido" name="apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="ci">Cédula:</label>
+                    <input type="text" id="ci" name="ci" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-success">Crear Usuario</button>
+            </form>
+        </div>
+
+        <!-- TAB MODIFICAR USUARIO -->
+        <div id="tab-modificar" class="tab">
+            <form id="formModificarUsuario" class="form-usuarios">
+                <h3>Modificar Usuario</h3>
+                <p>Selecciona un usuario de la lista para cargar sus datos.</p>
+                <div class="form-group">
+                    <label for="mod-nombre">Nombre:</label>
+                    <input type="text" id="mod-nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="mod-apellido">Apellido:</label>
+                    <input type="text" id="mod-apellido" name="apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="mod-correo">Correo:</label>
+                    <input type="email" id="mod-correo" name="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="mod-telefono">Teléfono:</label>
+                    <input type="text" id="mod-telefono" name="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="mod-ci">Cédula:</label>
+                    <input type="text" id="mod-ci" name="ci" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+
+        <!-- TAB ELIMINAR USUARIO -->
+        <div id="tab-eliminar" class="tab">
+            <form id="formEliminarUsuario" class="form-usuarios">
+                <h3>Eliminar Usuario</h3>
+                <p>Selecciona un usuario de la lista para eliminarlo.</p>
+                <div class="form-group">
+                    <label for="elim-nombre">Nombre:</label>
+                    <input type="text" id="elim-nombre" name="nombre" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="elim-apellido">Apellido:</label>
+                    <input type="text" id="elim-apellido" name="apellido" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="elim-correo">Correo:</label>
+                    <input type="email" id="elim-correo" name="correo" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="elim-ci">Cédula:</label>
+                    <input type="text" id="elim-ci" name="ci" readonly>
+                </div>
+                <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
+            </form>
+        </div>
+    </div>
+</div>
+
  
         <div class="horas section" style="display:none;">
             <h2>Horas</h2> 

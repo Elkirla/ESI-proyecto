@@ -95,13 +95,14 @@ class AuthControl {
     /* ---------------------------------------------------
      * VALIDACIÓN DE CÉDULA
      * --------------------------------------------------- */
-    if (!empty($ci)) {
-        if (!$validator->CedulaUruguaya($ci)) {
-            $errores['ci'][] = "Cédula de identidad inválida";
-        } elseif ($modelo->ExisteCI($ci)) {
-            $errores['ci'][] = "La CI ya está registrada";
-        }
-    }
+    
+    // if (!empty($ci)) {
+     //   if (!$validator->CedulaUruguaya($ci)) {
+       //     $errores['ci'][] = "Cédula de identidad inválida";
+        //} elseif ($modelo->ExisteCI($ci)) {
+       //     $errores['ci'][] = "La CI ya está registrada";
+        //}
+   // }
 
     /* ---------------------------------------------------
      * VALIDACIÓN DE CONTRASEÑAS
@@ -144,7 +145,7 @@ class AuthControl {
 
         echo json_encode(['success' => true]);
     } catch (Exception $e) {
-        error_log("Error en registrar: " . $e->getMessage());
+        logerror_("Error en registrar: " . $e->getMessage());
         echo json_encode([
             'success' => false,
             'errors' => ["general" => "Error interno. Intente más tarde."]

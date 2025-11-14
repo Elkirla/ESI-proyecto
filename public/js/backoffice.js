@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function CargarDatos() {
         cargarUsuariosPendientes();
         datosUsuario();  
+        CargarUsuarios();
         cargarTablaPagosUsuarios();
     }
 
@@ -248,6 +249,77 @@ async function cargarUsuariosPendientes() {
     }
 }
 
+
+    // --- ELEMENTOS DEL DOM ---
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabs = document.querySelectorAll(".tab");
+
+    // --- FUNCIÓN PARA CAMBIAR DE PESTAÑA ---
+    function cambiarPestaña(tabSeleccionada) {
+        // Remover clase activa de todos los botones
+        tabButtons.forEach(btn => btn.classList.remove("active"));
+
+        // Remover clase activa de todos los contenidos
+        tabs.forEach(tab => tab.classList.remove("active"));
+
+        // Activar la pestaña seleccionada
+        const botonActivo = document.querySelector(`.tab-button[data-tab="${tabSeleccionada}"]`);
+        const tabActiva = document.querySelector(`#tab-${tabSeleccionada}`);
+
+        if (botonActivo && tabActiva) {
+            botonActivo.classList.add("active");
+            tabActiva.classList.add("active");
+        }
+    }
+
+    function CargarUsuarios() {
+
+    fetch("/ObtenerUsuariosBackoffice")
+        .then(res => res.json())
+        .then(data => {
+
+            // Si ya existe una DataTable en esa tabla, destruirla para evitar duplicados
+            if ($.fn.DataTable.isDataTable("#tablaUsuarios")) {
+                $("#tablaUsuarios").DataTable().clear().destroy();
+            }
+
+            // Inicializar DataTable
+            $("#tablaUsuarios").DataTable({
+                data: data,
+                columns: [
+                    { data: "usuario" },
+                    { data: "unidad" },
+                    { data: "correo" },
+                    { data: "telefono" },
+                    { data: "ci" }
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                },
+                responsive: true,
+                pageLength: 10
+            });
+
+        })
+        .catch(err => {
+            console.error("Error cargando usuarios:", err);
+        });
+
+}
+
+
+    // --- EVENTOS DE CLIC EN LAS PESTAÑAS ---
+    tabButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tabSeleccionada = btn.dataset.tab;
+            cambiarPestaña(tabSeleccionada);
+        });
+    });
+
+    // --- PESTAÑA INICIAL ---
+    cambiarPestaña("listar");
+
+
  function activarClicksPendientes() {
     document.querySelectorAll('.usuario-pendiente').forEach(item => {
         item.addEventListener('click', async () => {
@@ -401,6 +473,12 @@ document.getElementById('usuariosAtrasados').textContent = atrasados;
     // --- Estado Inicial de la UI ---
     sections.forEach(s => s.style.display = "none");
     document.querySelector(".mi-perfil").style.display = "block"; // Mostrar "Mi Perfil" por defecto
+
+    
+
+
+
+
 
     // --- Carga de Datos ---
     CargarDatos();

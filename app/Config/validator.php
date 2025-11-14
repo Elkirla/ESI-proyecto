@@ -54,8 +54,14 @@ private function validarTelefono($telefono) {
         return;
     }
 
+    // Si empieza con + lo quitamos para validar
+    if ($telefono[0] === '+') {
+        $telefono = substr($telefono, 1);
+    }
+
+    // Validar que el resto sean dígitos
     if (!ctype_digit($telefono)) {
-        $this->errores["telefono"] = "El teléfono solo puede contener números";
+        $this->errores["telefono"] = "El teléfono solo puede contener números (excepto un + al inicio)";
         return;
     }
 
@@ -63,6 +69,7 @@ private function validarTelefono($telefono) {
         $this->errores["telefono"] = "Debe contener entre 8 y 9 números";
     }
 }
+
 
  
 private function validarCI($ci, $idUsuario = null) { 
@@ -85,10 +92,11 @@ private function validarCI($ci, $idUsuario = null) {
         $this->errores["ci"] = "La CI solo puede contener números";
         return;
     }
-
+/*
     if (!$this->CedulaUruguaya($ci)) {
         $this->errores["ci"] = "La CI ingresada no es válida";
     }
+        */
 }
 
     public function Contraseña($password) {

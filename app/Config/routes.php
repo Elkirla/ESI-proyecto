@@ -70,6 +70,8 @@ $routes = [
         "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes",
  
         "/actualizar-deuda-horas" => "HorasControl@actualizarDeudaHorasUsuario",
+        
+        "/ObtenerUsuariosBackoffice" => "AdminControl@ObtenerUsuariosBackoffice",
 
         // ======================
         // UNIDADES HABITACIONALES

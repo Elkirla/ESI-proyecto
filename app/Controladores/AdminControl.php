@@ -110,13 +110,10 @@ public function rechazarPago() {
         if (!$pago_id) throw new Exception("ID inválido.");
 
         $modelo = new PagoCompensatorioModelo();
-        
-        // Llama directamente al método de aprobación (igual que en pagos mensuales)
         $resultado = $modelo->aprobarPagoCompensatorio($pago_id);
 
         if (!$resultado) throw new Exception("No se pudo aprobar el pago.");
-
-        // Usa el usuario_id que viene del resultado, no de una consulta separada
+ 
         ob_start();
         $this->notiControl->CrearNoti(
             "Tu pago compensatorio fue aprobado ✅",
@@ -144,9 +141,7 @@ public function rechazarPagoCompensatorio() {
         $pago_id = $_POST['pago_id'] ?? null;
         if (!$pago_id) throw new Exception("ID inválido.");
 
-        $modelo = new PagoCompensatorioModelo();
-        
-        // Llama directamente al método de rechazo
+        $modelo = new PagoCompensatorioModelo(); 
         $resultado = $modelo->rechazarPagoCompensatorio($pago_id);
 
         if (!$resultado) throw new Exception("No se pudo rechazar el pago.");
@@ -154,7 +149,7 @@ public function rechazarPagoCompensatorio() {
         ob_start();
         $this->notiControl->CrearNoti(
             "Tu pago compensatorio fue rechazado ❌",
-            $resultado['usuario_id'] // ← Cambio importante aquí
+            $resultado['usuario_id']  
         );
         ob_end_clean();
 
@@ -261,11 +256,44 @@ public function rechazarPagoCompensatorio() {
     // ===================================
     // USUARIOS
     // ===================================
+ public function ObtenerUsuariosBackoffice() {
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
+    require_once __DIR__ . '/../Controladores/UnidadControl.php';
+
+    $modeloUsuario = new UsuarioModelo();  
+    $ControlUnidad  = new UnidadControl();
+
+    $usuarios = $modeloUsuario->ObtenerUsuarios();
+
+    $listaFinal = [];
+
+    foreach ($usuarios as $u) {
+ 
+        $unidad = $ControlUnidad->ObtenerUnidadPorId($u['id']);
+
+        // PREPARAR JSON FINAL
+        $listaFinal[] = [
+            "usuario"  => $u['usuario'], 
+            "unidad"   => $unidad ? $unidad['codigo'] : "Sin unidad",
+            "correo"   => $u['correo'],
+            "telefono" => $u['telefono'],
+            "ci"       => $u['ci'],
+ 
+            "id"       => $u['id'],
+            "nombre"   => $u['nombre'],
+            "apellido" => $u['apellido'],
+        ];
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($listaFinal);
+}
+
+
 public function RechazarUsuario() {
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
 
-    try {
-        // Aceptar usuario_id o id (según lo que envíe JS)
+    try { 
         $usuario_id = $_POST['usuario_id'] ?? $_POST['id'] ?? null;
          
         $modelo = new UsuarioModelo();
