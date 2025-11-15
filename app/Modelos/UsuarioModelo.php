@@ -9,24 +9,29 @@ class UsuarioModelo {
         $this->db = Database::getConnection();
     }
 
-    public function CrearUsuario(Usuario $usuario) {
-        $sql = "INSERT INTO usuarios (rol_id, nombre, apellido, email, telefono, ci, password_hash, estado, fecha_registro) 
-                VALUES (:rol_id, :nombre, :apellido, :email, :telefono, :ci, :password_hash, :estado, :fecha_registro)";
-        
-        $stmt = $this->db->prepare($sql);
-        
-        return $stmt->execute([
-            ':rol_id' => $usuario->getRol(),
-            ':nombre' => $usuario->getNombre(),
-            ':apellido' => $usuario->getApellido(),
-            ':email' => $usuario->getEmail(),
-            ':telefono' => $usuario->getTelefono(),       
-            ':ci' => $usuario->getCi(),                   
-            ':password_hash' => $usuario->getPassword(),
-            ':estado' => $usuario->getEstado(),
-            ':fecha_registro' => $usuario->getFechaRegistro()
-        ]);
-    }
+public function CrearUsuario(Usuario $usuario) {
+    $sql = "INSERT INTO usuarios (rol_id, nombre, apellido, email, telefono, ci, password_hash, estado, fecha_registro) 
+            VALUES (:rol_id, :nombre, :apellido, :email, :telefono, :ci, :password_hash, :estado, :fecha_registro)";
+    
+    $stmt = $this->db->prepare($sql);
+    
+    $ok = $stmt->execute([
+        ':rol_id' => $usuario->getRol(),
+        ':nombre' => $usuario->getNombre(),
+        ':apellido' => $usuario->getApellido(),
+        ':email' => $usuario->getEmail(),
+        ':telefono' => $usuario->getTelefono(),
+        ':ci' => $usuario->getCi(),
+        ':password_hash' => $usuario->getPassword(),
+        ':estado' => $usuario->getEstado(),
+        ':fecha_registro' => $usuario->getFechaRegistro()
+    ]);
+
+    if (!$ok) {
+        return false;
+    } 
+    return $this->db->lastInsertId();
+}
 
     public function AsignarUnidad($usuario_id, $unidad_id) {
     $sql = "INSERT INTO usuarios_unidades (usuario_id, unidad_id) VALUES (:usuario_id, :unidad_id)";

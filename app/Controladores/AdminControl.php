@@ -317,7 +317,7 @@ public function RechazarUsuario() {
 }
 
 
-public function AceptarUsuario() { 
+public function AceptarUsuario() {
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
     require_once __DIR__ . '/../Controladores/UnidadControl.php';
 
@@ -330,21 +330,18 @@ public function AceptarUsuario() {
 
         $modelo = new UsuarioModelo();
         $unidadcontrol = new UnidadControl();
- 
-        // Calcular la unidad con menos ocupación
-        $unidad_id = $unidadcontrol->CalcularUnidad();
- 
-        // Asignar al usuario a la unidad
-        $modelo->AsignarUnidad($usuario_id, $unidad_id);
- 
-        // Cambiar el estado del usuario a "activo"
+
+        // 1. Asignar unidad automáticamente
+        $unidad_id = $unidadcontrol->AsignarUnidadAUsuario($usuario_id);
+
+        // 2. Marcar usuario como activo
         $ok = $modelo->aceptarUsuario($usuario_id);
 
         if (!$ok) {
             throw new Exception("No se pudo actualizar el usuario en la base de datos.");
         }
 
-        // Obtener info de la unidad asignada (para devolver en el JSON)
+        // 3. Obtener datos de la unidad para retornarlos
         $unidad = $unidadcontrol->ObtenerUnidadPorId($unidad_id);
 
         $this->response(true, [
@@ -361,6 +358,7 @@ public function AceptarUsuario() {
         $this->response(false, ['error' => $e->getMessage()]);
     }
 }
+
 
     public function cargarUsuariosPendientes() {
     $this->listado->listadoComun(

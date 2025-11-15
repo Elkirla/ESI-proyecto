@@ -234,19 +234,31 @@
                 <h3>Crear Nuevo Usuario</h3>
                 <div class="form-group">
                     <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" required>
+                    <input type="text" id="nombre" name="nombre" maxlength="50" required>
                 </div>
                 <div class="form-group">
                     <label for="apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" required>
+                    <input type="text" id="apellido" name="apellido" maxlength="50" required>
                 </div>
                 <div class="form-group">
                     <label for="correo">Correo:</label>
-                    <input type="email" id="correo" name="correo" required>
+                    <input type="email" id="correo" name="email" required>
                 </div>
                 <div class="form-group">
                     <label for="telefono">Teléfono:</label>
-                    <input type="text" id="telefono" name="telefono" required>
+                
+                    <select id="pais" name="pais" class="select-pais" required>
+                        <option value="+598" selected>🇺🇾 +598</option>
+                        <option value="+54">🇦🇷 +54</option>
+                        <option value="+55">🇧🇷 +55</option>
+                        <option value="+56">🇨🇱 +56</option>
+                        <option value="+57">🇨🇴 +57</option>
+                        <option value="+34">🇪🇸 +34</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+52">🇲🇽 +52</option>
+                    </select>
+                
+                    <input type="text" id="telefono" name="telefono" maxlength="8" required>
                 </div>
                 <div class="form-group">
                     <label for="ci">Cédula:</label>
@@ -330,7 +342,7 @@
         </div>
 
     </div> 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="public/js/backoffice.js"></script>
 
 </body>

@@ -14,8 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const panel = document.getElementById("usuariosPendientes-div");
     const contenedorUsuariosPendientes = document.getElementById('usuariosPendientes-div');
     const btnAceptar = document.getElementById("A-Registro");
-    const btnRechazar = document.getElementById("R-Registro");
-    const listaUsuariosPend = document.getElementById("usuariosPendientes-div");
+    const btnRechazar = document.getElementById("R-Registro"); 
 
     // --- Navegación General & Sidebar ---
     const sections = document.querySelectorAll(".section");
@@ -35,7 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputTelefono = document.getElementById("input-telefono");
     const inputCi = document.getElementById("input-ci");
     const btnCancelar = document.getElementById("btn-cancelar");
-
+ 
+const formCrearUsuario = document.getElementById('formCrearUsuario');
+const inputTelefonoCompleto = document.getElementById('telefono_completo');
+const selectPaisCodigo = document.getElementById('pais_codigo');
+const inputTelefonoNumero = document.getElementById('telefono_numero');
     // =================================================================
     // 2. CONFIGURACIÓN DE NAVEGACIÓN
     // =================================================================
@@ -272,18 +275,79 @@ async function cargarUsuariosPendientes() {
         }
     }
 
-    function CargarUsuarios() {
+function mostrarErrores(errores) {
+    let htmlErrores = ''; 
+    for (const campo in errores) {
+        if (errores.hasOwnProperty(campo)) {
+            errores[campo].forEach(err => {
+                htmlErrores += `<p style="margin: 0; padding: 2px 0;">${err}</p>`;
+            });
+        }
+    }
 
+    Swal.fire({
+        icon: 'error',
+        title: 'Error al crear usuario',
+        html: htmlErrores,
+        confirmButtonText: 'Aceptar'
+    });
+}
+ 
+async function handleFormSubmit(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+ 
+    const pais = formData.get('pais') || '+598'; 
+    const telefono = formData.get('telefono');
+    const telefonoCompleto = pais + telefono;
+
+    formData.set('telefono', telefonoCompleto);
+
+    try {
+        const response = await fetch('/registro', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            mostrarErrores(result.errors);
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: 'Usuario Creado',
+                text: 'El nuevo usuario ha sido registrado exitosamente.',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                formCrearUsuario.reset();
+            });
+        }
+    } catch (error) {
+        console.error('Error al enviar el formulario:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de Conexión',
+            text: 'No se pudo completar la solicitud. Intente más tarde.',
+            confirmButtonText: 'Aceptar'
+        });
+    }
+}
+
+if (formCrearUsuario) {
+        formCrearUsuario.addEventListener('submit', handleFormSubmit);
+}
+
+function CargarUsuarios() {
     fetch("/ObtenerUsuariosBackoffice")
         .then(res => res.json())
         .then(data => {
-
-            // Si ya existe una DataTable en esa tabla, destruirla para evitar duplicados
+ 
             if ($.fn.DataTable.isDataTable("#tablaUsuarios")) {
                 $("#tablaUsuarios").DataTable().clear().destroy();
             }
-
-            // Inicializar DataTable
+ 
             $("#tablaUsuarios").DataTable({
                 data: data,
                 columns: [

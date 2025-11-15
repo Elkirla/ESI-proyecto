@@ -67,10 +67,8 @@ $routes = [
         // USUARIOS
         // ======================
         "/usuariodatos"        => "UserControl@cargarDatosUsuario",
-        "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes",
- 
-        "/actualizar-deuda-horas" => "HorasControl@actualizarDeudaHorasUsuario",
-        
+        "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes", 
+        "/actualizar-deuda-horas" => "HorasControl@actualizarDeudaHorasUsuario", 
         "/ObtenerUsuariosBackoffice" => "AdminControl@ObtenerUsuariosBackoffice",
 
         // ======================
@@ -139,8 +137,7 @@ $routes = [
         // ======================
         "/aprobar-usuario"         => "AdminControl@AceptarUsuario",
         "/rechazar-usuario"        => "AdminControl@RechazarUsuario",
-        "/usuario-por-id"          => "AdminControl@ObtenerUsuarioPorId", 
-
+        "/usuario-por-id"          => "AdminControl@ObtenerUsuarioPorId",  
         "/actualizar-DatosUsuario" => "UserControl@ActualizarDatosUsuario",
 
         // ======================
