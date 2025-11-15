@@ -275,23 +275,7 @@ async function cargarUsuariosPendientes() {
         }
     }
 
-function mostrarErrores(errores) {
-    let htmlErrores = ''; 
-    for (const campo in errores) {
-        if (errores.hasOwnProperty(campo)) {
-            errores[campo].forEach(err => {
-                htmlErrores += `<p style="margin: 0; padding: 2px 0;">${err}</p>`;
-            });
-        }
-    }
-
-    Swal.fire({
-        icon: 'error',
-        title: 'Error al crear usuario',
-        html: htmlErrores,
-        confirmButtonText: 'Aceptar'
-    });
-}
+ 
  
 async function handleFormSubmit(e) {
     e.preventDefault();
@@ -323,6 +307,7 @@ async function handleFormSubmit(e) {
             }).then(() => {
                 formCrearUsuario.reset();
             });
+                CargarUsuarios();
         }
     } catch (error) {
         console.error('Error al enviar el formulario:', error);
@@ -428,7 +413,7 @@ function CargarUsuarios() {
 // ACEPTAR / RECHAZAR USUARIO
 // =================================================================
 btnAceptar.addEventListener("click", async (e) => {
-    e.preventDefault(); // ✅ Evita recargar la página
+    e.preventDefault(); 
 
     if (!window.usuarioActual) {
         agregarNotificacion("Selecciona un usuario primero", "info");
@@ -445,8 +430,8 @@ btnAceptar.addEventListener("click", async (e) => {
 
         agregarNotificacion("Usuario aprobado correctamente ✅", "success");
 
-        cargarUsuariosPendientes(); // ✅ Se actualiza la lista
-        formRegistro.reset(); // ✅ Vaciamos la hoja
+        cargarUsuariosPendientes();  
+        formRegistro.reset();  
         window.usuarioActual = null;
 
     } catch (err) {
@@ -457,7 +442,7 @@ btnAceptar.addEventListener("click", async (e) => {
 
 
 btnRechazar.addEventListener("click", async (e) => {
-    e.preventDefault(); // ✅ Evita recargar la página
+    e.preventDefault();  
 
     if (!window.usuarioActual) {
         agregarNotificacion("Selecciona un usuario primero", "info");
@@ -474,7 +459,7 @@ btnRechazar.addEventListener("click", async (e) => {
 
         agregarNotificacion("Usuario rechazado ❌", "warning");
 
-        cargarUsuariosPendientes(); // ✅ Actualizamos lista
+        cargarUsuariosPendientes();  
         formRegistro.reset();
         window.usuarioActual = null;
 
@@ -483,6 +468,64 @@ btnRechazar.addEventListener("click", async (e) => {
         agregarNotificacion("Error al rechazar usuario", "error");
     }
 });
+ 
+$('#tablaUsuarios tbody').on('click', 'tr', function () {
+    let data = $('#tablaUsuarios').DataTable().row(this).data();
+    if (!data) return;
+
+    let ci = data.ci;
+ 
+    CargarUsuarioSeleccionado(ci);
+});
+
+function CargarUsuarioSeleccionado(ci) {
+
+    let formData = new FormData();
+    formData.append("ci", ci);
+
+    fetch("/usuarioPorID", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(usuario => {
+        if (usuario.error) {
+            console.error(usuario.error);
+            return;
+        }
+ 
+        CargarModificarUsuario(usuario);
+        CargarEliminarUsuario(usuario);
+
+        // Cambiar pestaña automáticamente
+        document.querySelector(".tab-button[data-tab='modificar']").click();
+    })
+    .catch(err => console.error("Error al obtener usuario:", err));
+}
+
+function CargarModificarUsuario(u) {
+    if (!u || !u[0]) return;
+
+    const usr = u[0];  
+
+    document.getElementById("mod-nombre").value = usr.nombre;
+    document.getElementById("mod-apellido").value = usr.apellido;
+    document.getElementById("mod-correo").value = usr.email;
+    document.getElementById("mod-telefono").value = usr.telefono;
+    document.getElementById("mod-ci").value = usr.ci;
+}
+
+function CargarEliminarUsuario(u) {
+    if (!u || !u[0]) return;
+
+    const usr = u[0];
+
+    document.getElementById("elim-nombre").value = usr.nombre;
+    document.getElementById("elim-apellido").value = usr.apellido;
+    document.getElementById("elim-correo").value = usr.email;
+    document.getElementById("elim-ci").value = usr.ci;
+}
+
 
 async function cargarTablaPagosUsuarios() {
     

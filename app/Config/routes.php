@@ -139,6 +139,7 @@ $routes = [
         "/rechazar-usuario"        => "AdminControl@RechazarUsuario",
         "/usuario-por-id"          => "AdminControl@ObtenerUsuarioPorId",  
         "/actualizar-DatosUsuario" => "UserControl@ActualizarDatosUsuario",
+        "/usuarioPorID"        => "AdminControl@usuarioPorID",
 
         // ======================
         // NOTIFICACIONES

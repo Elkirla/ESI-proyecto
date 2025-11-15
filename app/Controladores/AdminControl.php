@@ -256,6 +256,27 @@ public function rechazarPagoCompensatorio() {
     // ===================================
     // USUARIOS
     // ===================================
+public function usuarioPorID() { 
+    $ci = $_POST["ci"] ?? null;
+$this->listado->listadoComun(
+    "usuarios",
+    ["id", "nombre", "apellido", "email", "telefono", "ci", "estado"],
+    ["ci" => $ci],
+    [],
+    null
+);
+}
+public function ModificarDatosUsuarios() {
+    require_once __DIR__ . '/../Controladores/UsuarioControl.php';
+
+    $idUsuario = $_POST["id"] ?? null;
+
+    if (!$idUsuario) error_log ("ID de usuario no recibido") ; 
+    
+    $usuarioControl = new UsuarioControl();
+    $usuarioControl->ModificarDatos($idUsuario);
+}
+
  public function ObtenerUsuariosBackoffice() {
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
     require_once __DIR__ . '/../Controladores/UnidadControl.php';
