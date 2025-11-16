@@ -38,7 +38,7 @@ public function ModificarDatos($idUsuario) {
     $usuario->setId($idUsuario);
     $usuario->setNombre($_POST["nombre"] ?? "");
     $usuario->setApellido($_POST["apellido"] ?? "");
-    $usuario->setTelefono($_POST["telefono"] ?? "");
+    $usuario->setTelefono($_POST["telefono"] ?? ""); 
     $usuario->setCi($_POST["ci"] ?? "");
 
     // Validación - DEBEMOS usar el mismo validador que en la versión anterior

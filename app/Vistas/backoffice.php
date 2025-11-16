@@ -277,26 +277,33 @@
             <form id="formModificarUsuario" class="form-usuarios">
                 <h3>Modificar Usuario</h3>
                 <p>Selecciona un usuario de la lista para cargar sus datos.</p>
+        
+                <input type="hidden" id="mod-id" name="id">
+        
                 <div class="form-group">
                     <label for="mod-nombre">Nombre:</label>
                     <input type="text" id="mod-nombre" name="nombre" required>
+                    <span id="mod-error-nombre" class="error-msg"></span>
                 </div>
+        
                 <div class="form-group">
                     <label for="mod-apellido">Apellido:</label>
                     <input type="text" id="mod-apellido" name="apellido" required>
+                    <span id="mod-error-apellido" class="error-msg"></span>
                 </div>
-                <div class="form-group">
-                    <label for="mod-correo">Correo:</label>
-                    <input type="email" id="mod-correo" name="correo" required>
-                </div>
+        
                 <div class="form-group">
                     <label for="mod-telefono">Teléfono:</label>
                     <input type="text" id="mod-telefono" name="telefono" required>
+                    <span id="mod-error-telefono" class="error-msg"></span>
                 </div>
+        
                 <div class="form-group">
                     <label for="mod-ci">Cédula:</label>
                     <input type="text" id="mod-ci" name="ci" required>
+                    <span id="mod-error-ci" class="error-msg"></span>
                 </div>
+        
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
             </form>
         </div>

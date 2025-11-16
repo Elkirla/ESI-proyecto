@@ -119,7 +119,7 @@ public function ExisteCIParaOtroUsuario($ci, $idUsuario) {
     $sql = "SELECT id FROM usuarios WHERE ci = :ci AND id != :idUsuario LIMIT 1";
     $stmt = $this->db->prepare($sql);
     $stmt->bindParam(':ci', $ci);
-    $stmt->bindParam(':idUsuario', $idUsuario);
+    $stmt->bindParam(':idUsuario', $idUsuario); //122
     $stmt->execute();
     return $stmt->fetch() !== false;
 }

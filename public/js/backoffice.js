@@ -35,10 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputCi = document.getElementById("input-ci");
     const btnCancelar = document.getElementById("btn-cancelar");
  
-const formCrearUsuario = document.getElementById('formCrearUsuario');
-const inputTelefonoCompleto = document.getElementById('telefono_completo');
-const selectPaisCodigo = document.getElementById('pais_codigo');
-const inputTelefonoNumero = document.getElementById('telefono_numero');
+const formCrearUsuario = document.getElementById('formCrearUsuario'); 
     // =================================================================
     // 2. CONFIGURACIÓN DE NAVEGACIÓN
     // =================================================================
@@ -501,16 +498,72 @@ function CargarUsuarioSeleccionado(ci) {
         document.querySelector(".tab-button[data-tab='modificar']").click();
     })
     .catch(err => console.error("Error al obtener usuario:", err));
+} 
+const formModificar = document.getElementById("formModificarUsuario");
+
+function limpiarErroresAdmin() {
+    // Busca los errores del formulario de modificación
+    document.querySelectorAll("#formModificarUsuario .error-msg")
+        .forEach(el => el.textContent = "");
 }
+
+function mostrarErroresAdmin(errores) {
+    Object.keys(errores).forEach(key => {
+        // Busca el elemento de error con el nuevo prefijo (ej: mod-error-ci)
+        const el = document.getElementById(`mod-error-${key}`);
+        if (el) el.textContent = errores[key];
+    });
+}
+
+formModificar.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    limpiarErroresAdmin();
+ 
+    const datos = new FormData(e.target); 
+
+    try {
+        const res = await fetch("/usuario-modificar", {
+            method: "POST",
+            body: datos
+        });
+
+        let resp;
+        const text = await res.text(); 
+
+        try {
+            resp = JSON.parse(text);
+        } catch {
+            console.error("❌ No es JSON válido");
+            Swal.fire("Error", "El servidor devolvió una respuesta inválida", "error");
+            return;
+        }
+
+        if (resp.success) {
+            Swal.fire("Éxito", "Usuario modificado correctamente", "success");
+            CargarUsuarios();  
+
+
+        } else if (resp.errores) {
+            mostrarErroresAdmin(resp.errores);
+
+        } else {
+            Swal.fire("Error", resp.error || "Error desconocido", "error");
+        }
+
+    } catch (err) {
+        console.log("Error al modificar usuario:", err);
+        Swal.fire("Error", "No se pudo conectar con el servidor", "error");
+    }
+});
+
 
 function CargarModificarUsuario(u) {
     if (!u || !u[0]) return;
+    const usr = u[0];
 
-    const usr = u[0];  
-
+    document.getElementById("mod-id").value = usr.id;
     document.getElementById("mod-nombre").value = usr.nombre;
     document.getElementById("mod-apellido").value = usr.apellido;
-    document.getElementById("mod-correo").value = usr.email;
     document.getElementById("mod-telefono").value = usr.telefono;
     document.getElementById("mod-ci").value = usr.ci;
 }

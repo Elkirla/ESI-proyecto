@@ -835,4 +835,10 @@ input.error {
 
 .btn-danger:hover {
     background-color: #c82333;
+} 
+.error-msg { 
+    display: block;   
+    color: #dc3545;   
+    font-size: 0.875em;
+    margin-top: 0.25rem;
 }

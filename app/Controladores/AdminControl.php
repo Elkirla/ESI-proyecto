@@ -267,15 +267,18 @@ $this->listado->listadoComun(
 );
 }
 public function ModificarDatosUsuarios() {
-    require_once __DIR__ . '/../Controladores/UsuarioControl.php';
 
-    $idUsuario = $_POST["id"] ?? null;
+    require_once __DIR__ . '/../Controladores/UserControl.php';
 
-    if (!$idUsuario) error_log ("ID de usuario no recibido") ; 
-    
-    $usuarioControl = new UsuarioControl();
-    $usuarioControl->ModificarDatos($idUsuario);
+    if (!isset($_POST["id"])) {
+        echo json_encode(["error" => "ID no enviado"]);
+        return;
+    }
+
+    $usuarioControl = new UserControl();
+    $usuarioControl->ModificarDatos($_POST["id"]);
 }
+
 
  public function ObtenerUsuariosBackoffice() {
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
