@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnCancelar = document.getElementById("btn-cancelar");
  
 const formCrearUsuario = document.getElementById('formCrearUsuario'); 
+const formEliminarUsuario = document.getElementById("formEliminarUsuario");
     // =================================================================
     // 2. CONFIGURACIÓN DE NAVEGACIÓN
     // =================================================================
@@ -573,11 +574,53 @@ function CargarEliminarUsuario(u) {
 
     const usr = u[0];
 
+    document.getElementById("elim-id").value = usr.id;   
     document.getElementById("elim-nombre").value = usr.nombre;
     document.getElementById("elim-apellido").value = usr.apellido;
     document.getElementById("elim-correo").value = usr.email;
     document.getElementById("elim-ci").value = usr.ci;
 }
+
+formEliminarUsuario.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const id = document.getElementById("elim-id").value;
+    if (!id) return Swal.fire("Error", "No se seleccionó ningún usuario", "error");
+
+    // Confirmación antes de eliminar
+    const confirm = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    const datos = new FormData();
+    datos.append("id", id);
+
+    try {
+        const resp = await fetch("/eliminarUsuario", {
+            method: "POST",
+            body: datos
+        });
+        const json = await resp.json();
+
+        if (json.success) {
+            Swal.fire("Eliminado", "El usuario fue eliminado con éxito.", "success");
+            formEliminarUsuario.reset(); 
+            CargarUsuarios();
+        } else {
+            Swal.fire("Error", json.error || "No se pudo eliminar el usuario", "error");
+        }
+    } catch (err) {
+        console.error(err);
+        Swal.fire("Error", "Ocurrió un error inesperado", "error");
+    }
+});
 
 
 async function cargarTablaPagosUsuarios() {

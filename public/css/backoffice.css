@@ -673,6 +673,7 @@ input.error {
     background-color: #d8d8d8; 
 }
 .usuarios.section {
+    overflow-y: hidden;
     max-width: 1000px;
     margin: 20px auto;
     padding: 20px;

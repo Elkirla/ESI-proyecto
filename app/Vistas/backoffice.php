@@ -310,27 +310,33 @@
 
         <!-- TAB ELIMINAR USUARIO -->
         <div id="tab-eliminar" class="tab">
-            <form id="formEliminarUsuario" class="form-usuarios">
-                <h3>Eliminar Usuario</h3>
-                <p>Selecciona un usuario de la lista para eliminarlo.</p>
-                <div class="form-group">
-                    <label for="elim-nombre">Nombre:</label>
-                    <input type="text" id="elim-nombre" name="nombre" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="elim-apellido">Apellido:</label>
-                    <input type="text" id="elim-apellido" name="apellido" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="elim-correo">Correo:</label>
-                    <input type="email" id="elim-correo" name="correo" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="elim-ci">Cédula:</label>
-                    <input type="text" id="elim-ci" name="ci" readonly>
-                </div>
-                <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
-            </form>
+  <form id="formEliminarUsuario" class="form-usuarios">
+    <h3>Eliminar Usuario</h3>
+    <p>Selecciona un usuario de la lista para eliminarlo.</p>
+
+    <!-- Guardamos la ID real del usuario -->
+    <input type="hidden" id="elim-id" name="id">
+
+    <div class="form-group">
+        <label for="elim-nombre">Nombre:</label>
+        <input type="text" id="elim-nombre" name="nombre" readonly>
+    </div>
+    <div class="form-group">
+        <label for="elim-apellido">Apellido:</label>
+        <input type="text" id="elim-apellido" name="apellido" readonly>
+    </div>
+    <div class="form-group">
+        <label for="elim-correo">Correo:</label>
+        <input type="email" id="elim-correo" name="correo" readonly>
+    </div>
+    <div class="form-group">
+        <label for="elim-ci">Cédula:</label>
+        <input type="text" id="elim-ci" name="ci" readonly>
+    </div>
+
+    <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
+</form>
+
         </div>
     </div>
 </div>

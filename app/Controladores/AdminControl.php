@@ -256,6 +256,34 @@ public function rechazarPagoCompensatorio() {
     // ===================================
     // USUARIOS
     // ===================================
+public function EliminarUsuario() {
+    header('Content-Type: application/json');
+
+    $id = $_POST["id"] ?? null;
+
+    if (!$id) {
+        echo json_encode([
+            "success" => false,
+            "error" => "ID no recibido"
+        ]);
+        return;
+    }
+
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
+    $modelo = new UsuarioModelo();
+
+    $resultado = $modelo->EliminarUsuarioPorId($id);
+
+    if ($resultado) {
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "error" => "No se pudo eliminar el usuario (¿no existe?)"
+        ]);
+    }
+}
+
 public function usuarioPorID() { 
     $ci = $_POST["ci"] ?? null;
 $this->listado->listadoComun(
@@ -266,6 +294,7 @@ $this->listado->listadoComun(
     null
 );
 }
+
 public function ModificarDatosUsuarios() {
 
     require_once __DIR__ . '/../Controladores/UserControl.php';

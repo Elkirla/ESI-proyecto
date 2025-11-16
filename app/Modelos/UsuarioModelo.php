@@ -153,4 +153,16 @@ public function ObtenerUsuarios() {
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 } 
+public function EliminarUsuarioPorId($id) {
+    try {
+        $sql = "DELETE FROM usuarios WHERE id = :id LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    } catch (Exception $e) {
+        error_log("Error al eliminar usuario: " . $e->getMessage());
+        return false;
+    }
+}
+
 }
