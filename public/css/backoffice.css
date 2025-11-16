@@ -983,6 +983,40 @@ input.error {
     text-align: center;
 }
 
+
+    /* ===== Bloquear scroll y ocultar barras en la sección de Config ===== */
+    /* Clase que se añade al body desde JS cuando se abre la sección config */
+    body.no-scroll {
+        overflow: hidden !important;
+        height: 100vh !important;
+        touch-action: none !important;
+    }
+
+    /* Algunos navegadores usan el elemento html para scroll */
+    html.no-scroll, html.no-scroll body, body.no-scroll {
+        overflow: hidden !important;
+    }
+
+    /* Ocultar scrollbar en WebKit/Chromium */
+    body.no-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Asegurar que la propia sección config no muestre scroll interno */
+    .config.section {
+        overflow: hidden !important;
+        max-height: calc(100vh - 35px); /* deja espacio para el header fijo */
+    }
+
+    .config.section .config-content {
+        overflow: hidden !important;
+        height: 100% !important;
+    }
+
+    /* Defender contra overscroll en dispositivos táctiles */
+    .config.section, .config.section * {
+        overscroll-behavior: none !important;
+    }
 /* Celdas del cuerpo de la tabla */
 .tabla-horas td {
     text-align: center;
@@ -999,4 +1033,239 @@ input.error {
 /* Opcional: Rayado tipo "cebra" para mejor legibilidad */
 .tabla-horas tbody tr:nth-child(even) {
     background-color: #fcfcfc;
+}
+.config {
+    height: 100%;
+    overflow-y: hidden;
+    max-width: 800px; /* Reducción de ancho para enfoque */
+    margin: 15px auto; /* Reducción de margen externo */
+    padding: 15px; /* Reducción de padding interno */
+    background-color: #f8f9fa;
+    border-radius: 6px; /* Reducción de radio */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* BASE ESTILOS PROPORCIONADOS */
+.config-section {
+    display: none;
+    height: 100%;
+    font-family: "Roboto", sans-serif;
+}
+
+.config-section.active {
+    display: block;
+}
+
+.tab-content {
+    display: none;
+    margin-top: 10px; /* Reducción de margen superior */
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.btn-config.active,
+.tab-btn.active {
+    background-color: #2C3D8F; /* Nuevo color azul oscuro */
+    color: white;
+}
+
+.btn-config,
+.tab-btn {
+    cursor: pointer;
+}
+/* FIN BASE ESTILOS PROPORCIONADOS */
+
+.ConfigHeader {
+    text-align: center;
+    margin-bottom: 15px; /* Reducción de margen */
+    padding-bottom: 8px; /* Reducción de padding */
+    border-bottom: 1px solid #ced4da; /* Color de borde más suave */
+}
+
+.ConfigHeader h2 {
+    color: #343a40;
+    margin-bottom: 8px; /* Reducción de margen */
+    font-size: 1.5em; /* Asegurar tamaño estándar */
+}
+
+/* --- Navegación Principal --- */
+.config-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px; /* Reducción de espacio */
+}
+
+.btn-config {
+    padding: 8px 12px; /* Reducción de padding */
+    border: 1px solid #2C3D8F;
+    border-radius: 4px; /* Reducción de radio */
+    background-color: white;
+    color: #2C3D8F;
+    font-weight: bold;
+    font-size: 0.9em; /* Reducción de fuente para hacerlo más compacto */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-config:hover:not(.active) {
+    background-color: #e3e6f0; /* Azul muy claro para hover */
+}
+
+/* --- Formularios --- */
+.form-config {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Reducción de espacio entre grupos */
+    padding: 12px; /* Reducción de padding */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 3px; /* Reducción de margen */
+    font-weight: 500;
+    color: #495057;
+    font-size: 0.95em; /* Ajuste de fuente */
+}
+
+.form-group input[type="number"] {
+    padding: 6px; /* Reducción de padding */
+    border: 1px solid #ced4da;
+    border-radius: 3px; /* Reducción de radio */
+    font-size: 14px; /* Reducción de fuente */
+    transition: border-color 0.2s;
+}
+
+.form-group input[type="number"]:focus {
+    border-color: #2C3D8F;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(44, 61, 143, 0.25); /* Sombra con el nuevo color */
+}
+
+.error-msg {
+    color: #dc3545;
+    font-size: 0.8em; /* Reducción de fuente */
+    margin-top: 2px; /* Reducción de margen */
+}
+
+.btn-guardar-config {
+    padding: 8px 15px; /* Reducción de padding */
+    background-color: #19692b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px; /* Reducción de fuente */
+    font-weight: bold;
+    transition: background-color 0.2s;
+    margin-top: 5px; /* Reducción de margen */
+}
+
+.btn-guardar-config:hover {
+    background-color: #218838;
+}
+
+/* --- Sección Datos del Usuario --- */
+#user-data-section h3 {
+    color: #343a40;
+    margin-bottom: 12px; /* Reducción de margen */
+    font-size: 1.3em;
+}
+
+.user-search {
+    display: flex;
+    gap: 8px; /* Reducción de espacio */
+    margin-bottom: 15px; /* Reducción de margen */
+}
+
+.user-search input[type="text"] {
+    flex-grow: 1;
+    padding: 8px; /* Reducción de padding */
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.user-search button {
+    padding: 8px 12px;  
+    background-color: #202578;  
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.user-search button:hover {
+    background-color: #138496;
+}
+
+/* --- Tabs de Datos de Usuario --- */
+.tabs-user-data {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ced4da; /* Borde más sutil */
+    margin-bottom: 10px; /* Reducción de margen */
+}
+
+.tab-btn {
+    padding: 8px 10px; /* Reducción de padding */
+    border: none;
+    border-bottom: 2px solid transparent;
+    background-color: transparent;
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 0.9em;
+    transition: color 0.2s, border-color 0.2s;
+    margin-bottom: -1px; /* Ajuste sutil */
+}
+
+.tab-btn.active {
+    background-color: white;
+    color: #2C3D8F;
+    border-bottom: 2px solid #2C3D8F;
+}
+
+.tab-btn:hover:not(.active) {
+    color: #343a40;
+    border-bottom-color: #dee2e6;
+}
+
+/* --- Estilo de Tablas (Simulación de Datatable) --- */
+.datatable {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 5px; /* Reducción de margen */
+    background-color: white;
+    border-radius: 4px;
+    font-size: 0.9em; /* Reducción de fuente para la tabla */
+    overflow: hidden;
+}
+
+.datatable thead tr {
+    background-color: #2C3D8F;
+    color: white;
+    text-align: left;
+}
+
+.datatable th,
+.datatable td {
+    padding: 8px 10px; /* Reducción de padding */
+    border: 1px solid #dee2e6;
+}
+
+.datatable tbody tr:nth-child(even) {
+    background-color: #f2f4f8; /* Fondo un poco más claro que el principal */
+}
+
+.datatable tbody tr:hover {
+    background-color: #e9ecf4;
 }

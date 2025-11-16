@@ -17,10 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnRechazar = document.getElementById("R-Registro"); 
 
     // --- Navegación General & Sidebar ---
+    const botonesConfig = document.querySelectorAll(".btn-config");
+    const seccionesConfig = document.querySelectorAll(".config-section");
+
     const sections = document.querySelectorAll(".section");
     const marcador = document.querySelector(".opcion-div");
     const botones = document.querySelectorAll(".sider button");
 
+
+    const tabConfig = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
     // --- Mi Perfil ---
     const btnEditar = document.getElementById("btn-editar-datos");
     const vistaDatos = document.getElementById("vista-datos");
@@ -75,6 +81,12 @@ const formEliminarUsuario = document.getElementById("formEliminarUsuario");
                 } else {
                     sectionToShow.style.display = "block";
                 }
+                    // Si mostramos la sección de configuración, deshabilitar el scroll del body
+                    if (sectionClass === 'config') {
+                        document.body.classList.add('no-scroll');
+                    } else {
+                        document.body.classList.remove('no-scroll');
+                    }
             }
         });
     });
@@ -93,6 +105,7 @@ const formEliminarUsuario = document.getElementById("formEliminarUsuario");
         CargarUsuarios();
         cargarTablaPagosUsuarios();
         cargarHoras();
+        cargarConfiguracion();
     }
 
 
@@ -526,6 +539,112 @@ function limpiarErroresAdmin() {
     document.querySelectorAll("#formModificarUsuario .error-msg")
         .forEach(el => el.textContent = "");
 }
+async function cargarConfiguracion() {
+    try {
+        const response = await fetch('/obtenerTodasConfig');
+        const data = await response.json();
+
+        // Convertimos el array [{"clave":"x","valor":"y"}] en un objeto { x: y }
+        const configMap = {};
+        data.forEach(item => {
+            configMap[item.clave] = item.valor;
+        });
+
+        // Rellenar inputs automáticamente
+        const form = document.getElementById("form-configuracion");
+        Object.keys(configMap).forEach(clave => {
+            const input = form.querySelector(`[name="${clave}"]`);
+            if (input) {
+                input.value = configMap[clave];
+            }
+        });
+
+    } catch (error) {
+        console.error("Error cargando la configuración:", error);
+    }
+}
+
+    botonesConfig.forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            // Quitar 'active' a todos
+            botonesConfig.forEach(b => b.classList.remove("active"));
+            seccionesConfig.forEach(sec => sec.classList.remove("active"));
+
+            // Activar botón presionado
+            btn.classList.add("active");
+
+            // Mostrar la sección correspondiente
+            const objetivo = btn.dataset.target;
+            document.getElementById(objetivo).classList.add("active");
+        });
+    }); 
+    tabConfig.forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            // Desactivar todos los tabs
+            tabButtons.forEach(b => b.classList.remove("active"));
+            tabContents.forEach(c => c.classList.remove("active"));
+
+            // Activar el tab seleccionado
+            btn.classList.add("active");
+
+            // Mostrar contenido asociado
+            const tabObjetivo = btn.dataset.tab;
+            document.getElementById(tabObjetivo).classList.add("active");
+        });
+    });
+document.getElementById("form-configuracion").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const datos = new FormData(form);
+
+    try {
+        const response = await fetch("/editarConfig", {
+            method: "POST",
+            body: datos
+        });
+
+        const result = await response.json();
+
+        // ❌ Si hay errores del backend
+        if (!result.success) {
+            let mensajeErrores = "";
+
+            Object.keys(result.errores).forEach(clave => {
+                mensajeErrores += `• ${clave}: ${result.errores[clave]}<br>`;
+            });
+
+            Swal.fire({
+                icon: "error",
+                title: "Errores en la configuración",
+                html: mensajeErrores,
+                confirmButtonText: "Entendido"
+            });
+
+            return;
+        }
+
+        // ✅ Si todo salió bien
+        Swal.fire({
+            icon: "success",
+            title: "Configuraciones actualizadas",
+            text: result.mensaje,
+            timer: 2000,
+            showConfirmButton: false
+        });
+
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error inesperado",
+            text: "No se pudo conectar con el servidor."
+        });
+        console.error("Error FETCH:", error);
+    }
+});
+
 
 function mostrarErroresAdmin(errores) {
     Object.keys(errores).forEach(key => {

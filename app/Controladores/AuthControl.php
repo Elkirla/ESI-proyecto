@@ -148,10 +148,7 @@ public function registrar() {
             'errors' => ["general" => "Error interno. Intente más tarde."]
         ]);
     }
-}
-
- 
-    /** ✅ Login seguro y claro */
+} 
     public function login() {
         header('Content-Type: application/json');
 

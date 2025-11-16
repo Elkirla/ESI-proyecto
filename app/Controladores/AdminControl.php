@@ -513,14 +513,13 @@ public function verDeudasHorasAdmin() {
     // CONFIGURACIÖN
     // ===================================
 
-public function EditarConfiguracion() {
+ public function EditarConfiguracion() {
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
     require_once __DIR__ . '/../Config/validator.php';
 
     $modelo = new UsuarioModelo();
     $validator = new validator();
 
-    // Las claves de configuración que esperas recibir
     $claves = [
         'fecha_limite_pago',
         'mensualidad',
@@ -533,6 +532,7 @@ public function EditarConfiguracion() {
     $datos = [];
 
     foreach ($claves as $clave) {
+
         if (!isset($_POST[$clave])) {
             $errores[$clave] = "Falta el valor para $clave";
             continue;
@@ -540,11 +540,11 @@ public function EditarConfiguracion() {
 
         $valor = trim($_POST[$clave]);
 
-        // Validaciones especiales según clave
         switch ($clave) {
+
             case 'fecha_limite_pago':
-                if (!$validator->EsNumeroEnteroPositivo($valor)) {
-                    $errores[$clave] = "Debe ser un número entre 1 y 31.";
+                if (!$validator->EsDiaDelMes($valor)) {
+                    $errores[$clave] = "Debe ser un día válido entre 1 y 31.";
                 }
                 break;
 
@@ -562,18 +562,23 @@ public function EditarConfiguracion() {
     }
 
     if (!empty($errores)) {
-        http_response_code(200);
-        echo json_encode(["success" => false, "errores" => $errores]);
+        echo json_encode([
+            "success" => false,
+            "errores" => $errores
+        ]);
         return;
     }
 
-    // Actualizar todo
     foreach ($datos as $clave => $valor) {
         $modelo->editarConfig($clave, $valor);
     }
 
-    echo json_encode(["success" => true, "mensaje" => "Configuraciones actualizadas correctamente"]);
+    echo json_encode([
+        "success" => true,
+        "mensaje" => "Configuraciones actualizadas correctamente"
+    ]);
 }
+
 public function ObtenerTodasConfig(){
     $this->listado->listadoComun(
         "configuracion",

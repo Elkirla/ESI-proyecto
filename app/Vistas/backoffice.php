@@ -398,11 +398,147 @@
             <h2>Unidades</h2> 
         </div>
  
-        <div class="config section" style="display:none;">
-            <h2>Configuración</h2> 
+<div class="config section" style="display:none;">
+    <div class="ConfigHeader">
+        <h2>Configuración de la Cooperativa</h2>
+    
+        <!-- NAV PRINCIPAL -->
+        <div class="config-nav">
+            <button class="btn-config active" data-target="config-form-section">
+                Editar Configuración
+            </button>
+            <button class="btn-config" data-target="user-data-section">
+                Datos del Usuario
+            </button>
         </div>
+    </div>
+ 
+    <div class="config-content">
+        <section id="config-form-section" class="config-section active">
+            <h3>Valores Actuales</h3>
 
-    </div> 
+            <form id="form-configuracion" class="form-config">
+            
+                <div class="form-group">
+                    <label>Fecha límite de pago</label>
+                    <input type="number" name="fecha_limite_pago" min="1" max="31">
+                    <span class="error-msg" id="error-fecha_limite_pago"></span>
+                </div>
+            
+                <div class="form-group">
+                    <label>Mensualidad</label>
+                    <input type="number" name="mensualidad" min="0">
+                    <span class="error-msg" id="error-mensualidad"></span>
+                </div>
+            
+                <div class="form-group">
+                    <label>Horas semanales requeridas</label>
+                    <input type="number" name="horas_semanales" min="1">
+                    <span class="error-msg" id="error-horas_semanales"></span>
+                </div>
+            
+                <div class="form-group">
+                    <label>Valor semanal</label>
+                    <input type="number" name="valor_semanal" min="0">
+                    <span class="error-msg" id="error-valor_semanal"></span>
+                </div>
+            
+                <div class="form-group">
+                    <label>Cuota semanal</label>
+                    <input type="number" name="cuota_semanal" min="0">
+                    <span class="error-msg" id="error-cuota_semanal"></span>
+                </div>
+            
+                <button type="submit" class="btn-guardar-config">
+                    Guardar Configuración
+                </button>
+            
+            </form>
+
+        </section>
+
+
+        <section id="user-data-section" class="config-section">
+            <h3>Datos del Usuario</h3>
+
+            <!-- Buscador -->
+            <div class="user-search">
+                <input type="text" id="buscadorUsuario" placeholder="Buscar usuario por CI o nombre...">
+                <button id="btnBuscarUsuario">Buscar</button>
+            </div>
+
+            <!-- LENGUETAS -->
+            <div class="tabs-user-data">
+                <button class="tab-btn active" data-tab="tab-pagos-mensuales">Pagos Mensuales</button>
+                <button class="tab-btn" data-tab="tab-horas">Horas Trabajadas</button>
+                <button class="tab-btn" data-tab="tab-deudas-mensuales">Deudas Mensuales</button>
+                <button class="tab-btn" data-tab="tab-deudas-semanales">Deudas Semanales</button>
+            </div>
+
+            <!-- CONTENEDORES DE TABLAS -->
+
+            <!-- PAGOS MENSUALES -->
+            <div id="tab-pagos-mensuales" class="tab-content active">
+                <table id="tablaPagosMensuales" class="display datatable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Monto</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- HORAS -->
+            <div id="tab-horas" class="tab-content">
+                <table id="tablaHoras" class="display datatable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Horas</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- DEUDAS MENSUALES -->
+            <div id="tab-deudas-mensuales" class="tab-content">
+                <table id="tablaDeudasMensuales" class="display datatable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Monto</th>
+                            <th>Adeudado</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- DEUDAS SEMANALES -->
+            <div id="tab-deudas-semanales" class="tab-content">
+                <table id="tablaDeudasSemanales" class="display datatable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Semana</th>
+                            <th>Horas trabajadas</th>
+                            <th>Horas faltantes</th>
+                            <th>Horas justificadas</th>
+                            <th>Horas compensadas</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="public/js/backoffice.js"></script>
 

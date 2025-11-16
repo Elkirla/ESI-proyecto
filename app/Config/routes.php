@@ -143,6 +143,7 @@ $routes = [
         "/usuario-modificar"       => "AdminControl@ModificarDatosUsuarios",
         "/eliminarUsuario"         => "AdminControl@EliminarUsuario",
         "/usuarioPorID"            => "AdminControl@usuarioPorID",
+        "/editarConfig"            => "AdminControl@EditarConfiguracion",
 
         // ======================
         // NOTIFICACIONES
