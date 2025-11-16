@@ -248,8 +248,7 @@ async function cargarUsuariosPendientes() {
         const response = await fetch('/usuariospendientes');
         if (!response.ok) throw new Error('Error en la respuesta del servidor');
 
-        const usuarios = await response.json();
-        console.log("Usuarios pendientes recibidos:", usuarios);
+        const usuarios = await response.json(); 
 
         // Limpiar elementos previos
         contenedorUsuariosPendientes.querySelectorAll('.usuario-pendiente').forEach(el => el.remove());
@@ -373,7 +372,7 @@ function CargarUsuarios() {
                     { data: "ci" }
                 ],
                 language: {
-                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                    url: "/public/js/dataTables/es-ES-1.13.6.json"
                 },
                 responsive: true,
                 pageLength: 10
@@ -409,8 +408,7 @@ function CargarUsuarios() {
             item.classList.add('seleccionado');
 
             const id = item.dataset.id;
-            window.usuarioActual = id; 
-            console.log("Usuario seleccionado ID:", id);
+            window.usuarioActual = id;  
 
             try {
                 const response = await fetch('/usuario-por-id', {
@@ -582,8 +580,8 @@ async function cargarConfiguracion() {
     tabConfig.forEach(btn => {
         btn.addEventListener("click", () => {
 
-            // Desactivar todos los tabs
-            tabButtons.forEach(b => b.classList.remove("active"));
+            // Desactivar todos los tabs (.tab-btn), antes se usaba la colección equivocada
+            tabConfig.forEach(b => b.classList.remove("active"));
             tabContents.forEach(c => c.classList.remove("active"));
 
             // Activar el tab seleccionado
@@ -703,27 +701,19 @@ function buscarDatosUsuario(userInfo) {
 
     const formData = new FormData();
     formData.append("UserInfo", userInfo);
-
-    console.log("🔍 Enviando solicitud con:", userInfo);
+ 
 
     fetch("/ListarDatosUsuarios", {  
         method: "POST",
         body: formData
     })
-    .then(async response => {
-
-        console.log("📡 Estado HTTP:", response.status);
-
+    .then(async response => {  
         // Leer respuesta RAW (sin parsear)
         const rawText = await response.text();
-
-        console.log("📨 RESPUESTA RAW DEL SERVIDOR:");
-        console.log(rawText);
-
+ 
         // Intentar parsear JSON
         try {
-            const parsed = JSON.parse(rawText);
-            console.log("📦 JSON PARSEADO:", parsed);
+            const parsed = JSON.parse(rawText); 
             return parsed;
         } catch (parseError) {
             console.error("❌ ERROR AL PARSEAR JSON:", parseError);
@@ -981,7 +971,7 @@ async function cargarHorasPrincipales() {
             responsive: true,
             destroy: true,
             language: {
-                url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                url: "/public/js/dataTables/es-ES-1.13.4.json"
             },
             columns: [
                 { data: "usuario" },

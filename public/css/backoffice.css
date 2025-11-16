@@ -1234,9 +1234,10 @@ input.error {
 }
 
 .tab-btn.active {
-    background-color: white;
-    color: #2C3D8F;
+    background-color: #2C3D8F; /* Fondo azul para resaltar pestaña activa */
+    color: white; /* Texto claro sobre fondo oscuro */
     border-bottom: 2px solid #2C3D8F;
+    font-weight: 700;
 }
 
 .tab-btn:hover:not(.active) {

@@ -462,13 +462,109 @@ public function ObtenerPagosDeUsuarios() {
     // UNIDADES
     // ===================================
 
-    public function CrearUnidad(){
+public function listarTodasUnidades() {
+    $this->listado->listadoComun(
+        "unidades_habitacionales",
+        ["*"],
+        [],
+        [],
+        null
+    );
+}
 
+public function CrearUnidad() {
+    require_once __DIR__ . '/../Modelos/UnidadModelo.php';
+    require_once __DIR__ . '/../Config/validator.php';
+
+    $modelo = new UnidadModelo();
+    $validator = new validator();
+
+    $codigo = $_POST['codigoUnidad'] ?? null;
+    $estado = $_POST['estadoUnidad'] ?? null;
+
+    // Campo requerido
+    if (!$validator->validarCampoRequerido($codigo)) {
+        return json_encode(["error" => "El código es obligatorio."]);
     }
 
-    public function CambiarEstadoUnidad(){
-
+    // Validaciones
+    if (!$validator->validarTexto($codigo, 3, 20)) {
+        return json_encode(["error" => "El código es inválido. Solo letras, números y guiones."]);
     }
+
+    if (!$validator->validarEstadoUnidad($estado)) {
+        return json_encode(["error" => "Estado no válido."]);
+    }
+
+    // Crear
+    $resultado = $modelo->crearUnidad($codigo, $estado);
+
+    if ($resultado === true) {
+        return json_encode(["success" => "Unidad creada correctamente"]);
+    }
+
+    return json_encode(["error" => $resultado]);
+}
+
+
+ public function CambiarEstadoUnidad() {
+    require_once __DIR__ . '/../Modelos/UnidadModelo.php';
+    require_once __DIR__ . '/../Config/validator.php';
+
+    $modelo = new UnidadModelo();
+    $validator = new validator();
+
+    $idUnidad = $_POST['idUnidad'] ?? null;
+    $nuevoEstado = $_POST['nuevoEstado'] ?? null;
+
+    if (!$validator->validarID($idUnidad)) {
+        return json_encode(["error" => "ID no válido"]);
+    }
+
+    if (!$validator->validarEstadoUnidad($nuevoEstado)) {
+        return json_encode(["error" => "Estado no válido"]);
+    }
+
+    $resultado = $modelo->actualizarEstado($idUnidad, $nuevoEstado);
+
+    if ($resultado === true) {
+        return json_encode(["success" => "Estado actualizado con éxito"]);
+    }
+
+    return json_encode(["error" => $resultado]);
+}
+
+public function EliminarUnidad() {
+    require_once __DIR__ . '/../Modelos/UnidadModelo.php';
+    require_once __DIR__ . '/../Config/validator.php';
+
+    $modelo = new UnidadModelo();
+    $validator = new validator();
+
+    $unidadID = $_POST['idUnidad'] ?? null;
+
+    // Validar ID
+    if (!$validator->validarID($unidadID)) {
+        return json_encode(["error" => "ID de unidad no válido"]);
+    }
+
+    // Comprobar si hay usuarios asignados
+    if ($modelo->tieneUsuariosAsignados($unidadID)) {
+        return json_encode([
+            "error" => "No se puede eliminar la unidad porque tiene usuarios asignados."
+        ]);
+    }
+
+    // Eliminar
+    $resultado = $modelo->eliminarUnidad($unidadID);
+
+    if ($resultado === true) {
+        return json_encode(["success" => "Unidad eliminada correctamente"]);
+    }
+
+    // Error SQL
+    return json_encode(["error" => $resultado]);
+}
 
     // ===================================
     // HORAS

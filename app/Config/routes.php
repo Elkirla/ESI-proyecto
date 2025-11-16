@@ -66,16 +66,17 @@ $routes = [
         // ======================
         // USUARIOS
         // ======================
-        "/usuariodatos"        => "UserControl@cargarDatosUsuario",
-        "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes", 
-        "/actualizar-deuda-horas" => "HorasControl@actualizarDeudaHorasUsuario", 
+        "/usuariodatos"              => "UserControl@cargarDatosUsuario",
+        "/usuariospendientes"        => "AdminControl@cargarUsuariosPendientes", 
+        "/actualizar-deuda-horas"    => "HorasControl@actualizarDeudaHorasUsuario", 
         "/ObtenerUsuariosBackoffice" => "AdminControl@ObtenerUsuariosBackoffice",
-        "/obtenerTodasConfig"  => "AdminControl@ObtenerTodasConfig",
+        "/obtenerTodasConfig"        => "AdminControl@ObtenerTodasConfig",
 
         // ======================
         // UNIDADES HABITACIONALES
         // ======================
-        "/obtenerdatosunidad" => "UnidadControl@ObtenerDatosUnidad",
+        "/obtenerdatosunidad"   => "UnidadControl@ObtenerDatosUnidad",
+        "/obtenerTodasUnidades" => "AdminControl@listarTodasUnidades",
         
         // ======================
         // NOTIFICACIONES

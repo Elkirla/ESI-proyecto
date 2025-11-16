@@ -13,6 +13,35 @@ public function validarUsuarioCambios($usuario, $personal) {
     $this->validarTelefono($usuario->getTelefono());
     $this->validarCI($usuario->getCi(), $usuario->getId(), $personal);
 }
+public function validarTexto($texto, $min = 1, $max = 255) {
+    if (!isset($texto)) return false;
+
+    $texto = trim($texto);
+
+    if (strlen($texto) < $min || strlen($texto) > $max) {
+        return false;
+    } 
+    if (!preg_match('/^[a-zA-Z0-9\-]+$/', $texto)) {
+        return false;
+    }
+
+    return true;
+}
+
+public function validarEstadoUnidad($estado) {
+    $estadosValidos = ["Cimientos", "Estructura", "Terminaciones", "Finalizada"];
+    return in_array($estado, $estadosValidos);
+}
+public function validarID($id) {
+    return filter_var($id, FILTER_VALIDATE_INT) && $id > 0;
+}
+
+public function validarCampoRequerido($valor) {
+    return isset($valor) && trim($valor) !== "";
+}
+public function validarLongitudExacta($str, $len) {
+    return strlen(trim($str)) === $len;
+}
 
 
 public function EsNumeroEnteroPositivo($valor) {
