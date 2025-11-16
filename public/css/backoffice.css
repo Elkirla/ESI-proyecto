@@ -1310,3 +1310,116 @@ input.error {
     padding: 10px 12px;
     color: var(--color-texto-claro);
 }
+
+/* --- Estilos para Formularios de Unidades --- */
+.form-unidades {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: var(--color-fondo-elevado);
+    padding: 25px;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+}
+.unidades h2{
+    font-size: 2.8rem;
+    margin: 10px;
+    color:var(--color-texto-claro);
+    font-family: "Roboto";
+    font-weight: 300;
+}
+.form-unidades h3 {
+    color: var(--color-primario-acento);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.form-unidades p {
+    color: var(--color-texto-secundario);
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.form-unidades .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-unidades .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--color-texto-claro);
+    font-weight: 500;
+}
+
+.form-unidades input:not([type="submit"]),
+.form-unidades select {
+    padding: 10px 12px;
+    border: 1px solid var(--color-borde);
+    border-radius: 6px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: var(--color-input-bg);
+    color: var(--color-texto-claro);
+}
+
+.form-unidades input:focus,
+.form-unidades select:focus {
+    border-color: var(--color-primario-acento);
+    box-shadow: 0 0 0 3px rgba(27, 152, 224, 0.2);
+    outline: none;
+}
+
+/* Inputs de solo lectura en formulario de modificar */
+#tab-modificar-unidad .form-group input[readonly] {
+    background-color: #1A1D24;
+    color: var(--color-texto-secundario);
+    cursor: not-allowed;
+    border-style: dashed;
+}
+
+/* Inputs de solo lectura en formulario de eliminar */
+#tab-eliminar-unidad .form-group input[readonly] {
+    background-color: #1A1D24;
+    color: var(--color-texto-secundario);
+    cursor: not-allowed;
+    border-style: dashed;
+}
+
+/* Botones de acción en unidades */
+.form-unidades .btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 15px;
+    color: white;
+}
+
+.form-unidades .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.form-unidades .btn:active {
+    transform: translateY(0);
+}
+
+/* Mensajes de error */
+#tab-crear-unidad .error-msg,
+#tab-modificar-unidad .error-msg,
+#tab-eliminar-unidad .error-msg {
+    color: var(--color-peligro);
+    font-size: 0.9em;
+    margin-top: 5px;
+} 
