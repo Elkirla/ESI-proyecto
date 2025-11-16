@@ -7,14 +7,21 @@ class validator {
         return $this->errores;
     }
  
-    public function validarUsuarioCambios($usuario) {
-        $this->validarNombre($usuario->getNombre());
-        $this->validarApellido($usuario->getApellido());
-        $this->validarTelefono($usuario->getTelefono());
-        $this->validarCI($usuario->getCi(), $usuario->getId());
-    }
+public function validarUsuarioCambios($usuario, $personal) {
+    $this->validarNombre($usuario->getNombre());
+    $this->validarApellido($usuario->getApellido());
+    $this->validarTelefono($usuario->getTelefono());
+    $this->validarCI($usuario->getCi(), $usuario->getId(), $personal);
+}
 
- 
+
+public function EsNumeroEnteroPositivo($valor) {
+    return preg_match('/^[0-9]+$/', $valor) && intval($valor) > 0;
+}
+public function EsDiaDelMes($valor) {
+    return preg_match('/^[0-9]+$/', $valor) && intval($valor) >= 1 && intval($valor) <= 31;
+}
+
 private function validarNombre($nombre) {
     if (empty($nombre)) {
         $this->errores["nombre"] = "El nombre es obligatorio";
@@ -68,30 +75,41 @@ private function validarTelefono($telefono) {
 
 
  
-private function validarCI($ci, $idUsuario = null) { 
+private function validarCI($ci, $idUsuario = null, $personal = false) { 
+
     require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
     $modelo = new UsuarioModelo();
 
-    // Si estamos editando, verificar si la CI pertenece a otro usuario
-    if (!empty($ci) && $idUsuario !== null && $modelo->ExisteCIParaOtroUsuario($ci, $idUsuario)) {
-        $this->errores["ci"] = "La CI ya está registrada por otro usuario";
-        return;
+    // Caso personal: permitir misma CI sin error
+    if ($personal) {
+
+        // Si el usuario cambió su CI, verificar que no esté usada por OTRO
+        if (!empty($ci) && $modelo->ExisteCIParaOtroUsuario($ci, $idUsuario)) {
+            $this->errores["ci"] = "La CI ya está registrada por otro usuario";
+            return;
+        }
+
+    } else {
+        // Caso admin modificando otro usuario
+        if (!empty($ci) && $idUsuario !== null && $modelo->ExisteCIParaOtroUsuario($ci, $idUsuario)) {
+            $this->errores["ci"] = "La CI ya está registrada por otro usuario";
+            return;
+        }
     }
 
-    // Si no estamos editando (registro nuevo)
-    if (!empty($ci) && $idUsuario === null && $modelo->ExisteCI($ci)) {
-        $this->errores["ci"] = "La CI ya está registrada";
-        return;
-    }
-
+    // Validación numérica
     if (!ctype_digit($ci)) {
         $this->errores["ci"] = "La CI solo puede contener números";
         return;
     }  
+
+    // Validación de algoritmo uruguayo
     if (!$this->CedulaUruguaya($ci)) {
         $this->errores["ci"] = "La CI ingresada no es válida";
-    }  
+    }
+        
 }
+
 
     public function Contraseña($password) {
         $errors = [];

@@ -1,19 +1,16 @@
 <?php
 class AuthControl {
-
-    /** ✅ Verificar si es admin */
+ 
     private function EsAdmin(): bool {
         return isset($_SESSION['rol']) && $_SESSION['rol'] === "administrador";
     }
-
-    /** ✅ Mostrar 404 limpio */
+ 
     private function Mostrar404() {
         http_response_code(404);
         include __DIR__ . "/../Vistas/404.php";
         exit;
     }
-
-    /** ✅ Helpers para validar acceso */
+ 
     private function requireAdmin() {
         if (!$this->EsAdmin()) {
             $this->Mostrar404();
@@ -94,6 +91,7 @@ public function registrar() {
     if (!empty($ci) && $modelo->ExisteCI($ci)) {
         $errores['ci'][] = "La CI ya está registrada";
     }
+    
     if (!$validator->CedulaUruguaya($ci)) {
         $errores['ci'][] = "La CI no es valida";
     }
