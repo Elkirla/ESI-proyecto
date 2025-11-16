@@ -1054,27 +1054,27 @@ input.error {
     display: block;
 }
 
-/* .tab-content es solo un contenedor en usuarios, no necesita display: none */
-.tab {
+/* Estilos para tabs en la sección Usuarios */
+.usuarios .tab {
     display: none;
     padding-top: 20px;
 }
-.tab.active {
+.usuarios .tab.active {
     display: block;
 }
 
-/* Estilos para tabs en la sección Datos del Usuario */
-.tab-content {
-    display: block;
+/* Estilos para tabs en la sección Config (Datos del Usuario) */
+#user-data-section .tab-content {
+    display: none;
     padding-top: 20px;
 }
-.tab-content.active {
+#user-data-section .tab-content.active {
     display: block;
 }
 
 .btn-config.active,
 .tab-btn.active {
-    background-color: #2C3D8F; /* Nuevo color azul oscuro */
+    background-color: #2C3D8F;  
     color: white;
 }
 
