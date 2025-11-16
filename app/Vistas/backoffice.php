@@ -392,10 +392,113 @@
     </table>
 
 </div>
-
- 
         <div class="unidades section" style="display:none;">
-            <h2>Unidades</h2> 
+            <h2>Gestión de Unidades Habitacionales</h2>
+
+            <!-- Navegación entre pestañas -->
+            <div class="tabs">
+                <button class="tab-button active" data-tab="listar-unidades">Lista de Unidades</button>
+                <button class="tab-button" data-tab="crear-unidad">Crear Unidad</button>
+                <button class="tab-button" data-tab="modificar-unidad">Modificar Unidad</button>
+                <button class="tab-button" data-tab="eliminar-unidad">Eliminar Unidad</button>
+            </div>
+
+            <!-- Contenido de pestañas -->
+            <div class="tab-content">
+                
+                <!-- TAB LISTAR UNIDADES -->
+                <div id="tab-listar-unidades" class="tab active">
+                    <table id="tablaUnidades" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Estado</th>  
+                            </tr>
+                        </thead>
+                        <tbody> 
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TAB CREAR UNIDAD -->
+                <div id="tab-crear-unidad" class="tab">
+                    <form id="formCrearUnidad" class="form-unidades">
+                        <h3>Crear Nueva Unidad Habitacional</h3>
+
+                        <div class="form-group">
+                            <label for="codigo-unidad">Código de Unidad:</label>
+                            <input type="text" id="codigo-unidad" name="codigoUnidad" maxlength="20" placeholder="Ej: A-101, Casa-5" required>
+                            <span id="error-codigo-unidad" class="error-msg"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="estado-unidad">Estado:</label>
+                            <select id="estado-unidad" name="estadoUnidad" required>
+                                <option value="">-- Seleccionar estado --</option>
+                                <option value="Cimientos">Cimientos</option>
+                                <option value="Estructura">Estructura</option>
+                                <option value="Terminaciones">Terminaciones</option>
+                                <option value="Finalizada">Finalizada</option>
+                            </select>
+                            <span id="error-estado-unidad" class="error-msg"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Crear Unidad</button>
+                    </form>
+                </div>
+
+                <!-- TAB MODIFICAR UNIDAD -->
+                <div id="tab-modificar-unidad" class="tab">
+                    <form id="formModificarUnidad" class="form-unidades">
+                        <h3>Modificar Unidad Habitacional</h3>
+                        <p>Selecciona una unidad de la lista para cargar sus datos.</p>
+
+                        <input type="hidden" id="mod-unidad-id" name="idUnidad">
+
+                        <div class="form-group">
+                            <label for="mod-codigo-unidad">Código de Unidad:</label>
+                            <input type="text" id="mod-codigo-unidad" name="codigoUnidad" readonly>
+                            <span id="mod-error-codigo-unidad" class="error-msg"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mod-estado-unidad">Estado:</label>
+                            <select id="mod-estado-unidad" name="nuevoEstado" required>
+                                <option value="">-- Seleccionar estado --</option>
+                                <option value="Cimientos">Cimientos</option>
+                                <option value="Estructura">Estructura</option>
+                                <option value="Terminaciones">Terminaciones</option>
+                                <option value="Finalizada">Finalizada</option>
+                            </select>
+                            <span id="mod-error-estado-unidad" class="error-msg"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+
+                <!-- TAB ELIMINAR UNIDAD -->
+                <div id="tab-eliminar-unidad" class="tab">
+                    <form id="formEliminarUnidad" class="form-unidades">
+                        <h3>Eliminar Unidad Habitacional</h3>
+                        <p>Selecciona una unidad de la lista para eliminarla.</p>
+
+                        <input type="hidden" id="elim-unidad-id" name="idUnidad">
+
+                        <div class="form-group">
+                            <label for="elim-codigo-unidad">Código de Unidad:</label>
+                            <input type="text" id="elim-codigo-unidad" name="codigoUnidad" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="elim-estado-unidad">Estado:</label>
+                            <input type="text" id="elim-estado-unidad" name="estado" readonly>
+                        </div> 
+                        <button type="submit" class="btn btn-danger">Eliminar Unidad</button>
+                    </form>
+                </div>
+
+            </div>
         </div>
  
 <div class="config section" style="display:none;">

@@ -147,6 +147,13 @@ $routes = [
         "/editarConfig"            => "AdminControl@EditarConfiguracion",
         "/ListarDatosUsuarios"     => "AdminControl@ListarDatosUsuario",
         
+        // ======================
+        // UNIDADES
+        // ======================
+
+        "/CrearUnidad"           => "AdminControl@CrearUnidad",
+        "/CambiarEstadoUnidad"   => "AdminControl@CambiarEstadoUnidad",
+        "/EliminarUnidad"        => "AdminControl@EliminarUnidad", 
 
         // ======================
         // NOTIFICACIONES

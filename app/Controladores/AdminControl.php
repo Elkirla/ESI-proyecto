@@ -473,6 +473,7 @@ public function listarTodasUnidades() {
 }
 
 public function CrearUnidad() {
+    header('Content-Type: application/json; charset=utf-8');
     require_once __DIR__ . '/../Modelos/UnidadModelo.php';
     require_once __DIR__ . '/../Config/validator.php';
 
@@ -484,30 +485,34 @@ public function CrearUnidad() {
 
     // Campo requerido
     if (!$validator->validarCampoRequerido($codigo)) {
-        return json_encode(["error" => "El código es obligatorio."]);
+        echo json_encode(["error" => "El código es obligatorio."]);
+        exit;
     }
 
     // Validaciones
     if (!$validator->validarTexto($codigo, 3, 20)) {
-        return json_encode(["error" => "El código es inválido. Solo letras, números y guiones."]);
+        echo json_encode(["error" => "El código es inválido. Solo letras, números y guiones."]);
+        exit;
     }
 
     if (!$validator->validarEstadoUnidad($estado)) {
-        return json_encode(["error" => "Estado no válido."]);
+        echo json_encode(["error" => "Estado no válido."]);
+        exit;
     }
 
     // Crear
     $resultado = $modelo->crearUnidad($codigo, $estado);
 
     if ($resultado === true) {
-        return json_encode(["success" => "Unidad creada correctamente"]);
+        echo json_encode(["success" => "Unidad creada correctamente"]);
+    } else {
+        echo json_encode(["error" => $resultado]);
     }
-
-    return json_encode(["error" => $resultado]);
 }
 
 
  public function CambiarEstadoUnidad() {
+    header('Content-Type: application/json; charset=utf-8');
     require_once __DIR__ . '/../Modelos/UnidadModelo.php';
     require_once __DIR__ . '/../Config/validator.php';
 
@@ -518,23 +523,26 @@ public function CrearUnidad() {
     $nuevoEstado = $_POST['nuevoEstado'] ?? null;
 
     if (!$validator->validarID($idUnidad)) {
-        return json_encode(["error" => "ID no válido"]);
+        echo json_encode(["error" => "ID no válido"]);
+        exit;
     }
 
     if (!$validator->validarEstadoUnidad($nuevoEstado)) {
-        return json_encode(["error" => "Estado no válido"]);
+        echo json_encode(["error" => "Estado no válido"]);
+        exit;
     }
 
     $resultado = $modelo->actualizarEstado($idUnidad, $nuevoEstado);
 
     if ($resultado === true) {
-        return json_encode(["success" => "Estado actualizado con éxito"]);
+        echo json_encode(["success" => "Estado actualizado con éxito"]);
+    } else {
+        echo json_encode(["error" => $resultado]);
     }
-
-    return json_encode(["error" => $resultado]);
 }
 
 public function EliminarUnidad() {
+    header('Content-Type: application/json; charset=utf-8');
     require_once __DIR__ . '/../Modelos/UnidadModelo.php';
     require_once __DIR__ . '/../Config/validator.php';
 
@@ -545,25 +553,26 @@ public function EliminarUnidad() {
 
     // Validar ID
     if (!$validator->validarID($unidadID)) {
-        return json_encode(["error" => "ID de unidad no válido"]);
+        echo json_encode(["error" => "ID de unidad no válido"]);
+        exit;
     }
 
     // Comprobar si hay usuarios asignados
     if ($modelo->tieneUsuariosAsignados($unidadID)) {
-        return json_encode([
+        echo json_encode([
             "error" => "No se puede eliminar la unidad porque tiene usuarios asignados."
         ]);
+        exit;
     }
 
     // Eliminar
     $resultado = $modelo->eliminarUnidad($unidadID);
 
     if ($resultado === true) {
-        return json_encode(["success" => "Unidad eliminada correctamente"]);
+        echo json_encode(["success" => "Unidad eliminada correctamente"]);
+    } else {
+        echo json_encode(["error" => $resultado]);
     }
-
-    // Error SQL
-    return json_encode(["error" => $resultado]);
 }
 
     // ===================================

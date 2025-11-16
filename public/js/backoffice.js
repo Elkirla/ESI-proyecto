@@ -105,6 +105,7 @@ const formEliminarUsuario = document.getElementById("formEliminarUsuario");
         CargarUsuarios();
         cargarTablaPagosUsuarios();
         cargarHorasPrincipales();
+        cargarUnidades();
         cargarConfiguracion();
     }
 
@@ -1043,11 +1044,241 @@ document.getElementById('usuariosAtrasados').textContent = atrasados;
         btnCerrar.textContent = panel.classList.contains("cerrado") ? ">" : "<";
     }); 
 
+    // =================================================================
+    // 7. LÓGICA DE "UNIDADES"
+    // =================================================================
+
+    // --- SELECTORES DE UNIDADES ---
+    const tabButtonsUnidades = document.querySelectorAll(".unidades .tab-button");
+    const tabsUnidades = document.querySelectorAll(".unidades .tab");
+    const formCrearUnidad = document.getElementById("formCrearUnidad");
+    const formModificarUnidad = document.getElementById("formModificarUnidad");
+    const formEliminarUnidad = document.getElementById("formEliminarUnidad");
+
+    // --- FUNCIÓN PARA CAMBIAR PESTAÑA (Unidades) ---
+    function cambiarPestañaUnidades(tabSeleccionada) {
+        tabButtonsUnidades.forEach(btn => btn.classList.remove("active"));
+        tabsUnidades.forEach(tab => tab.classList.remove("active"));
+
+        const botonActivo = document.querySelector(`.unidades .tab-button[data-tab="${tabSeleccionada}"]`);
+        const tabActiva = document.querySelector(`.unidades #tab-${tabSeleccionada}`);
+
+        if (botonActivo && tabActiva) {
+            botonActivo.classList.add("active");
+            tabActiva.classList.add("active");
+        }
+    }
+
+    // --- CARGAR UNIDADES EN TABLA ---
+    async function cargarUnidades() {
+        try {
+            const response = await fetch("/obtenerTodasUnidades");
+            const data = await response.json();
+
+            if ($.fn.DataTable.isDataTable("#tablaUnidades")) {
+                $("#tablaUnidades").DataTable().clear().destroy();
+            }
+
+            // El backend devuelve directamente un array
+            const unidades = Array.isArray(data) ? data : (data.data || []);
+
+            $("#tablaUnidades").DataTable({
+                data: unidades,
+                columns: [
+                    { data: "codigo" },
+                    { data: "estado" }
+                ],
+                language: {
+                    url: "/public/js/dataTables/es-ES-1.13.6.json"
+                },
+                responsive: true,
+                pageLength: 10
+            });
+
+        } catch (err) {
+            console.error("Error cargando unidades:", err);
+            agregarNotificacion("Error al cargar unidades", "error");
+        }
+    }
+
+    // --- EVENTO DE CLICK EN TABLA (Seleccionar Unidad) ---
+    document.addEventListener("click", function(e) {
+        if (e.target.closest("#tablaUnidades tbody tr")) {
+            const tabla = $("#tablaUnidades").DataTable();
+            const fila = e.target.closest("tr");
+            const data = tabla.row(fila).data();
+
+            if (!data) return;
+
+            cargarUnidadSeleccionada(data);
+        }
+    });
+
+    // --- CARGAR UNIDAD SELECCIONADA EN FORMULARIOS ---
+    function cargarUnidadSeleccionada(unidad) {
+        // Modificar
+        document.getElementById("mod-unidad-id").value = unidad.id;
+        document.getElementById("mod-codigo-unidad").value = unidad.codigo;
+        document.getElementById("mod-estado-unidad").value = unidad.estado;
+
+        // Eliminar
+        document.getElementById("elim-unidad-id").value = unidad.id;
+        document.getElementById("elim-codigo-unidad").value = unidad.codigo;
+        document.getElementById("elim-estado-unidad").value = unidad.estado;
+
+        // Si tiene información de usuarios asignados
+        if (unidad.usuarios_asignados !== undefined) {
+            document.getElementById("elim-usuarios-unidad").value = unidad.usuarios_asignados || "0";
+        }
+    }
+
+    // --- CREAR UNIDAD ---
+    if (formCrearUnidad) {
+        formCrearUnidad.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const datos = new FormData(formCrearUnidad);
+
+            try {
+                const response = await fetch("/CrearUnidad", {
+                    method: "POST",
+                    body: datos
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Respuesta vacía del servidor");
+                }
+
+                const result = JSON.parse(text);
+
+                if (result.success) {
+                    Swal.fire("Éxito", "Unidad creada exitosamente", "success");
+                    formCrearUnidad.reset();
+                    cargarUnidades();
+                    cambiarPestañaUnidades("listar-unidades");
+                } else {
+                    Swal.fire("Error", result.error || "Error al crear unidad", "error");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                Swal.fire("Error", "Error de conexión: " + error.message, "error");
+            }
+        });
+    }
+
+    // --- MODIFICAR UNIDAD ---
+    if (formModificarUnidad) {
+        formModificarUnidad.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const datos = new FormData(formModificarUnidad);
+
+            try {
+                const response = await fetch("/CambiarEstadoUnidad", {
+                    method: "POST",
+                    body: datos
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Respuesta vacía del servidor");
+                }
+
+                const result = JSON.parse(text);
+
+                if (result.success) {
+                    Swal.fire("Éxito", "Unidad actualizada exitosamente", "success");
+                    cargarUnidades();
+                    cambiarPestañaUnidades("listar-unidades");
+                } else {
+                    Swal.fire("Error", result.error || "Error al actualizar unidad", "error");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                Swal.fire("Error", "Error de conexión: " + error.message, "error");
+            }
+        });
+    }
+
+    // --- ELIMINAR UNIDAD ---
+    if (formEliminarUnidad) {
+        formEliminarUnidad.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const idUnidad = document.getElementById("elim-unidad-id").value;
+            if (!idUnidad) {
+                Swal.fire("Advertencia", "Selecciona una unidad primero", "warning");
+                return;
+            }
+
+            // Confirmación
+            const confirm = await Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            });
+
+            if (!confirm.isConfirmed) return;
+
+            const datos = new FormData();
+            datos.append("idUnidad", idUnidad);
+
+            try {
+                const response = await fetch("/EliminarUnidad", {
+                    method: "POST",
+                    body: datos
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Respuesta vacía del servidor");
+                }
+
+                const result = JSON.parse(text);
+
+                if (result.success) {
+                    Swal.fire("Éxito", "Unidad eliminada exitosamente", "success");
+                    cargarUnidades();
+                    cambiarPestañaUnidades("listar-unidades");
+                } else {
+                    Swal.fire("Error", result.error || "Error al eliminar unidad", "error");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                Swal.fire("Error", "Error de conexión: " + error.message, "error");
+            }
+        });
+    }
+
+    // --- EVENTOS DE PESTAÑAS (Unidades) ---
+    tabButtonsUnidades.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tabSeleccionada = btn.dataset.tab;
+            cambiarPestañaUnidades(tabSeleccionada);
+        });
+    });
+
     // --- Estado Inicial de la UI ---
     sections.forEach(s => s.style.display = "none");
     document.querySelector(".mi-perfil").style.display = "block"; // Mostrar "Mi Perfil" por defecto
  
     // --- Carga de Datos ---
     CargarDatos();
-
+ 
 }); // Fin de DOMContentLoaded
