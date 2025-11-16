@@ -222,55 +222,69 @@
                         <th>CI</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- DataTables insertará aquí los datos -->
+                <tbody> 
                 </tbody>
             </table>
         </div>
 
         <!-- TAB CREAR USUARIO -->
-        <div id="tab-crear" class="tab">
-            <form id="formCrearUsuario" class="form-usuarios">
-                <h3>Crear Nuevo Usuario</h3>
-                <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" maxlength="50" required>
-                </div>
-                <div class="form-group">
-                    <label for="apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" maxlength="50" required>
-                </div>
-                <div class="form-group">
-                    <label for="correo">Correo:</label>
-                    <input type="email" id="correo" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefono">Teléfono:</label>
-                
-                    <select id="pais" name="pais" class="select-pais" required>
-                        <option value="+598" selected>🇺🇾 +598</option>
-                        <option value="+54">🇦🇷 +54</option>
-                        <option value="+55">🇧🇷 +55</option>
-                        <option value="+56">🇨🇱 +56</option>
-                        <option value="+57">🇨🇴 +57</option>
-                        <option value="+34">🇪🇸 +34</option>
-                        <option value="+1">🇺🇸 +1</option>
-                        <option value="+52">🇲🇽 +52</option>
-                    </select>
-                
-                    <input type="text" id="telefono" name="telefono" maxlength="8" required>
-                </div>
-                <div class="form-group">
-                    <label for="ci">Cédula:</label>
-                    <input type="text" id="ci" name="ci" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-success">Crear Usuario</button>
-            </form>
+<!-- TAB CREAR USUARIO -->
+<div id="tab-crear" class="tab">
+    <form id="formCrearUsuario" class="form-usuarios">
+        <h3>Crear Nuevo Usuario</h3>
+
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" maxlength="50" required>
+            <span id="error-nombre" class="error-msg"></span>
         </div>
+
+        <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" maxlength="50" required>
+            <span id="error-apellido" class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" name="email" required>
+            <span id="error-email" class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+
+            <select id="pais" name="pais" class="select-pais" required>
+                <option value="+598" selected>🇺🇾 +598</option>
+                <option value="+54">🇦🇷 +54</option>
+                <option value="+55">🇧🇷 +55</option>
+                <option value="+56">🇨🇱 +56</option>
+                <option value="+57">🇨🇴 +57</option>
+                <option value="+34">🇪🇸 +34</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+52">🇲🇽 +52</option>
+            </select>
+
+            <input type="text" id="telefono" name="telefono" maxlength="8" required>
+            <span id="error-telefono" class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="ci">Cédula:</label>
+            <input type="text" id="ci" name="ci" required>
+            <span id="error-ci" class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+            <span id="error-password" class="error-msg"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Crear Usuario</button>
+    </form>
+</div>
+
 
         <!-- TAB MODIFICAR USUARIO -->
         <div id="tab-modificar" class="tab">

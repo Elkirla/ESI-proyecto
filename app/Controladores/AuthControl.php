@@ -94,6 +94,9 @@ public function registrar() {
     if (!empty($ci) && $modelo->ExisteCI($ci)) {
         $errores['ci'][] = "La CI ya está registrada";
     }
+    if (!$validator->CedulaUruguaya($ci)) {
+        $errores['ci'][] = "La CI no es valida";
+    }
 
     // Contraseña
     if ($password !== $confirm) {

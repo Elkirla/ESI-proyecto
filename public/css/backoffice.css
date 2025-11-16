@@ -670,176 +670,230 @@ input.error {
     background: #304276;
 } 
 .content{
-    background-color: #d8d8d8; 
+    background-color: #1A1D24; 
 }
-.usuarios.section {
-    overflow-y: hidden;
-    max-width: 1000px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #ffffff; 
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-    color: #2A3551;
+/* Variables de color para "Modo Oscuro" */
+:root {
+    /* Paleta Oscura */
+    --color-fondo-seccion: #1A1D24; /* Fondo principal (azul muy oscuro) */
+    --color-fondo-elevado: #2C313A; /* Fondo para formularios y tablas */
+    --color-input-bg: #252930;     /* Fondo para inputs */
+    
+    /* Acentos */
+    --color-primario-acento: #1B98E0; /* Azul claro para acentos y títulos */
+    --color-borde: #444444;           /* Bordes sutiles */
+    
+    /* Texto */
+    --color-texto-claro: #F0F0F0;     /* Texto principal (casi blanco) */
+    --color-texto-secundario: #BBBBBB; /* Texto más tenue (párrafos) */
+
+    /* Colores de Acción */
+    --color-exito: #4CAF50;
+    --color-peligro: #F44336;
+    --color-primario-btn: #0A3D62; /* Botón primario sigue siendo azul */
+    --sombra-suave: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
+/* Estilo general de la sección principal */
+.usuarios.section {
+    background-color: var(--color-fondo-seccion);
+    padding: 30px; 
+    box-shadow: var(--sombra-suave);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título de la sección */
 .usuarios h2 {
-    color: #2A3551;
-    border-bottom: 2px solid #FF9800;
+    color: var(--color-texto-claro);
+    border-bottom: 3px solid var(--color-primario-acento);
     padding-bottom: 10px;
     margin-bottom: 20px;
+    font-weight: 600;
 }
 
-/* --- Estilos de Pestañas (Tabs) --- */
-
+/* Estilo de las pestañas (Tabs) */
 .tabs {
     display: flex;
-    margin-bottom: 20px;
-    overflow-x: auto;
-    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--color-borde);
 }
 
 .tab-button {
-    background-color: #F5F7FA;
+    padding: 12px 20px;
     border: none;
-    padding: 10px 15px;
+    background-color: transparent;
+    color: var(--color-texto-secundario);
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
     font-size: 16px;
-    font-weight: bold;
-    color: #2A3551;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-    border-bottom: 3px solid transparent; /* Espacio para el indicador */
-    margin-right: 5px;
+    outline: none;
 }
 
 .tab-button:hover {
-    background-color: #e0e0e0;
+    background-color: var(--color-fondo-elevado);
+    color: var(--color-texto-claro);
 }
 
 .tab-button.active {
-    background-color: #ffffff;
-    border-bottom: 3px solid #FF9800; /* Indicador de pestaña activa */
-    color: #FF9800;
+    color: var(--color-primario-acento);
+    border-bottom: 3px solid var(--color-primario-acento);
+    font-weight: 700;
+    background-color: var(--color-fondo-elevado);
 }
 
-/* Ocultar contenido de pestañas inactivas */
-.tab-content .tab {
+/* Contenido de la pestaña */
+.tab {
     display: none;
-    padding: 15px 0;
+    padding-top: 20px;
 }
-
-.tab-content .tab.active {
+.tab.active {
     display: block;
-} 
-
-#tablaUsuarios {
-    border-collapse: collapse;
-    width: 100%;
 }
 
-#tablaUsuarios th {
-    background-color: #2A3551;
-    color: white;
-    padding: 12px 8px;
-    text-align: left;
-    font-weight: bold;
-}
+/* --- Estilos de Formularios (Crear, Modificar, Eliminar) --- */
 
-#tablaUsuarios td {
-    padding: 10px 8px;
-    border-bottom: 1px solid #e0e0e0;
+.form-usuarios {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: var(--color-fondo-elevado);
+    padding: 25px;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
 }
-
-#tablaUsuarios tbody tr:nth-child(even) {
-    background-color: #F5F7FA;
-}
-
-#tablaUsuarios tbody tr:hover {
-    background-color: #ffeccf; /* Tono suave de naranja al pasar el mouse */
-}
-
-/* --- Estilos de Formularios --- */
 
 .form-usuarios h3 {
-    color: #2A3551;
-    margin-bottom: 15px;
+    color: var(--color-primario-acento);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.form-usuarios p {
+    color: var(--color-texto-secundario);
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 20px;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-group label {
     display: block;
-    font-weight: bold;
     margin-bottom: 5px;
-    color: #2A3551;
+    color: var(--color-texto-claro);
+    font-weight: 500;
 }
 
-.form-usuarios input[type="text"],
-.form-usuarios input[type="email"],
-.form-usuarios input[type="password"] {
+.form-usuarios input:not([type="submit"]),
+.form-usuarios select {
+    padding: 10px 12px;
+    border: 1px solid var(--color-borde);
+    border-radius: 6px;
+    font-size: 16px;
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Asegura que el padding no cambie el ancho total */
-    transition: border-color 0.3s;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: var(--color-input-bg);
+    color: var(--color-texto-claro);
 }
 
-.form-usuarios input:focus {
-    border-color: #FF9800;
+.form-usuarios input:focus,
+.form-usuarios select:focus {
+    border-color: var(--color-primario-acento);
+    box-shadow: 0 0 0 3px rgba(27, 152, 224, 0.2);
     outline: none;
-    box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
 }
 
-.form-usuarios input[readonly] {
-    background-color: #e9ecef;
-    color: #6c757d;
+/* Grupo Teléfono */
+#tab-crear .form-group:nth-child(4) {
+    display: flex;
+    flex-direction: row;
+}
+#tab-crear .form-group:nth-child(4) .select-pais {
+    width: 150px;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+#tab-crear .form-group:nth-child(4) input[type="text"] {
+    flex-grow: 1;
 }
 
-/* --- Estilos de Botones de Acción --- */
+.error-msg {
+    color: var(--color-peligro);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
 
+/* Botones de acción (se mantienen colores brillantes) */
 .btn {
-    padding: 10px 20px;
+    padding: 12px 25px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 16px;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 15px;
+    color: white; /* Texto siempre blanco en botones de color */
 }
 
-.btn-success {
-    background-color: #FF9800;
-    color: white;
+.btn-success { background-color: var(--color-exito); }
+.btn-success:hover { background-color: #43A047; }
+
+.btn-primary { background-color: var(--color-primario-btn); }
+.btn-primary:hover { background-color: #083253; }
+
+.btn-danger { background-color: var(--color-peligro); }
+.btn-danger:hover { background-color: #E53935; }
+
+/* Estilo para inputs de solo lectura (Eliminar) */
+#formEliminarUsuario input[readonly] {
+    background-color: var(--color-input-bg);
+    color: var(--color-texto-secundario);
+    cursor: not-allowed;
+    border-style: dashed;
 }
 
-.btn-success:hover {
-    background-color: #f57c00; /* Naranja más oscuro */
+/* --- Estilos de Tabla (Lista de Usuarios) --- */
+
+#tablaUsuarios {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.btn-primary {
-    background-color: #2A3551;
-    color: white;
+#tablaUsuarios thead th {
+    background-color: var(--color-fondo-elevado);
+    color: var(--color-texto-claro);
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--color-primario-acento);
 }
 
-.btn-primary:hover {
-    background-color: #1a233b; /* Azul más oscuro */
+#tablaUsuarios tbody tr {
+    border-bottom: 1px solid var(--color-borde);
+    transition: background-color 0.2s;
 }
 
-.btn-danger {
-    background-color: #dc3545; /* Rojo estándar para eliminar */
-    color: white;
+#tablaUsuarios tbody tr:nth-child(even) {
+    background-color: var(--color-fondo-elevado); /* Tono sutilmente diferente */
 }
 
-.btn-danger:hover {
-    background-color: #c82333;
-} 
-.error-msg { 
-    display: block;   
-    color: #dc3545;   
-    font-size: 0.875em;
-    margin-top: 0.25rem;
+#tablaUsuarios tbody tr:hover {
+    background-color: #373D4A;
+    cursor: pointer;
+}
+
+#tablaUsuarios tbody td {
+    padding: 10px 12px;
+    color: var(--color-texto-claro);
 }

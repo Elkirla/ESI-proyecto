@@ -169,12 +169,18 @@ const formEliminarUsuario = document.getElementById("formEliminarUsuario");
         ciDatos.textContent = inputCi.value;
     }
 
-    function mostrarErrores(errores) {
-        Object.keys(errores).forEach(key => {
-            const el = document.getElementById(`error-${key}`);
-            if (el) el.textContent = errores[key];
-        });
-    }
+function mostrarErrores(errores) {
+    Object.keys(errores).forEach(key => {
+        const el = document.getElementById(`error-${key}`);
+        if (el) {
+            const msg = Array.isArray(errores[key]) 
+                ? errores[key].join(', ')
+                : errores[key];
+            el.textContent = msg;
+        }
+    });
+}
+
 
     function limpiarErrores() {
         document.querySelectorAll(".error-msg").forEach(el => el.textContent = "");
@@ -294,9 +300,21 @@ async function handleFormSubmit(e) {
 
         const result = await response.json();
 
-        if (!result.success) {
-            mostrarErrores(result.errors);
-        } else {
+  if (!result.success) {
+    mostrarErrores(result.errors); 
+
+    Swal.fire({
+        icon: "error",
+        title: "Errores en el formulario",
+        html: Object.keys(result.errors)
+            .map(k => `<b>${k}:</b> ${
+                Array.isArray(result.errors[k]) ? result.errors[k].join("<br>") : result.errors[k]
+            }`)
+            .join("<br>"),
+    });
+
+    return;
+}else {
             Swal.fire({
                 icon: 'success',
                 title: 'Usuario Creado',
@@ -427,8 +445,7 @@ btnAceptar.addEventListener("click", async (e) => {
         if (!resp.ok) throw new Error('Error al aprobar usuario');
 
         agregarNotificacion("Usuario aprobado correctamente ✅", "success");
-
-        cargarUsuariosPendientes();  
+        CargarDatos();
         formRegistro.reset();  
         window.usuarioActual = null;
 
@@ -676,13 +693,7 @@ document.getElementById('usuariosAtrasados').textContent = atrasados;
     // --- Estado Inicial de la UI ---
     sections.forEach(s => s.style.display = "none");
     document.querySelector(".mi-perfil").style.display = "block"; // Mostrar "Mi Perfil" por defecto
-
-    
-
-
-
-
-
+ 
     // --- Carga de Datos ---
     CargarDatos();
 
