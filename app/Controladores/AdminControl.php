@@ -588,67 +588,65 @@ public function ListarDatosUsuario() {
     $controlPagos = new PagosControl();
 
     try {
-        $userInfo = $_POST["UserInfo"] ?? null;
 
+        $userInfo = $_POST["UserInfo"] ?? null;
         if (!$userInfo) {
             echo json_encode(["error" => "Debe ingresar una CI o correo."]);
             return;
         }
 
-        // -------------------------
-        // 1. Determinar si es email o CI
-        // -------------------------
-        $id_usuario = null;
-
+        // Determinar ID
         if (filter_var($userInfo, FILTER_VALIDATE_EMAIL)) {
-            // Es email
             $id_usuario = $modelo->ObtenerIdPorEmail($userInfo);
         } elseif (ctype_digit($userInfo)) {
-            // Es CI numérica
             $id_usuario = $modelo->ObtenerIdPorCI($userInfo);
         } else {
-            echo json_encode(["error" => "Formato inválido. Debe ingresar email o CI numérica."]);
+            echo json_encode(["error" => "Formato inválido."]);
             return;
         }
 
         if (!$id_usuario) {
-            echo json_encode(["error" => "No se encontró ningún usuario con ese dato."]);
+            echo json_encode(["error" => "No se encontró usuario."]);
             return;
         }
 
-        // -------------------------
-        // 2. Actualizar deudas del usuario
-        // -------------------------
+        // Actualizar deudas
         $controlHoras->actualizarDeudaHorasUsuario($id_usuario);
-        $controlPagos->ActualizarDeudaPago($id_usuario); 
+        $controlPagos->ActualizarDeudaPago($id_usuario);
 
-        // Horas trabajadas
-        $this->listado->listadoComun(
-            "horas_trabajadas",
-            ["*"],
-            ["usuario_id" => $id_usuario]
-        );
+        // ----------------------------------------------------
+        // CAPTURAR TODAS LAS SALIDAS
+        // ----------------------------------------------------
+        ob_start();
+        $this->listado->listadoComun("horas_trabajadas", ["*"], ["usuario_id" => $id_usuario]);
+        $json_horas = ob_get_clean();
+        $horas = json_decode($json_horas, true);
 
-        // Pagos mensuales
-        $this->listado->listadoComun(
-            "pagos_mensuales",
-            ["*"],
-            ["usuario_id" => $id_usuario]
-        );
+        ob_start();
+        $this->listado->listadoComun("pagos_mensuales", ["*"], ["usuario_id" => $id_usuario]);
+        $json_pagos = ob_get_clean();
+        $pagos = json_decode($json_pagos, true);
 
-        // Deudas mensuales
-        $this->listado->listadoComun(
-            "Deudas_Mensuales",
-            ["*"],
-            ["usuario_id" => $id_usuario]
-        );
+        ob_start();
+        $this->listado->listadoComun("Deudas_Mensuales", ["*"], ["usuario_id" => $id_usuario]);
+        $json_deudas_m = ob_get_clean();
+        $deudas_m = json_decode($json_deudas_m, true);
 
-        // Deudas semanales
-        $this->listado->listadoComun(
-            "Semana_deudas",
-            ["*"],
-            ["usuario_id" => $id_usuario]
-        );
+        ob_start();
+        $this->listado->listadoComun("Semana_deudas", ["*"], ["usuario_id" => $id_usuario]);
+        $json_deudas_s = ob_get_clean();
+        $deudas_s = json_decode($json_deudas_s, true);
+
+        // ----------------------------------------------------
+        // RESPUESTA FINAL — UN SOLO JSON LIMPIO
+        // ----------------------------------------------------
+        echo json_encode([
+            "status" => "ok",
+            "horas" => $horas,
+            "pagos" => $pagos,
+            "deudas_mensuales" => $deudas_m,
+            "deudas_semanales" => $deudas_s
+        ]);
 
     } catch (Exception $e) {
         echo json_encode(["error" => $e->getMessage()]);

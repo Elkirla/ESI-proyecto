@@ -187,7 +187,10 @@ public function obtenerEstadoPagoUsuario($usuario_id) {
 public function CalcularPagoDeudas($usuario_id) {
     try {
         if (!$usuario_id) {
-            return $this->responderJson("error", "Sesión no válida.");
+            return [
+                "status" => "error",
+                "message" => "Sesión no válida."
+            ];
         }
 
         // Obtener información del usuario
@@ -196,7 +199,10 @@ public function CalcularPagoDeudas($usuario_id) {
         $correo = $usuario_info['email'] ?? null;
 
         if (!$fecha_inicio) {
-            return $this->responderJson("error", "No se encontró la fecha de registro del usuario.");
+            return [
+                "status" => "error",
+                "message" => "No se encontró la fecha de registro del usuario."
+            ];
         }
 
         // Obtener mensualidad
@@ -209,14 +215,15 @@ public function CalcularPagoDeudas($usuario_id) {
         $fecha_actual = new DateTime();
 
         // Calcular meses con deuda
-        list($deudas_mensuales, $meses_totales_deuda, $primer_mes_pendiente) = $this->calcularDeudasMensuales(
-            $fecha_desde,
-            $fecha_actual,
-            $mensualidad,
-            $pagos_aprobados,
-            $usuario_id,
-            $correo
-        );
+        list($deudas_mensuales, $meses_totales_deuda, $primer_mes_pendiente) = 
+            $this->calcularDeudasMensuales(
+                $fecha_desde,
+                $fecha_actual,
+                $mensualidad,
+                $pagos_aprobados,
+                $usuario_id,
+                $correo
+            );
 
         // Guardar deudas detalladas
         $modelo = new PagoModelo();
@@ -229,16 +236,28 @@ public function CalcularPagoDeudas($usuario_id) {
         );
 
         if (!$guardado) {
-            return $this->responderJson("error", "No se pudo registrar la deuda en la base de datos.");
+            return [
+                "status" => "error",
+                "message" => "No se pudo registrar la deuda en la base de datos."
+            ];
         }
-
-        return $this->responderJson("ok", "Cálculo de deuda actualizado correctamente. Meses adeudados: " . $meses_totales_deuda . ", Monto: " . ($mensualidad * $meses_totales_deuda));
+ 
+        return [
+            "status"    => "ok",
+            "message"   => "Cálculo de deuda actualizado correctamente. Meses adeudados: $meses_totales_deuda, Monto: " . ($mensualidad * $meses_totales_deuda),
+            "meses"     => $meses_totales_deuda,
+            "monto"     => $mensualidad * $meses_totales_deuda
+        ];
 
     } catch (Exception $e) {
         error_log("[CALCULAR_DEUDA_ERROR] " . $e->getMessage());
-        return $this->responderJson("error", "Error al calcular deuda: " . $e->getMessage());
+        return [
+            "status" => "error",
+            "message" => "Error al calcular deuda: " . $e->getMessage()
+        ];
     }
 }
+
 
 /* ============================================================
 MÉTODOS AUXILIARES NUEVOS PARA CÁLCULO MENSUAL

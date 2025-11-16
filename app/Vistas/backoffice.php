@@ -453,11 +453,11 @@
         <section id="user-data-section" class="config-section">
             <h3>Datos del Usuario</h3>
 
-            <!-- Buscador -->
-            <div class="user-search">
-                <input type="text" id="buscadorUsuario" placeholder="Buscar usuario por CI o nombre...">
-                <button id="btnBuscarUsuario">Buscar</button>
-            </div>
+            <!-- Buscador --> 
+                <form class="user-search">
+                    <input type="text" id="buscadorUsuario" placeholder="Buscar usuario por CI o correo...">
+                    <button id="btnBuscarUsuario">Buscar</button>
+                </form> 
 
             <!-- LENGUETAS -->
             <div class="tabs-user-data">
@@ -485,7 +485,7 @@
 
             <!-- HORAS -->
             <div id="tab-horas" class="tab-content">
-                <table id="tablaHoras" class="display datatable" style="width:100%">
+                <table id="tablaHorasUsuario" class="display datatable" style="width:100%">
                     <thead>
                         <tr>
                             <th>Fecha</th>

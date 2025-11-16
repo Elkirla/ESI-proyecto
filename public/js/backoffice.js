@@ -104,7 +104,7 @@ const formEliminarUsuario = document.getElementById("formEliminarUsuario");
         datosUsuario();  
         CargarUsuarios();
         cargarTablaPagosUsuarios();
-        cargarHoras();
+        cargarHorasPrincipales();
         cargarConfiguracion();
     }
 
@@ -653,6 +653,203 @@ function mostrarErroresAdmin(errores) {
         if (el) el.textContent = errores[key];
     });
 }
+const btnBuscar = document.getElementById("btnBuscarUsuario");
+const inputBuscar = document.getElementById("buscadorUsuario");
+
+// Instancias DataTables (se crean cuando realmente existan)
+let tablaPagos = null;
+let tablaHoras = null;
+let tablaDeudasM = null;
+let tablaDeudasS = null;
+
+// Crear DataTables cuando el DOM esté cargado (si las tablas están visibles)
+document.addEventListener("DOMContentLoaded", () => {
+
+    if ($("#tablaPagosMensuales").length) {
+        tablaPagos = $('#tablaPagosMensuales').DataTable();
+    }
+
+    if ($("#tablaHorasUsuario").length) {
+        tablaHoras = $('#tablaHorasUsuario').DataTable();
+    }
+
+    if ($("#tablaDeudasMensuales").length) {
+        tablaDeudasM = $('#tablaDeudasMensuales').DataTable();
+    }
+
+    if ($("#tablaDeudasSemanales").length) {
+        tablaDeudasS = $('#tablaDeudasSemanales').DataTable();
+    }
+});
+
+// Evento del botón Buscar
+btnBuscar.addEventListener("click", function(e) {
+    e.preventDefault();
+
+    const userInfo = inputBuscar.value.trim();
+    if (userInfo === "") {
+        Swal.fire("Error", "Ingrese CI o correo", "warning");
+        return;
+    }
+
+    buscarDatosUsuario(userInfo);
+});
+
+
+/* --------------------------------------------------------------
+   FUNCIÓN PRINCIPAL — Solicitar datos al backend
+---------------------------------------------------------------- */
+function buscarDatosUsuario(userInfo) {
+
+    const formData = new FormData();
+    formData.append("UserInfo", userInfo);
+
+    console.log("🔍 Enviando solicitud con:", userInfo);
+
+    fetch("/ListarDatosUsuarios", {  
+        method: "POST",
+        body: formData
+    })
+    .then(async response => {
+
+        console.log("📡 Estado HTTP:", response.status);
+
+        // Leer respuesta RAW (sin parsear)
+        const rawText = await response.text();
+
+        console.log("📨 RESPUESTA RAW DEL SERVIDOR:");
+        console.log(rawText);
+
+        // Intentar parsear JSON
+        try {
+            const parsed = JSON.parse(rawText);
+            console.log("📦 JSON PARSEADO:", parsed);
+            return parsed;
+        } catch (parseError) {
+            console.error("❌ ERROR AL PARSEAR JSON:", parseError);
+            Swal.fire("Error", "El servidor devolvió una respuesta inválida.", "error");
+            return null;
+        }
+    })
+    .then(data => {
+
+        if (!data) return;
+
+        if (data.error) {
+            Swal.fire("Error", data.error, "error");
+            return;
+        }
+
+        if (data.status !== "ok") {
+            Swal.fire("Error", "No se pudo cargar la información.", "error");
+            return;
+        }
+
+        // Cargar tablas
+        cargarPagos(data.pagos);
+        cargarHoras(data.horas);
+        cargarDeudasMensuales(data.deudas_mensuales);
+        cargarDeudasSemanales(data.deudas_semanales);
+
+        Swal.fire("Éxito", "Datos cargados correctamente.", "success");
+    })
+    .catch(err => {
+        console.error("🔥 ERROR FATAL EN FETCH:", err);
+        Swal.fire("Error", "No se pudo conectar con el servidor.", "error");
+    });
+}
+
+
+
+/* --------------------------------------------------------------
+   CARGADORES DE TABLAS
+---------------------------------------------------------------- */
+
+// Crear DataTable si no existe
+function asegurarTabla(ref, selector) {
+    if (!ref) {
+        console.warn(`⚠ Inicializando DataTable tardíamente: ${selector}`);
+        return $(selector).DataTable();
+    }
+    return ref;
+}
+
+// PAGOS MENSUALES
+function cargarPagos(pagos) {
+
+    tablaPagos = asegurarTabla(tablaPagos, "#tablaPagosMensuales");
+
+    tablaPagos.clear();
+
+    pagos.forEach(p => {
+        tablaPagos.row.add([
+            p.mes,
+            p.monto,
+            p.fecha
+        ]);
+    });
+
+    tablaPagos.draw();
+}
+
+
+// HORAS TRABAJADAS
+function cargarHoras(horas) {
+
+    tablaHoras = asegurarTabla(tablaHoras, "#tablaHorasUsuario");
+
+    tablaHoras.clear();
+
+    horas.forEach(h => {
+        tablaHoras.row.add([
+            h.fecha,
+            h.horas
+        ]);
+    });
+
+    tablaHoras.draw();
+}
+
+
+// DEUDAS MENSUALES
+function cargarDeudasMensuales(deudas) {
+
+    tablaDeudasM = asegurarTabla(tablaDeudasM, "#tablaDeudasMensuales");
+
+    tablaDeudasM.clear();
+
+    deudas.forEach(d => {
+        tablaDeudasM.row.add([
+            d.mes,
+            d.monto,
+            d.adeudado
+        ]);
+    });
+
+    tablaDeudasM.draw();
+}
+
+
+// DEUDAS SEMANALES
+function cargarDeudasSemanales(deudas) {
+
+    tablaDeudasS = asegurarTabla(tablaDeudasS, "#tablaDeudasSemanales");
+
+    tablaDeudasS.clear();
+
+    deudas.forEach(d => {
+        tablaDeudasS.row.add([
+            `${d.fecha_inicio} → ${d.fecha_fin}`,
+            d.horas_trabajadas,
+            d.horas_faltantes,
+            d.horas_justificadas,
+            d.horas_compensadas
+        ]);
+    });
+
+    tablaDeudasS.draw();
+}
+
 
 formModificar.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -760,7 +957,7 @@ formEliminarUsuario.addEventListener("submit", async (e) => {
     }
 });
 // Ejecutar cuando se muestra la sección o al cargar la página
-async function cargarHoras() {
+async function cargarHorasPrincipales() {
     try {
         const resp = await fetch("/horasadmin");
         const data = await resp.json();
@@ -801,7 +998,7 @@ async function cargarHoras() {
 
  
 document.getElementById("btnActualizarHoras").addEventListener("click", () => {
-    cargarHoras();
+    cargarHorasPrincipales();
 });
  
 

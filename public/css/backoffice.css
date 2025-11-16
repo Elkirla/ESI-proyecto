@@ -1062,8 +1062,6 @@ input.error {
 .usuarios .tab.active {
     display: block;
 }
-
-/* Estilos para tabs en la sección Config (Datos del Usuario) */
 #user-data-section .tab-content {
     display: none;
     padding-top: 20px;
