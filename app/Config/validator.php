@@ -87,12 +87,10 @@ private function validarCI($ci, $idUsuario = null) {
     if (!ctype_digit($ci)) {
         $this->errores["ci"] = "La CI solo puede contener números";
         return;
-    } 
-    /*
+    }  
     if (!$this->CedulaUruguaya($ci)) {
         $this->errores["ci"] = "La CI ingresada no es válida";
-    } 
-    */
+    }  
 }
 
     public function Contraseña($password) {

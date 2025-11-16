@@ -98,7 +98,7 @@ public function registrar() {
     // Contraseña
     if ($password !== $confirm) {
         $errores['confirm'][] = "Las contraseñas no coinciden";
-    } else {
+    } elseif (!$esAdmin) {
         $passErrors = $validator->Contraseña($password);
         if (!empty($passErrors)) {
             $errores['password'] = $passErrors;
