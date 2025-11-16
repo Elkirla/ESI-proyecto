@@ -356,9 +356,43 @@
 </div>
 
  
-        <div class="horas section" style="display:none;">
-            <h2>Horas</h2> 
+<div class="horas section" style="display:none;">
+
+    <!-- Encabezado -->
+    <div class="horas-header">
+        <h2>Horas trabajadas</h2>
+
+        <!-- Rango de semana -->
+        <div class="semana-rango">
+            <span id="semanaInicio"></span> 
+            <span> / </span>
+            <span id="semanaFin"></span>
         </div>
+
+        <!-- Botón para actualizar (puede llevar icono) -->
+        <button id="btnActualizarHoras" class="btn-actualizar">
+            Actualizar
+           <img src="public/imagenes/reload.png" alt="reload_icon">
+        </button>
+    </div>
+
+    <!-- Tabla de horas -->
+    <table id="tablaHoras" class="display tabla-horas" style="width:100%;">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Horas trabajadas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- DataTables llenará esto -->
+        </tbody>
+    </table>
+
+</div>
+
  
         <div class="unidades section" style="display:none;">
             <h2>Unidades</h2> 

@@ -24,10 +24,10 @@ public function cargarDatosUsuario() {
 
 public function ActualizarDatosUsuario() { 
     $idUsuario = $_SESSION["usuario_id"] ?? null; 
-    $this->ModificarDatos($idUsuario);
+    $this->ModificarDatos($idUsuario, true);
 }
 
-public function ModificarDatos($idUsuario) {
+public function ModificarDatos($idUsuario, $personal) {
     header('Content-Type: application/json');
 
     require_once __DIR__ . '/../Config/validator.php';
@@ -40,20 +40,19 @@ public function ModificarDatos($idUsuario) {
     $usuario->setApellido($_POST["apellido"] ?? "");
     $usuario->setTelefono($_POST["telefono"] ?? ""); 
     $usuario->setCi($_POST["ci"] ?? "");
-
-    // Validación - DEBEMOS usar el mismo validador que en la versión anterior
+ 
     $validator = new Validator();
-    $validator->validarUsuarioCambios($usuario);
+    $validator->validarUsuarioCambios($usuario, $personal);
     $errores = $validator->getErrores();
  
-    if (!empty($errores)) {
-        // ELIMINAR toda la normalización y devolver los errores directamente
+    if (!empty($errores)) { 
         echo json_encode([
             "success" => false,    
-            "errores" => $errores  // ← Así funcionaba antes
+            "errores" => $errores  
         ]);
         return;
     }
+    
 
     // Actualizar datos
     $modeloUsuario = new UsuarioModelo();

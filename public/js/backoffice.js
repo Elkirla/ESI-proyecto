@@ -92,6 +92,7 @@ const formEliminarUsuario = document.getElementById("formEliminarUsuario");
         datosUsuario();  
         CargarUsuarios();
         cargarTablaPagosUsuarios();
+        cargarHoras();
     }
 
 
@@ -510,7 +511,8 @@ function CargarUsuarioSeleccionado(ci) {
         }
  
         CargarModificarUsuario(usuario);
-        CargarEliminarUsuario(usuario);
+        CargarEliminarUsuario(usuario); 
+        limpiarErrores();
 
         // Cambiar pestaña automáticamente
         document.querySelector(".tab-button[data-tab='modificar']").click();
@@ -638,6 +640,51 @@ formEliminarUsuario.addEventListener("submit", async (e) => {
         Swal.fire("Error", "Ocurrió un error inesperado", "error");
     }
 });
+// Ejecutar cuando se muestra la sección o al cargar la página
+async function cargarHoras() {
+    try {
+        const resp = await fetch("/horasadmin");
+        const data = await resp.json();
+  
+        if (!data.success) {
+            console.warn("No se pudo cargar horas.");
+            return;
+        }
+
+        // Rango de semana
+        document.getElementById("semanaInicio").textContent = data.semana.inicio;
+        document.getElementById("semanaFin").textContent   = data.semana.fin;
+
+        // Crear / recrear DataTable
+        if ($.fn.DataTable.isDataTable("#tablaHoras")) {
+            $("#tablaHoras").DataTable().clear().destroy(); 
+        }
+
+        $("#tablaHoras").DataTable({
+            data: data.data,
+            responsive: true,
+            destroy: true,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+            },
+            columns: [
+                { data: "usuario" },
+                { data: "email" },
+                { data: "telefono" },
+                { data: "horas_trabajadas" }
+            ]
+        });
+
+    } catch (e) {
+        console.error("❌ Error cargando horas:", e);
+    }
+}
+
+ 
+document.getElementById("btnActualizarHoras").addEventListener("click", () => {
+    cargarHoras();
+});
+ 
 
 
 async function cargarTablaPagosUsuarios() {

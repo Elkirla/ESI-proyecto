@@ -60,8 +60,8 @@ $routes = [
         // ======================
         // JUSTIFICATIVOS
         // ======================
-        "/listar-justificativos"        => "JustificativoControl@listarJustificativos",
-        "/listar-justificativos-admin"  => "AdminControl@listarJustificativosAdmin", 
+        "/listar-justificativos"   => "JustificativoControl@listarJustificativos",
+        "/justificativosAdmin"     => "AdminControl@listarJustificativosAdmin", 
         
         // ======================
         // USUARIOS
@@ -70,6 +70,7 @@ $routes = [
         "/usuariospendientes"  => "AdminControl@cargarUsuariosPendientes", 
         "/actualizar-deuda-horas" => "HorasControl@actualizarDeudaHorasUsuario", 
         "/ObtenerUsuariosBackoffice" => "AdminControl@ObtenerUsuariosBackoffice",
+        "/obtenerTodasConfig"  => "AdminControl@ObtenerTodasConfig",
 
         // ======================
         // UNIDADES HABITACIONALES

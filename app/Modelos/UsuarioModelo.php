@@ -164,5 +164,12 @@ public function EliminarUsuarioPorId($id) {
         return false;
     }
 }
+public function editarConfig($clave, $valor) {
+    $sql = "UPDATE configuracion SET valor = :valor WHERE clave = :clave";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':clave', $clave);
+    $stmt->bindParam(':valor', $valor);
+    return $stmt->execute();
+}
 
 }
