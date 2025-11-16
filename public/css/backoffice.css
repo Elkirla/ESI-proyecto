@@ -1034,9 +1034,7 @@ input.error {
 .tabla-horas tbody tr:nth-child(even) {
     background-color: #fcfcfc;
 }
-.config {
-    height: 100%;
-    overflow-y: hidden;
+.config.section {
     max-width: 800px; /* Reducción de ancho para enfoque */
     margin: 15px auto; /* Reducción de margen externo */
     padding: 15px; /* Reducción de padding interno */
@@ -1056,11 +1054,20 @@ input.error {
     display: block;
 }
 
-.tab-content {
+/* .tab-content es solo un contenedor en usuarios, no necesita display: none */
+.tab {
     display: none;
-    margin-top: 10px; /* Reducción de margen superior */
+    padding-top: 20px;
+}
+.tab.active {
+    display: block;
 }
 
+/* Estilos para tabs en la sección Datos del Usuario */
+.tab-content {
+    display: block;
+    padding-top: 20px;
+}
 .tab-content.active {
     display: block;
 }

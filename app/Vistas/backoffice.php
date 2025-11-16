@@ -418,43 +418,35 @@
             <h3>Valores Actuales</h3>
 
             <form id="form-configuracion" class="form-config">
-            
                 <div class="form-group">
                     <label>Fecha límite de pago</label>
                     <input type="number" name="fecha_limite_pago" min="1" max="31">
-                    <span class="error-msg" id="error-fecha_limite_pago"></span>
                 </div>
-            
+
                 <div class="form-group">
                     <label>Mensualidad</label>
                     <input type="number" name="mensualidad" min="0">
-                    <span class="error-msg" id="error-mensualidad"></span>
                 </div>
-            
+
                 <div class="form-group">
                     <label>Horas semanales requeridas</label>
                     <input type="number" name="horas_semanales" min="1">
-                    <span class="error-msg" id="error-horas_semanales"></span>
                 </div>
-            
+
                 <div class="form-group">
                     <label>Valor semanal</label>
                     <input type="number" name="valor_semanal" min="0">
-                    <span class="error-msg" id="error-valor_semanal"></span>
                 </div>
-            
+
                 <div class="form-group">
                     <label>Cuota semanal</label>
                     <input type="number" name="cuota_semanal" min="0">
-                    <span class="error-msg" id="error-cuota_semanal"></span>
                 </div>
-            
+
                 <button type="submit" class="btn-guardar-config">
                     Guardar Configuración
                 </button>
-            
             </form>
-
         </section>
 
 

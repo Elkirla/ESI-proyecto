@@ -578,6 +578,83 @@ public function verDeudasHorasAdmin() {
         "mensaje" => "Configuraciones actualizadas correctamente"
     ]);
 }
+public function ListarDatosUsuario() {
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
+    require_once __DIR__ . '/../Controladores/HorasControl.php';
+    require_once __DIR__ . '/../Controladores/PagosControl.php';
+
+    $modelo = new UsuarioModelo();
+    $controlHoras = new HorasControl();
+    $controlPagos = new PagosControl();
+
+    try {
+        $userInfo = $_POST["UserInfo"] ?? null;
+
+        if (!$userInfo) {
+            echo json_encode(["error" => "Debe ingresar una CI o correo."]);
+            return;
+        }
+
+        // -------------------------
+        // 1. Determinar si es email o CI
+        // -------------------------
+        $id_usuario = null;
+
+        if (filter_var($userInfo, FILTER_VALIDATE_EMAIL)) {
+            // Es email
+            $id_usuario = $modelo->ObtenerIdPorEmail($userInfo);
+        } elseif (ctype_digit($userInfo)) {
+            // Es CI numérica
+            $id_usuario = $modelo->ObtenerIdPorCI($userInfo);
+        } else {
+            echo json_encode(["error" => "Formato inválido. Debe ingresar email o CI numérica."]);
+            return;
+        }
+
+        if (!$id_usuario) {
+            echo json_encode(["error" => "No se encontró ningún usuario con ese dato."]);
+            return;
+        }
+
+        // -------------------------
+        // 2. Actualizar deudas del usuario
+        // -------------------------
+        $controlHoras->actualizarDeudaHorasUsuario($id_usuario);
+        $controlPagos->ActualizarDeudaPago($id_usuario); 
+
+        // Horas trabajadas
+        $this->listado->listadoComun(
+            "horas_trabajadas",
+            ["*"],
+            ["usuario_id" => $id_usuario]
+        );
+
+        // Pagos mensuales
+        $this->listado->listadoComun(
+            "pagos_mensuales",
+            ["*"],
+            ["usuario_id" => $id_usuario]
+        );
+
+        // Deudas mensuales
+        $this->listado->listadoComun(
+            "Deudas_Mensuales",
+            ["*"],
+            ["usuario_id" => $id_usuario]
+        );
+
+        // Deudas semanales
+        $this->listado->listadoComun(
+            "Semana_deudas",
+            ["*"],
+            ["usuario_id" => $id_usuario]
+        );
+
+    } catch (Exception $e) {
+        echo json_encode(["error" => $e->getMessage()]);
+    }
+}
+
 
 public function ObtenerTodasConfig(){
     $this->listado->listadoComun(

@@ -658,9 +658,14 @@ private function obtenerPagoCompensatorioParaSemana($pagos, $fecha_inicio, $fech
 private function haySuperposicionFechas($inicio1, $fin1, $inicio2, $fin2) {
     return ($inicio1 <= $fin2) && ($inicio2 <= $fin1);
 }
-    public function actualizarDeudaHorasUsuario(){
+public function actualizarDeudaHorasUsuario($id_usuario = null) {
+    if (!$id_usuario) {
         $this->CalcularHorasDeuda($this->usuario_id);
+    } else { 
+        $this->CalcularHorasDeuda($id_usuario);
+    }
 }
+
 public function verDeudasHorasUsuario(){
     $this->listado->listadoComun(
         "Horas_deuda",

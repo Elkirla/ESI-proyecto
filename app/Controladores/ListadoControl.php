@@ -9,12 +9,6 @@ class ListadoControl {
     }
 
     public function listadoComun($tabla, $columnas, $condiciones = [], $orden = null, $limite = null) {
-    $usuarioid = $_SESSION['usuario_id'] ?? null;
-    if (!$usuarioid) {
-        echo json_encode([
-            "error" => "Su sesión ha expirado. Por favor, inicie sesión nuevamente."]);
-        exit;
-    }
         try {
             $arreglo = $this->modelo->listadoUniversalSimple(
                 $tabla,

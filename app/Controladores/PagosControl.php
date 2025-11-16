@@ -413,8 +413,8 @@ private function tienePagoAprobadoParaMes($pagos_aprobados, $mes_buscado) {
 private function responderJson($status, $message) {
     echo json_encode(['status' => $status, 'message' => $message]);
 }
-    public function ActualizarDeudaPago() {
-        $usuario_id = $_SESSION['usuario_id'] ?? null; 
-        $this->CalcularPagoDeudas($usuario_id);
-    }
+public function ActualizarDeudaPago($id_usuario = null) {
+    $usuario_id = $id_usuario ?? ($_SESSION['usuario_id'] ?? null);
+    $this->CalcularPagoDeudas($usuario_id);
+}
 }
