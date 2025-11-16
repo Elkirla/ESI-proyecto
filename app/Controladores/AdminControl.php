@@ -473,15 +473,33 @@ public function ObtenerPagosDeUsuarios() {
     // ===================================
     // HORAS
     // ===================================
-
+ 
 public function verHorasAdmin() {
-    $this->listado->listadoComun(
-        "horas_trabajadas",
-        ["fecha", "horas"],
-        [],                       
-        ["fecha", "DESC"]
-    );
+    require_once __DIR__ . '/../Modelos/UsuarioModelo.php';
+    require_once __DIR__ . '/../Controladores/HorasControl.php';
+
+    try {
+        $modeloUsuarios = new UsuarioModelo();
+        $controlHoras = new HorasControl();
+
+        $usuarios = $modeloUsuarios->ObtenerTodosUsuarios();
+
+        $resultado = $controlHoras->obtenerHorasSemanaDeTodos($usuarios);
+
+        echo json_encode([
+            'success' => true,
+            'semana' => $resultado['semana'],
+            'data' => $resultado['data']
+        ]);
+
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
 }
+
 public function verDeudasHorasAdmin() {
     $this->listado->listadoComun(
         "Horas_deuda",

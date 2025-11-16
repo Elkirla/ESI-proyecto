@@ -589,7 +589,35 @@ private function ValorSemanal() {
 
     return floatval($data[0]['valor']);
 }
+public function obtenerHorasSemanaDeTodos($usuarios) {
+    $resultado = [];
 
+    // Obtener rango semanal
+    $semana = $this->obtenerSemanaActual();
+    $inicio = new DateTime($semana['inicio']);
+    $fin = new DateTime($semana['fin']);
+
+    foreach ($usuarios as $u) {
+
+        // Como está dentro de HorasControl, se puede llamar a métodos privados!
+        $horasUsuario = $this->obtenerHorasTrabajadas($u['id']);
+        $horasSemana = $this->calcularHorasEnSemana($horasUsuario, $inicio, $fin);
+
+        $resultado[] = [
+            'usuario' => $u['nombre'] . ' ' . $u['apellido'],
+            'email' => $u['email'],
+            'telefono' => $u['telefono'],
+            'horas_trabajadas' => $horasSemana
+        ];
+    }
+
+    return [
+        'semana' => $semana,
+        'data' => $resultado
+    ];
+}
+
+ 
 private function obtenerJustificativoParaSemana($justificativos, $fecha_inicio, $fecha_fin) {
     $inicio = $fecha_inicio->format('Y-m-d');
     $fin = $fecha_fin->format('Y-m-d');

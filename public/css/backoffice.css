@@ -1,3 +1,23 @@
+:root {
+    /* Paleta Oscura */
+    --color-fondo-seccion: #1A1D24; /* Fondo principal (azul muy oscuro) */
+    --color-fondo-elevado: #2C313A; /* Fondo para formularios y tablas */
+    --color-input-bg: #252930;     /* Fondo para inputs */
+    
+    /* Acentos */
+    --color-primario-acento: #1B98E0; /* Azul claro para acentos y títulos */
+    --color-borde: #444444;           /* Bordes sutiles */
+    
+    /* Texto */
+    --color-texto-claro: #F0F0F0;     /* Texto principal (casi blanco) */
+    --color-texto-secundario: #BBBBBB; 
+
+    /* Colores de Acción */
+    --color-exito: #4CAF50;
+    --color-peligro: #F44336;
+    --color-primario-btn: #0A3D62; /* Botón primario sigue siendo azul */
+    --sombra-suave: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
 * {
     margin: 0;
     padding: 0;
@@ -609,14 +629,13 @@ input.error {
 .dataTables_paginate {
     color: #ffffff !important;
 }
-/* Hacer la tabla más grande */
 .dataTables_wrapper {
     width: 100%;
 }
 
 #tabla-pagos {
     width: 100% !important;
-    font-size: 15px; /* texto un poquito más grande */
+    font-size: 15px; 
 }
 
 /* Aumentar alto de celdas y espaciado */
@@ -673,26 +692,7 @@ input.error {
     background-color: #1A1D24; 
 }
 /* Variables de color para "Modo Oscuro" */
-:root {
-    /* Paleta Oscura */
-    --color-fondo-seccion: #1A1D24; /* Fondo principal (azul muy oscuro) */
-    --color-fondo-elevado: #2C313A; /* Fondo para formularios y tablas */
-    --color-input-bg: #252930;     /* Fondo para inputs */
-    
-    /* Acentos */
-    --color-primario-acento: #1B98E0; /* Azul claro para acentos y títulos */
-    --color-borde: #444444;           /* Bordes sutiles */
-    
-    /* Texto */
-    --color-texto-claro: #F0F0F0;     /* Texto principal (casi blanco) */
-    --color-texto-secundario: #BBBBBB; /* Texto más tenue (párrafos) */
 
-    /* Colores de Acción */
-    --color-exito: #4CAF50;
-    --color-peligro: #F44336;
-    --color-primario-btn: #0A3D62; /* Botón primario sigue siendo azul */
-    --sombra-suave: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
 
 /* Estilo general de la sección principal */
 .usuarios.section {
