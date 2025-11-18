@@ -133,6 +133,7 @@ private function validarCI($ci, $idUsuario = null, $personal = false) {
     }  
 
     // Validación de algoritmo uruguayo
+    
     if (!$this->CedulaUruguaya($ci)) {
         $this->errores["ci"] = "La CI ingresada no es válida";
     }
