@@ -6,26 +6,23 @@ class Uploads {
     private $maxSize;
 
     public function __construct(
-        $uploadsDir = '/var/www/html/public/uploads/',
+        $relativePath = 'uploads/', // Carpeta dentro de public/
         $allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'],
         $maxSize = 5242880 // 5MB
     ) {
-        $this->uploadsDir = $uploadsDir;
+        // Ruta absoluta correcta: siempre dentro de public/
+        $this->uploadsDir = rtrim($_SERVER['DOCUMENT_ROOT'] . '/' . $relativePath, '/') . '/';
         $this->allowedTypes = $allowedTypes;
         $this->maxSize = $maxSize;
 
-        // Asegurar directorio
-$uploadDir = '/var/www/html/public/uploads/';
-
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0775, true);
-    chown($uploadDir, 'www-data');
-    chgrp($uploadDir, 'www-data');
-}
-        if (!is_writable($this->uploadsDir)) {
-            throw new Exception("El directorio de subidas no es escribible.");
+        // Crear carpeta si no existe
+        if (!is_dir($this->uploadsDir)) {
+            mkdir($this->uploadsDir, 0777, true);
         }
 
+        if (!is_writable($this->uploadsDir)) {
+            throw new Exception("El directorio '{$this->uploadsDir}' no es escribible.");
+        }
     }
 
     public function subirArchivo($fileInputName) {
@@ -35,44 +32,39 @@ if (!is_dir($uploadDir)) {
 
         $file = $_FILES[$fileInputName];
 
-        // Validar errores
         if ($file['error'] !== UPLOAD_ERR_OK) {
             throw new Exception($this->getUploadErrorMessage($file['error']));
         }
 
-        // Validar tipo MIME
         $fileType = mime_content_type($file['tmp_name']);
         if (!in_array($fileType, $this->allowedTypes)) {
-            throw new Exception("Tipo de archivo no permitido. Use JPEG, PNG o PDF.");
+            throw new Exception("Tipo de archivo no permitido (JPEG, PNG o PDF).");
         }
 
-        // Validar tamaño
         if ($file['size'] > $this->maxSize) {
-            throw new Exception("El archivo es demasiado grande. Máximo permitido: " . ($this->maxSize / 1024 / 1024) . " MB.");
+            throw new Exception("Archivo demasiado grande. Máximo 5MB.");
         }
 
-        // Generar nombre seguro
         $nombreSeguro = uniqid() . "_" . preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file['name']));
         $destino = $this->uploadsDir . $nombreSeguro;
 
-        // Mover archivo
         if (!move_uploaded_file($file['tmp_name'], $destino)) {
-            throw new Exception("Error al guardar el archivo en el servidor.");
+            throw new Exception("No se pudo guardar el archivo.");
         }
 
-        // Retornar ruta relativa para la BD
+        // Ruta para la BD (desde la raíz pública)
         return "/uploads/" . $nombreSeguro;
     }
 
     private function getUploadErrorMessage($errorCode) {
         $errors = [
-            UPLOAD_ERR_INI_SIZE => 'El archivo excede el tamaño máximo permitido por el servidor.',
-            UPLOAD_ERR_FORM_SIZE => 'El archivo excede el tamaño máximo permitido por el formulario.',
-            UPLOAD_ERR_PARTIAL => 'El archivo se subió parcialmente.',
+            UPLOAD_ERR_INI_SIZE => 'Archivo excede el tamaño permitido por el servidor.',
+            UPLOAD_ERR_FORM_SIZE => 'Archivo excede el tamaño permitido por el formulario.',
+            UPLOAD_ERR_PARTIAL => 'Archivo subido parcialmente.',
             UPLOAD_ERR_NO_FILE => 'No se seleccionó ningún archivo.',
-            UPLOAD_ERR_NO_TMP_DIR => 'No hay carpeta temporal en el servidor.',
-            UPLOAD_ERR_CANT_WRITE => 'No se pudo escribir el archivo en el disco.',
-            UPLOAD_ERR_EXTENSION => 'Una extensión de PHP detuvo la subida del archivo.'
+            UPLOAD_ERR_NO_TMP_DIR => 'Falta carpeta temporal en el servidor.',
+            UPLOAD_ERR_CANT_WRITE => 'Error al escribir en el disco.',
+            UPLOAD_ERR_EXTENSION => 'Extensión PHP detuvo la subida.'
         ];
         return $errors[$errorCode] ?? 'Error desconocido al subir archivo.';
     }

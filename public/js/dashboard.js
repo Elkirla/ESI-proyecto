@@ -684,52 +684,50 @@ if (resultado.success) {
     }
     
 async function procesarPago(e) {
-        e.preventDefault();
-        
-        // Deshabilitar botón para evitar múltiples envíos
-        enviarPagoBtn.disabled = true;
-        enviarPagoBtn.textContent = 'Procesando...';
-        
+    e.preventDefault();
+
+    enviarPagoBtn.disabled = true;
+    enviarPagoBtn.textContent = 'Procesando...';
+
+    try {
+        const formData = new FormData(formPago);
+
+        const respuesta = await fetch('/pago', {
+            method: "POST",
+            body: formData
+        });
+
+        // Obtener texto en bruto SIEMPRE
+        const raw = await respuesta.text();
+        console.log("🔥 RAW RESPONSE DEL SERVIDOR:", raw);
+
+        // Intentar parsear JSON
+        let resultado;
         try {
-            const formData = new FormData(formPago);
-            
-            const respuesta = await fetch('/pago', {
-                method: "POST",
-                body: formData
-            });
-            
-            // Verificar si la respuesta es JSON válido
-            const contentType = respuesta.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new Error('El servidor respondió con un formato incorrecto');
-            }
-            
-            const resultado = await respuesta.json();
-            
-            if (resultado.success) {
-                agregarNotificacion(resultado.message || "Pago registrado exitosamente", 'success');
-                cargarpagos();  // Refrescar datos de pagos       
-                formPago.reset();  // Limpiar formulario después de éxito
-            } else {
-                // Mostrar error específico del servidor
-                agregarNotificacion(resultado.error || "Error al procesar el pago", 'error');
-            }
-        } catch (err) {
-            // Mensajes más amigables según el tipo de error
-            if (err.name === 'TypeError' && err.message.includes('JSON')) {
-                agregarNotificacion("Error en el servidor. Por favor, intente más tarde.", 'error');
-            } else if (err.name === 'TypeError') {
-                agregarNotificacion("Error de conexión. Verifique su internet e intente nuevamente.", 'error');
-            } else {
-                agregarNotificacion("Error inesperado. Intente más tarde.", 'error');
-            }
-            
-            console.error('Error detallado (solo desarrollo):', err);
-        } finally { 
-            enviarPagoBtn.disabled = false;
-            enviarPagoBtn.textContent = 'Enviar Pago';
+            resultado = JSON.parse(raw);
+        } catch (jsonError) {
+            console.error("❌ ERROR: El servidor no devolvió JSON válido.");
+            console.error("Contenido recibido:", raw);
+            throw new Error("El servidor devolvió HTML o un error PHP en vez de JSON.");
         }
+
+        if (resultado.success) {
+            agregarNotificacion(resultado.message || "Pago registrado exitosamente", 'success');
+            cargarpagos();
+            formPago.reset();
+        } else {
+            agregarNotificacion(resultado.error || "Error al procesar el pago", 'error');
+        }
+
+    } catch (err) {
+        console.error("Error en procesarPago:", err);
+        agregarNotificacion("Ocurrió un error inesperado.", 'error');
+    } finally {
+        enviarPagoBtn.disabled = false;
+        enviarPagoBtn.textContent = 'Enviar Pago';
     }
+}
+
     
 const btnEditar = document.getElementById("btn-editar-datos");
 const vistaDatos = document.getElementById("vista-datos");
