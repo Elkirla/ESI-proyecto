@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Normas de convivencia</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700&family=Montserrat&display=swap" rel="stylesheet"> 
-    <link rel="icon" href="public/imagenes/logo.png" type="icon">
-    <link rel="stylesheet" href="public/css/normas.css">
+    <link rel="icon" href="imagenes/logo.png" type="image/png">
+    <link rel="stylesheet" href="css/normas.css">
 </head>
 <body>
 
 <div class="header">
     <a href="/">
-        <img src="public/imagenes/regresar.png" alt="regresar boton" class="regresar_flecha">
+        <img src="imagenes/regresar.png" alt="regresar boton" class="regresar_flecha">
     </a>
-    <img src="public/imagenes/logo2.png" alt="logo FENEC" class="logoheader">
+    <img src="imagenes/logo2.png" alt="logo FENEC" class="logoheader">
     <p class="separador"></p>
 </div>
 

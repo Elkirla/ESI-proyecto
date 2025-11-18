@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700&family=Montserrat&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="public/css/exitoregistro.css">
-    <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <link rel="stylesheet" href="css/exitoregistro.css">
+    <link rel="icon" href="imagenes/logo.png" type="image/png">
     <title>Exito</title>
 </head>
 <body>
-<img src="public/imagenes/check.png" alt="tick_ok">
+<img src="imagenes/check.png" alt="tick_ok">
 <h1>Registro enviado con éxito</h1>
 <h2>Procesaremos su orden y recibiras una respuesta</h2>
 <a href="/">Regresar</a>

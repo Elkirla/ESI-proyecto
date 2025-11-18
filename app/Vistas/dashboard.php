@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
-    <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <link rel="icon" href="imagenes/logo.png" type="image/png">
     <title>Página usuario</title>
 </head>
 <body>
@@ -43,18 +43,18 @@
     
     <div class="InfoInicio">
         <div class="info-item">
-            <img src="public/imagenes/dinero.png" alt="dinero_icon">
+            <img src="imagenes/dinero.png" alt="dinero_icon">
             <h3>Pagos</h3>
             <h3 id="EstadoPagosID"></h3>
         </div>
 
         <div class="info-item">
-            <img src="public/imagenes/reloj.png" alt="reloj_icon">
+            <img src="imagenes/reloj.png" alt="reloj_icon">
             <h3 id="HorasTrabajadasID">Horas</h3>  
         </div>
 
         <div class="info-item">
-            <img src="public/imagenes/casa.png" alt="casa_icon">
+            <img src="imagenes/casa.png" alt="casa_icon">
             <h3 id="UnidadInicioID"></h3>
         </div>
     </div>
@@ -62,14 +62,14 @@
  
 <div class="mi-perfil section">
     <div class="texto-icono">
-        <img src="public/imagenes/usuario.png" alt="usuario_icon"> 
+        <img src="imagenes/usuario.png" alt="usuario_icon"> 
         <h2>MI PERFIL</h2>
     </div>
 
     <div class="datosUsuario-container">
         <div id="editar-datos">
             <button id="btn-editar-datos">
-                <img src="public/imagenes/lapiz.png" alt="lapiz_icon">
+                <img src="imagenes/lapiz.png" alt="lapiz_icon">
                 <p>Editar datos</p>
             </button>
         </div>
@@ -319,12 +319,12 @@
 
     <div class="mensajes section">
         <div class="texto-icono-mensajes">
-            <img src="public/imagenes/correo.png" alt="mensajes_icon">
+            <img src="imagenes/correo.png" alt="mensajes_icon">
             <h2>MIS MENSAJES</h2>
         </div>
         <div id="sona-mensajes">
             <div class="sin-mensajes">
-                <img src="public/imagenes/luna.png" alt="luna_icon">
+                <img src="imagenes/luna.png" alt="luna_icon">
                 <h3>Nada por aqui...</h3> 
             </div>
         </div>
@@ -333,7 +333,7 @@
 
     <div class="soporte section">
         <div class="texto-icono-soporte"> 
-            <img src="public/imagenes/celular.png" alt="celular_icon">
+            <img src="imagenes/celular.png" alt="celular_icon">
             <h2>Soporte al usuario</h2>
         </div>
         <h3>Si ha experimentado algún error o tiene alguna duda, consulte al personal por nuestros medios de comunicación </h3>
@@ -342,6 +342,6 @@
     </div>
 </div>
 
-<script src="public/js/dashboard.js"></script>
+<script src="js/dashboard.js"></script>
 </body>
 </html>

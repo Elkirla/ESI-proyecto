@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/css/login.css">
-    <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" href="imagenes/logo.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <title>Login</title>
 </head>
@@ -14,7 +14,7 @@
 
   <div class="regresar-container">
     <a href="/">
-    <img src="public/imagenes/flecha.png" alt="flecha_icon">
+    <img src="imagenes/flecha.png" alt="flecha_icon">
     </a>
   </div>
 
@@ -31,17 +31,17 @@
     <label class="Error"></label>
     <input type="submit" value="Iniciar Sesión" class="boton-login">
 </form>
-        <img src="public/imagenes/ojo-apagado.png" alt="mostrar contraseña" id="eye" class="eye-icon">
+        <img src="imagenes/ojo-apagado.png" alt="mostrar contraseña" id="eye" class="eye-icon">
     
 </div>
  
 <div class="Lado-derecho-container">
   <h2>¿Sin cuenta?</h2>
-  <img src="public/imagenes/persona-mas.png" alt="usuario_icon">
+  <img src="imagenes/persona-mas.png" alt="usuario_icon">
   <p>Crea una solicitud para participar de nuestra cooperativa.</p>
   <a href="/registro"><button>Registrar</button></a>
 </div>
 
-<script src="public/js/login.js"></script>
+<script src="js/login.js"></script>
 </body>
 </html>

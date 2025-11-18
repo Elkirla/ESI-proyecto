@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/css/backoffice.css">
+    <link rel="stylesheet" href="css/backoffice.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
  
-    <script src="/public/js/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="/public/css/jquery.dataTables.min.css">
-    <script src="/public/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="/public/css/sweetalert2.min.css">
-    <script src="/public/js/sweetalert2.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <script src="js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="css/sweetalert2.min.css">
+    <script src="js/sweetalert2.min.js"></script>
 
-    <link rel="icon" href="public/imagenes/logo.png" type="icon">
+    <link rel="icon" href="imagenes/logo.png" type="image/png">
     <title>BackOffice</title>
 </head>
 
@@ -49,14 +49,14 @@
  
 <div class="mi-perfil section">
     <div class="texto-icono">
-        <img src="public/imagenes/usuario.png" alt="usuario_icon"> 
+        <img src="imagenes/usuario.png" alt="usuario_icon"> 
         <h2>MI PERFIL</h2>
     </div>
 
     <div class="datosUsuario-container">
         <div id="editar-datos">
             <button id="btn-editar-datos">
-                <img src="public/imagenes/lapiz.png" alt="lapiz_icon">
+                <img src="imagenes/lapiz.png" alt="lapiz_icon">
                 <p>Editar datos</p>
             </button>
         </div>
@@ -73,33 +73,33 @@
         </div>
         
         <div class="formulario-editar-datos-container">
- <form id="form-editar-datos" class="datos" style="display:none;">
+            <form id="form-editar-datos" class="datos" style="display:none;">
 
-        <div class="input-group">
-            <input type="text" id="input-nombre" placeholder="Nombre">
-            <small class="error-msg" id="error-nombre"></small>
-        </div>
+                <div class="input-group">
+                    <input type="text" id="input-nombre" placeholder="Nombre">
+                    <small class="error-msg" id="error-nombre"></small>
+                </div>
 
-        <div class="input-group">
-            <input type="text" id="input-apellido" placeholder="Apellido">
-            <small class="error-msg" id="error-apellido"></small>
-        </div>
+                <div class="input-group">
+                    <input type="text" id="input-apellido" placeholder="Apellido">
+                    <small class="error-msg" id="error-apellido"></small>
+                </div>
 
-        <div class="input-group">
-            <input type="text" id="input-telefono" placeholder="Teléfono">
-            <small class="error-msg" id="error-telefono"></small>
-        </div>
+                <div class="input-group">
+                    <input type="text" id="input-telefono" placeholder="Teléfono">
+                    <small class="error-msg" id="error-telefono"></small>
+                </div>
 
-        <div class="input-group">
-            <input type="text" id="input-ci" placeholder="CI">
-            <small class="error-msg" id="error-ci"></small>
-        </div>
+                <div class="input-group">
+                    <input type="text" id="input-ci" placeholder="CI">
+                    <small class="error-msg" id="error-ci"></small>
+                </div>
 
-        <div class="form-buttons">
-            <button type="submit" id="btn-guardar">Guardar cambios</button>
-            <button type="button" id="btn-cancelar">Cancelar</button>
-        </div>
-    </form>
+                <div class="form-buttons">
+                    <button type="submit" id="btn-guardar">Guardar cambios</button>
+                    <button type="button" id="btn-cancelar">Cancelar</button>
+                </div>
+            </form>
         </div>
 
     </div>
@@ -176,32 +176,29 @@
     </div>
 
     <table id="tabla-pagos" class="display">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Teléfono</th>
-            <th>Correo</th>
-            <th>Estado de pagos</th>
-        </tr>
-    </thead>
-    <tbody> 
-    </tbody>
-</table> 
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Estado de pagos</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table> 
 
-<div class="AdministrarPagos">
-    <a href="/AdministrarPagos" target="_blank">
-        <button class="btn-admin-pagos">Administrar pagos pendientes</button>
-    </a>
-</div>
-
+    <div class="AdministrarPagos">
+        <a href="/AdministrarPagos" target="_blank">
+            <button class="btn-admin-pagos">Administrar pagos pendientes</button>
+        </a>
+    </div>
 
 </div>
  
 <div class="usuarios section" style="display:none;">
     <h2>Gestión de Usuarios</h2>
 
-    <!-- Navegación entre pestañas -->
     <div class="tabs">
         <button class="tab-button active" data-tab="listar">Lista de Usuarios</button>
         <button class="tab-button" data-tab="crear">Crear Usuario</button>
@@ -209,11 +206,10 @@
         <button class="tab-button" data-tab="eliminar">Eliminar Usuario</button>
     </div>
 
-    <!-- Contenido de pestañas -->
     <div class="tab-content">
-        <!-- TAB LISTAR USUARIOS -->
+
         <div id="tab-listar" class="tab active">
-            <table id="tablaUsuarios" class="display" style="width:100%">
+            <table id="tablaUsuarios" class="display">
                 <thead>
                     <tr>
                         <th>Usuario</th>
@@ -223,71 +219,66 @@
                         <th>CI</th>
                     </tr>
                 </thead>
-                <tbody> 
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
 
-        <!-- TAB CREAR USUARIO -->
-<!-- TAB CREAR USUARIO -->
-<div id="tab-crear" class="tab">
-    <form id="formCrearUsuario" class="form-usuarios">
-        <h3>Crear Nuevo Usuario</h3>
+        <div id="tab-crear" class="tab">
+            <form id="formCrearUsuario" class="form-usuarios">
+                <h3>Crear Nuevo Usuario</h3>
 
-        <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" maxlength="50" required>
-            <span id="error-nombre" class="error-msg"></span>
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" maxlength="50" required>
+                    <span id="error-nombre" class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" id="apellido" name="apellido" maxlength="50" required>
+                    <span id="error-apellido" class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="email" required>
+                    <span id="error-email" class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+
+                    <select id="pais" name="pais" class="select-pais" required>
+                        <option value="+598" selected>🇺🇾 +598</option>
+                        <option value="+54">🇦🇷 +54</option>
+                        <option value="+55">🇧🇷 +55</option>
+                        <option value="+56">🇨🇱 +56</option>
+                        <option value="+57">🇨🇴 +57</option>
+                        <option value="+34">🇪🇸 +34</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+52">🇲🇽 +52</option>
+                    </select>
+
+                    <input type="text" id="telefono" name="telefono" maxlength="8" required>
+                    <span id="error-telefono" class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="ci">Cédula:</label>
+                    <input type="text" id="ci" name="ci" required>
+                    <span id="error-ci" class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required>
+                    <span id="error-password" class="error-msg"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Crear Usuario</button>
+            </form>
         </div>
 
-        <div class="form-group">
-            <label for="apellido">Apellido:</label>
-            <input type="text" id="apellido" name="apellido" maxlength="50" required>
-            <span id="error-apellido" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="correo">Correo:</label>
-            <input type="email" id="correo" name="email" required>
-            <span id="error-email" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="telefono">Teléfono:</label>
-
-            <select id="pais" name="pais" class="select-pais" required>
-                <option value="+598" selected>🇺🇾 +598</option>
-                <option value="+54">🇦🇷 +54</option>
-                <option value="+55">🇧🇷 +55</option>
-                <option value="+56">🇨🇱 +56</option>
-                <option value="+57">🇨🇴 +57</option>
-                <option value="+34">🇪🇸 +34</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+52">🇲🇽 +52</option>
-            </select>
-
-            <input type="text" id="telefono" name="telefono" maxlength="8" required>
-            <span id="error-telefono" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="ci">Cédula:</label>
-            <input type="text" id="ci" name="ci" required>
-            <span id="error-ci" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-            <span id="error-password" class="error-msg"></span>
-        </div>
-
-        <button type="submit" class="btn btn-success">Crear Usuario</button>
-    </form>
-</div>
-
-
-        <!-- TAB MODIFICAR USUARIO -->
         <div id="tab-modificar" class="tab">
             <form id="formModificarUsuario" class="form-usuarios">
                 <h3>Modificar Usuario</h3>
@@ -323,62 +314,56 @@
             </form>
         </div>
 
-        <!-- TAB ELIMINAR USUARIO -->
         <div id="tab-eliminar" class="tab">
-  <form id="formEliminarUsuario" class="form-usuarios">
-    <h3>Eliminar Usuario</h3>
-    <p>Selecciona un usuario de la lista para eliminarlo.</p>
+            <form id="formEliminarUsuario" class="form-usuarios">
+                <h3>Eliminar Usuario</h3>
+                <p>Selecciona un usuario de la lista para eliminarlo.</p>
 
-    <!-- Guardamos la ID real del usuario -->
-    <input type="hidden" id="elim-id" name="id">
+                <input type="hidden" id="elim-id" name="id">
 
-    <div class="form-group">
-        <label for="elim-nombre">Nombre:</label>
-        <input type="text" id="elim-nombre" name="nombre" readonly>
-    </div>
-    <div class="form-group">
-        <label for="elim-apellido">Apellido:</label>
-        <input type="text" id="elim-apellido" name="apellido" readonly>
-    </div>
-    <div class="form-group">
-        <label for="elim-correo">Correo:</label>
-        <input type="email" id="elim-correo" name="correo" readonly>
-    </div>
-    <div class="form-group">
-        <label for="elim-ci">Cédula:</label>
-        <input type="text" id="elim-ci" name="ci" readonly>
-    </div>
+                <div class="form-group">
+                    <label for="elim-nombre">Nombre:</label>
+                    <input type="text" id="elim-nombre" name="nombre" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="elim-apellido">Apellido:</label>
+                    <input type="text" id="elim-apellido" name="apellido" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="elim-correo">Correo:</label>
+                    <input type="email" id="elim-correo" name="correo" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="elim-ci">Cédula:</label>
+                    <input type="text" id="elim-ci" name="ci" readonly>
+                </div>
 
-    <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
-</form>
-
+                <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
+            </form>
         </div>
+
     </div>
 </div>
 
  
 <div class="horas section" style="display:none;">
 
-    <!-- Encabezado -->
     <div class="horas-header">
         <h2>Horas trabajadas</h2>
 
-        <!-- Rango de semana -->
         <div class="semana-rango">
             <span id="semanaInicio"></span> 
             <span> / </span>
             <span id="semanaFin"></span>
         </div>
 
-        <!-- Botón para actualizar (puede llevar icono) -->
         <button id="btnActualizarHoras" class="btn-actualizar">
             Actualizar
-           <img src="public/imagenes/reload.png" alt="reload_icon">
+            <img src="imagenes/reload.png" alt="reload_icon">
         </button>
     </div>
 
-    <!-- Tabla de horas -->
-    <table id="tablaHoras" class="display tabla-horas" style="width:100%;">
+    <table id="tablaHoras" class="display tabla-horas">
         <thead>
             <tr>
                 <th>Usuario</th>
@@ -387,126 +372,118 @@
                 <th>Horas trabajadas</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- DataTables llenará esto -->
-        </tbody>
+        <tbody></tbody>
     </table>
 
 </div>
-        <div class="unidades section" style="display:none;">
-            <h2>Gestión de Unidades Habitacionales</h2>
 
-            <!-- Navegación entre pestañas -->
-            <div class="tabs">
-                <button class="tab-button active" data-tab="listar-unidades">Lista de Unidades</button>
-                <button class="tab-button" data-tab="crear-unidad">Crear Unidad</button>
-                <button class="tab-button" data-tab="modificar-unidad">Modificar Unidad</button>
-                <button class="tab-button" data-tab="eliminar-unidad">Eliminar Unidad</button>
-            </div>
+<div class="unidades section" style="display:none;">
+    <h2>Gestión de Unidades Habitacionales</h2>
 
-            <!-- Contenido de pestañas -->
-            <div class="tab-content">
+    <div class="tabs">
+        <button class="tab-button active" data-tab="listar-unidades">Lista de Unidades</button>
+        <button class="tab-button" data-tab="crear-unidad">Crear Unidad</button>
+        <button class="tab-button" data-tab="modificar-unidad">Modificar Unidad</button>
+        <button class="tab-button" data-tab="eliminar-unidad">Eliminar Unidad</button>
+    </div>
+
+    <div class="tab-content">
                 
-                <!-- TAB LISTAR UNIDADES -->
-                <div id="tab-listar-unidades" class="tab active">
-                    <table id="tablaUnidades" class="display" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Estado</th>  
-                            </tr>
-                        </thead>
-                        <tbody> 
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- TAB CREAR UNIDAD -->
-                <div id="tab-crear-unidad" class="tab">
-                    <form id="formCrearUnidad" class="form-unidades">
-                        <h3>Crear Nueva Unidad Habitacional</h3>
-
-                        <div class="form-group">
-                            <label for="codigo-unidad">Código de Unidad:</label>
-                            <input type="text" id="codigo-unidad" name="codigoUnidad" maxlength="20" placeholder="Ej: A-101, Casa-5" required>
-                            <span id="error-codigo-unidad" class="error-msg"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="estado-unidad">Estado:</label>
-                            <select id="estado-unidad" name="estadoUnidad" required>
-                                <option value="">-- Seleccionar estado --</option>
-                                <option value="Cimientos">Cimientos</option>
-                                <option value="Estructura">Estructura</option>
-                                <option value="Terminaciones">Terminaciones</option>
-                                <option value="Finalizada">Finalizada</option>
-                            </select>
-                            <span id="error-estado-unidad" class="error-msg"></span>
-                        </div>
-
-                        <button type="submit" class="btn btn-success">Crear Unidad</button>
-                    </form>
-                </div>
-
-                <!-- TAB MODIFICAR UNIDAD -->
-                <div id="tab-modificar-unidad" class="tab">
-                    <form id="formModificarUnidad" class="form-unidades">
-                        <h3>Modificar Unidad Habitacional</h3>
-                        <p>Selecciona una unidad de la lista para cargar sus datos.</p>
-
-                        <input type="hidden" id="mod-unidad-id" name="idUnidad">
-
-                        <div class="form-group">
-                            <label for="mod-codigo-unidad">Código de Unidad:</label>
-                            <input type="text" id="mod-codigo-unidad" name="codigoUnidad" readonly>
-                            <span id="mod-error-codigo-unidad" class="error-msg"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="mod-estado-unidad">Estado:</label>
-                            <select id="mod-estado-unidad" name="nuevoEstado" required>
-                                <option value="">-- Seleccionar estado --</option>
-                                <option value="Cimientos">Cimientos</option>
-                                <option value="Estructura">Estructura</option>
-                                <option value="Terminaciones">Terminaciones</option>
-                                <option value="Finalizada">Finalizada</option>
-                            </select>
-                            <span id="mod-error-estado-unidad" class="error-msg"></span>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                    </form>
-                </div>
-
-                <!-- TAB ELIMINAR UNIDAD -->
-                <div id="tab-eliminar-unidad" class="tab">
-                    <form id="formEliminarUnidad" class="form-unidades">
-                        <h3>Eliminar Unidad Habitacional</h3>
-                        <p>Selecciona una unidad de la lista para eliminarla.</p>
-
-                        <input type="hidden" id="elim-unidad-id" name="idUnidad">
-
-                        <div class="form-group">
-                            <label for="elim-codigo-unidad">Código de Unidad:</label>
-                            <input type="text" id="elim-codigo-unidad" name="codigoUnidad" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="elim-estado-unidad">Estado:</label>
-                            <input type="text" id="elim-estado-unidad" name="estado" readonly>
-                        </div> 
-                        <button type="submit" class="btn btn-danger">Eliminar Unidad</button>
-                    </form>
-                </div>
-
-            </div>
+        <div id="tab-listar-unidades" class="tab active">
+            <table id="tablaUnidades" class="display">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Estado</th>  
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
+
+        <div id="tab-crear-unidad" class="tab">
+            <form id="formCrearUnidad" class="form-unidades">
+                <h3>Crear Nueva Unidad Habitacional</h3>
+
+                <div class="form-group">
+                    <label for="codigo-unidad">Código de Unidad:</label>
+                    <input type="text" id="codigo-unidad" name="codigoUnidad" maxlength="20" placeholder="Ej: A-101, Casa-5" required>
+                    <span id="error-codigo-unidad" class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="estado-unidad">Estado:</label>
+                    <select id="estado-unidad" name="estadoUnidad" required>
+                        <option value="">-- Seleccionar estado --</option>
+                        <option value="Cimientos">Cimientos</option>
+                        <option value="Estructura">Estructura</option>
+                        <option value="Terminaciones">Terminaciones</option>
+                        <option value="Finalizada">Finalizada</option>
+                    </select>
+                    <span id="error-estado-unidad" class="error-msg"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Crear Unidad</button>
+            </form>
+        </div>
+
+        <div id="tab-modificar-unidad" class="tab">
+            <form id="formModificarUnidad" class="form-unidades">
+                <h3>Modificar Unidad Habitacional</h3>
+                <p>Selecciona una unidad de la lista para cargar sus datos.</p>
+
+                <input type="hidden" id="mod-unidad-id" name="idUnidad">
+
+                <div class="form-group">
+                    <label for="mod-codigo-unidad">Código de Unidad:</label>
+                    <input type="text" id="mod-codigo-unidad" name="codigoUnidad" readonly>
+                    <span id="mod-error-codigo-unidad" class="error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="mod-estado-unidad">Estado:</label>
+                    <select id="mod-estado-unidad" name="nuevoEstado" required>
+                        <option value="">-- Seleccionar estado --</option>
+                        <option value="Cimientos">Cimientos</option>
+                        <option value="Estructura">Estructura</option>
+                        <option value="Terminaciones">Terminaciones</option>
+                        <option value="Finalizada">Finalizada</option>
+                    </select>
+                    <span id="mod-error-estado-unidad" class="error-msg"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+
+        <div id="tab-eliminar-unidad" class="tab">
+            <form id="formEliminarUnidad" class="form-unidades">
+                <h3>Eliminar Unidad Habitacional</h3>
+                <p>Selecciona una unidad de la lista para eliminarla.</p>
+
+                <input type="hidden" id="elim-unidad-id" name="idUnidad">
+
+                <div class="form-group">
+                    <label for="elim-codigo-unidad">Código de Unidad:</label>
+                    <input type="text" id="elim-codigo-unidad" name="codigoUnidad" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="elim-estado-unidad">Estado:</label>
+                    <input type="text" id="elim-estado-unidad" name="estado" readonly>
+                </div> 
+
+                <button type="submit" class="btn btn-danger">Eliminar Unidad</button>
+            </form>
+        </div>
+
+    </div>
+</div>
  
 <div class="config section" style="display:none;">
     <div class="ConfigHeader">
         <h2>Configuración de la Cooperativa</h2>
     
-        <!-- NAV PRINCIPAL -->
         <div class="config-nav">
             <button class="btn-config active" data-target="config-form-section">
                 Editar Configuración
@@ -553,17 +530,14 @@
             </form>
         </section>
 
-
         <section id="user-data-section" class="config-section">
             <h3>Datos del Usuario</h3>
 
-            <!-- Buscador --> 
-                <form class="user-search">
-                    <input type="text" id="buscadorUsuario" placeholder="Buscar usuario por CI o correo...">
-                    <button id="btnBuscarUsuario">Buscar</button>
-                </form> 
+            <form class="user-search">
+                <input type="text" id="buscadorUsuario" placeholder="Buscar usuario por CI o correo...">
+                <button id="btnBuscarUsuario">Buscar</button>
+            </form> 
 
-            <!-- LENGUETAS -->
             <div class="tabs-user-data">
                 <button class="tab-btn active" data-tab="tab-pagos-mensuales">Pagos Mensuales</button>
                 <button class="tab-btn" data-tab="tab-horas">Horas Trabajadas</button>
@@ -571,11 +545,8 @@
                 <button class="tab-btn" data-tab="tab-deudas-semanales">Deudas Semanales</button>
             </div>
 
-            <!-- CONTENEDORES DE TABLAS -->
-
-            <!-- PAGOS MENSUALES -->
             <div id="tab-pagos-mensuales" class="tab-content active">
-                <table id="tablaPagosMensuales" class="display datatable" style="width:100%">
+                <table id="tablaPagosMensuales" class="display datatable">
                     <thead>
                         <tr>
                             <th>Mes</th>
@@ -587,9 +558,8 @@
                 </table>
             </div>
 
-            <!-- HORAS -->
             <div id="tab-horas" class="tab-content">
-                <table id="tablaHorasUsuario" class="display datatable" style="width:100%">
+                <table id="tablaHorasUsuario" class="display datatable">
                     <thead>
                         <tr>
                             <th>Fecha</th>
@@ -600,9 +570,8 @@
                 </table>
             </div>
 
-            <!-- DEUDAS MENSUALES -->
             <div id="tab-deudas-mensuales" class="tab-content">
-                <table id="tablaDeudasMensuales" class="display datatable" style="width:100%">
+                <table id="tablaDeudasMensuales" class="display datatable">
                     <thead>
                         <tr>
                             <th>Mes</th>
@@ -614,9 +583,8 @@
                 </table>
             </div>
 
-            <!-- DEUDAS SEMANALES -->
             <div id="tab-deudas-semanales" class="tab-content">
-                <table id="tablaDeudasSemanales" class="display datatable" style="width:100%">
+                <table id="tablaDeudasSemanales" class="display datatable">
                     <thead>
                         <tr>
                             <th>Semana</th>
@@ -635,8 +603,8 @@
     </div>
 </div>
 
-<script src="/public/js/sweetalert2.min.js"></script>
-    <script src="/public/js/backoffice.js"></script>
+<script src="js/sweetalert2.min.js"></script>
+<script src="js/backoffice.js"></script>
 
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="public/css/registro.css">
-  <link rel="icon" href="public/imagenes/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/registro.css">
+  <link rel="icon" href="imagenes/logo.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <title>Registro</title>
 </head>
@@ -23,14 +23,14 @@
   <!-- Botón para regresar -->
   <div class="regresar-container">
     <a href="/">
-      <img src="public/imagenes/flecha.png" alt="Regresar">
+      <img src="imagenes/flecha.png" alt="Regresar">
     </a>
   </div>
 
-  <!-- Sección “Ya registrado” -->
+  <!-- Sección "Ya registrado" -->
   <div class="yaregistrado-container">
     <h2>¿Ya registrado?</h2>
-    <img src="public/imagenes/key.png" alt="Icono llave">
+    <img src="imagenes/key.png" alt="Icono llave">
     <p>Ingresa a tu cuenta de manera rápida, segura y sencilla.</p>
     <a href="/login"><button>Ingresar</button></a> 
   </div>
@@ -148,6 +148,6 @@
     </form>
   </div>
 
-  <script src="public/js/registro.js"></script>
+  <script src="js/registro.js"></script>
 </body>
 </html>
