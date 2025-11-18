@@ -155,15 +155,57 @@ public function ObtenerUsuarios() {
 } 
 public function EliminarUsuarioPorId($id) {
     try {
+        $this->db->beginTransaction();
+
+        // 1️⃣ Borrar registros dependientes
+        $tablasDependientes = [
+            'Deudas_Mensuales',
+            'Pagos_Deudas',
+            'pagos_mensuales',
+            'pagos_compensatorios',
+            'justificativos',
+            'horas_trabajadas',
+            'Semana_deudas',
+            'Horas_deuda',
+            'usuarios_unidades',
+            'Notificaciones'
+        ];
+
+        foreach ($tablasDependientes as $tabla) {
+            $sql = "DELETE FROM $tabla WHERE usuario_id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+        // 2️⃣ Borrar el usuario
         $sql = "DELETE FROM usuarios WHERE id = :id LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            $this->db->commit();
+            return ["success" => true];
+        } else {
+            $this->db->rollBack();
+            return [
+                "success" => false,
+                "error" => "No se pudo eliminar el usuario (¿no existe?)"
+            ];
+        }
+
     } catch (Exception $e) {
+        $this->db->rollBack();
         error_log("Error al eliminar usuario: " . $e->getMessage());
-        return false;
+        return [
+            "success" => false,
+            "error" => "Ocurrió un error al intentar eliminar el usuario."
+        ];
     }
 }
+
+
 public function editarConfig($clave, $valor) {
     $sql = "UPDATE configuracion SET valor = :valor WHERE clave = :clave";
     $stmt = $this->db->prepare($sql);

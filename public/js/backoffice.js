@@ -532,7 +532,7 @@ function CargarUsuarioSeleccionado(ci) {
     let formData = new FormData();
     formData.append("ci", ci);
 
-    fetch("/usuarioPorID", {
+    fetch("usuarioPorID", {
         method: "POST",
         body: formData
     })
@@ -959,8 +959,10 @@ function CargarEliminarUsuario(u) {
 formEliminarUsuario.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const id = document.getElementById("elim-id").value;
-    if (!id) return Swal.fire("Error", "No se seleccionó ningún usuario", "error");
+    const id = document.getElementById("elim-id").value.trim();
+    if (!id) {
+        return Swal.fire("Error", "No se seleccionó ningún usuario", "error");
+    }
 
     // Confirmación antes de eliminar
     const confirm = await Swal.fire({
@@ -974,28 +976,37 @@ formEliminarUsuario.addEventListener("submit", async (e) => {
 
     if (!confirm.isConfirmed) return;
 
-    const datos = new FormData();
-    datos.append("id", id);
-
     try {
+        // Usamos FormData para enviar el ID
+        const datos = new FormData();
+        datos.append("id", id);
+
         const resp = await fetch("/eliminarUsuario", {
             method: "POST",
             body: datos
         });
+
+        // Verificar que la respuesta sea JSON
+        const contentType = resp.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("El servidor no devolvió JSON válido");
+        }
+
         const json = await resp.json();
 
         if (json.success) {
             Swal.fire("Eliminado", "El usuario fue eliminado con éxito.", "success");
-            formEliminarUsuario.reset(); 
-            CargarUsuarios();
+            formEliminarUsuario.reset();
+            CargarUsuarios(); // Recargar listado de usuarios
         } else {
             Swal.fire("Error", json.error || "No se pudo eliminar el usuario", "error");
         }
     } catch (err) {
-        console.error(err);
-        Swal.fire("Error", "Ocurrió un error inesperado", "error");
+        console.error("Error eliminando usuario:", err);
+        Swal.fire("Error", "Ocurrió un error inesperado. Ver consola para más detalles.", "error");
     }
 });
+
 // Ejecutar cuando se muestra la sección o al cargar la página
 async function cargarHorasPrincipales() {
     try {

@@ -274,15 +274,10 @@ public function EliminarUsuario() {
 
     $resultado = $modelo->EliminarUsuarioPorId($id);
 
-    if ($resultado) {
-        echo json_encode(["success" => true]);
-    } else {
-        echo json_encode([
-            "success" => false,
-            "error" => "No se pudo eliminar el usuario (¿no existe?)"
-        ]);
-    }
+    echo json_encode($resultado);
 }
+
+
 
 public function usuarioPorID() { 
     $ci = $_POST["ci"] ?? null;

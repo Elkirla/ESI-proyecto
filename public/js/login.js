@@ -136,10 +136,10 @@ if (result.success) {
 eye.addEventListener("click", () => {
     if (password.type === "password") {
         password.type = "text";
-        eye.src = "public/imagenes/ojo.png"; // ojo abierto
+        eye.src = "imagenes/ojo.png"; // ojo abierto
     } else {
         password.type = "password";
-        eye.src = "public/imagenes/ojo-apagado.png"; // ojo apagado
+        eye.src = "imagenes/ojo-apagado.png"; // ojo apagado
     }
 });
 
