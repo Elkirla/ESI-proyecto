@@ -109,6 +109,19 @@ const formEliminarUsuario = document.getElementById("formEliminarUsuario");
         cargarConfiguracion();
     }
 
+    // Helper global para comprobar jQuery + DataTables
+    function ensureDataTables() {
+        if (typeof window.jQuery === 'undefined') {
+            console.error("[backoffice] jQuery no está definido. Asegúrate de cargar jQuery antes de DataTables/backoffice.js");
+            return false;
+        }
+        if (!$.fn || !$.fn.DataTable) {
+            console.error("[backoffice] DataTables no está disponible. Comprueba que 'jquery.dataTables.min.js' se cargó correctamente.");
+            return false;
+        }
+        return true;
+    }
+
 
 
     // =================================================================
@@ -359,10 +372,15 @@ function CargarUsuarios() {
         .then(res => res.json())
         .then(data => {
  
+            if (!ensureDataTables()) {
+                console.warn('[backoffice] Se omitió inicializar DataTable para #tablaUsuarios porque DataTables no está disponible.');
+                return;
+            }
+
             if ($.fn.DataTable.isDataTable("#tablaUsuarios")) {
                 $("#tablaUsuarios").DataTable().clear().destroy();
             }
- 
+
             $("#tablaUsuarios").DataTable({
                 data: data,
                 columns: [
@@ -498,7 +516,10 @@ btnRechazar.addEventListener("click", async (e) => {
 });
  
 $('#tablaUsuarios tbody').on('click', 'tr', function () {
-    let data = $('#tablaUsuarios').DataTable().row(this).data();
+    if (!ensureDataTables()) return;
+    let dt = $('#tablaUsuarios').DataTable();
+    if (!dt) return;
+    let data = dt.row(this).data();
     if (!data) return;
 
     let ci = data.ci;
@@ -664,6 +685,11 @@ let tablaDeudasS = null;
 // Crear DataTables cuando el DOM esté cargado (si las tablas están visibles)
 document.addEventListener("DOMContentLoaded", () => {
 
+    if (!ensureDataTables()) {
+        console.warn('[backoffice] DataTables no inicializado: faltan dependencias.');
+        return;
+    }
+
     if ($("#tablaPagosMensuales").length) {
         tablaPagos = $('#tablaPagosMensuales').DataTable();
     }
@@ -758,10 +784,33 @@ function buscarDatosUsuario(userInfo) {
 
 // Crear DataTable si no existe
 function asegurarTabla(ref, selector) {
+    // Comprobación segura: jQuery y DataTables deben existir
+    function ensureDataTables() {
+        if (typeof window.jQuery === 'undefined') {
+            console.error("jQuery no está definido. Asegúrate de cargar jQuery antes de DataTables/backoffice.js");
+            return false;
+        }
+        if (!$.fn || !$.fn.DataTable) {
+            console.error("DataTables no está disponible. Comprueba que 'jquery.dataTables.min.js' se cargó correctamente.");
+            return false;
+        }
+        return true;
+    }
+
+    if (!ensureDataTables()) {
+        // Devolver un stub mínimo para evitar errores si se llama a métodos esperados
+        return {
+            clear: function() {},
+            row: function() { return { add: function() {} }; },
+            draw: function() {}
+        };
+    }
+
     if (!ref) {
         console.warn(`⚠ Inicializando DataTable tardíamente: ${selector}`);
         return $(selector).DataTable();
     }
+
     return ref;
 }
 
@@ -963,6 +1012,12 @@ async function cargarHorasPrincipales() {
         document.getElementById("semanaFin").textContent   = data.semana.fin;
 
         // Crear / recrear DataTable
+        // Comprobar dependencias antes de tocar DataTables
+        if (!ensureDataTables()) {
+            console.warn('[backoffice] Se omitió inicializar DataTable para #tablaHoras porque DataTables no está disponible.');
+            return;
+        }
+
         if ($.fn.DataTable.isDataTable("#tablaHoras")) {
             $("#tablaHoras").DataTable().clear().destroy(); 
         }
@@ -1002,6 +1057,11 @@ async function cargarTablaPagosUsuarios() {
 
         if (!result.success) {
             console.error(result.error);
+            return;
+        }
+
+        if (!ensureDataTables()) {
+            console.warn('[backoffice] Se omitió inicializar tabla de pagos porque DataTables no está disponible.');
             return;
         }
 

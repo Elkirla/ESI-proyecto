@@ -8,10 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
  
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
- 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="/public/js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="/public/css/jquery.dataTables.min.css">
+    <script src="/public/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="/public/css/sweetalert2.min.css">
+    <script src="/public/js/sweetalert2.min.js"></script>
 
     <link rel="icon" href="public/imagenes/logo.png" type="icon">
     <title>BackOffice</title>
@@ -634,8 +635,8 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="public/js/backoffice.js"></script>
+<script src="/public/js/sweetalert2.min.js"></script>
+    <script src="/public/js/backoffice.js"></script>
 
 </body>
 </html>
